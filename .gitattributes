@@ -1,0 +1,9 @@
+# Normalize line endings across the repo (public multi-platform project).
+* text=auto eol=lf
+
+# Non-text files
+*.png binary
+*.jpg binary
+*.gif binary
+*.mp4 binary
+*.tgz binary

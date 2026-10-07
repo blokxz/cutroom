@@ -1,0 +1,21 @@
+{
+  "name": "cutroom",
+  "displayName": "cutroom · Video Studio",
+  "version": "0.1.0",
+  "description": "A team of agents for producing reels and short videos: director, writer, motion, editor, art and QA, plus community skills for video.",
+  "author": {
+    "name": "Alejandro M. Ceccheto",
+    "url": "https://github.com/blokxz"
+  },
+  "homepage": "https://github.com/blokxz/cutroom#readme",
+  "repository": "https://github.com/blokxz/cutroom",
+  "license": "MIT",
+  "keywords": [
+    "video",
+    "reels",
+    "motion",
+    "remotion",
+    "ffmpeg",
+    "agents"
+  ]
+}

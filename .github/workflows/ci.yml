@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    name: plugin files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: JSON files parse
+        run: |
+          for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json .claude/settings.json skills.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f', 'utf8'))" && echo "ok  $f"
+          done
+
+      - name: Catalog entries are complete
+        run: |
+          node -e '
+            const c = JSON.parse(require("fs").readFileSync("skills.json", "utf8"));
+            const tiers = Object.keys(c.tiers);
+            const bad = c.skills.filter((s) => !s.id || !s.source || !tiers.includes(s.tier) || !Array.isArray(s.agents) || s.agents.length === 0);
+            if (bad.length) { console.error("Incomplete entries:", bad.map((s) => s.id)); process.exit(1); }
+            const active = c.skills.filter((s) => s.status === "active" && !s.commit);
+            if (active.length) { console.error("Active entries without a pinned commit:", active.map((s) => s.id)); process.exit(1); }
+            console.log(`ok  ${c.skills.length} catalog entries`);
+          '
+
+      - name: No bin/ folder at the plugin root
+        run: test ! -e bin
+
+      - name: Validate the plugin
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude plugin validate --strict .
+          claude plugin validate --strict .claude-plugin/plugin.json

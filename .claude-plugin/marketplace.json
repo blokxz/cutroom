@@ -1,0 +1,21 @@
+{
+  "name": "blokxz",
+  "description": "blokxz's plugins for video production with Claude Code.",
+  "owner": {
+    "name": "Alejandro M. Ceccheto",
+    "url": "https://github.com/blokxz"
+  },
+  "plugins": [
+    {
+      "name": "cutroom",
+      "source": "./",
+      "description": "Video studio: /reel \"brief\" and a team of agents that produces it.",
+      "category": "media",
+      "tags": [
+        "video",
+        "reels",
+        "motion"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+# Productions are local work: footage, renders and drafts never go into the plugin repo.
+productions/
+
+# Secrets and local Claude Code settings
+.env
+.env.*
+.claude/settings.local.json
+
+# Tooling and OS noise
+node_modules/
+__pycache__/
+*.log
+.DS_Store
+Thumbs.db

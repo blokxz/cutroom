@@ -1,0 +1,214 @@
+{
+  "$comment": "Catalog of add-ons. Read by the /setup skill (phase 3). Each entry is pinned to a commit and tested before moving from 'candidate' to 'active'. Details in docs/add-ons.md.",
+  "version": 2,
+  "tiers": {
+    "core": "always installed",
+    "recommended": "offered by /setup",
+    "optional": "needs an account, API key or extra software"
+  },
+  "skills": [
+    {
+      "id": "remotion",
+      "kind": "skill",
+      "source": "remotion",
+      "installer": "npx skills add",
+      "commit": null,
+      "agents": [
+        "motion"
+      ],
+      "requires": [
+        "node>=18"
+      ],
+      "purpose": "React components rendered to MP4",
+      "tier": "core",
+      "status": "candidate"
+    },
+    {
+      "id": "video-edit",
+      "kind": "skill",
+      "source": "heygen-com/skills",
+      "skill": "video-edit",
+      "installer": "npx skills add",
+      "commit": null,
+      "agents": [
+        "editor",
+        "qa"
+      ],
+      "requires": [
+        "ffmpeg",
+        "ffprobe"
+      ],
+      "purpose": "Direct ffmpeg/ffprobe: cuts, audio, formats, metadata",
+      "tier": "core",
+      "status": "candidate"
+    },
+    {
+      "id": "auto-editor",
+      "kind": "cli",
+      "source": "WyattBlue/auto-editor",
+      "installer": "pip install auto-editor",
+      "commit": null,
+      "agents": [
+        "editor"
+      ],
+      "requires": [
+        "python>=3.9"
+      ],
+      "purpose": "Cut silences and dead time; exports to Premiere/Resolve/FCP",
+      "tier": "core",
+      "status": "candidate"
+    },
+    {
+      "id": "hyperframes",
+      "kind": "skill",
+      "source": "heygen-com/hyperframes",
+      "skill": "hyperframes-read-first",
+      "installer": "npx skills add",
+      "commit": null,
+      "agents": [
+        "motion"
+      ],
+      "requires": [
+        "node>=22",
+        "ffmpeg"
+      ],
+      "purpose": "Video from HTML + GSAP; explainer, talking-head and web-to-video flows",
+      "tier": "recommended",
+      "status": "candidate"
+    },
+    {
+      "id": "whisperx",
+      "kind": "cli",
+      "source": "m-bain/whisperX",
+      "installer": "pip install whisperx",
+      "commit": null,
+      "agents": [
+        "editor"
+      ],
+      "requires": [
+        "python",
+        "gpu-recommended"
+      ],
+      "purpose": "Captions with exact word-level timing",
+      "tier": "recommended",
+      "status": "candidate"
+    },
+    {
+      "id": "toolkit-ffmpeg-moviepy",
+      "kind": "skill",
+      "source": "digitalsamba/claude-code-video-toolkit",
+      "skill": "ffmpeg,moviepy",
+      "installer": "vendor",
+      "commit": null,
+      "agents": [
+        "editor"
+      ],
+      "requires": [
+        "ffmpeg",
+        "python"
+      ],
+      "purpose": "Encoding and compositing recipes (MIT, with credit)",
+      "tier": "recommended",
+      "status": "candidate"
+    },
+    {
+      "id": "pexels",
+      "kind": "mcp",
+      "source": "developer-ishan/mcp-pexels",
+      "installer": "mcp",
+      "commit": null,
+      "agents": [
+        "editor"
+      ],
+      "requires": [
+        "PEXELS_API_KEY"
+      ],
+      "purpose": "Free-license stock B-roll",
+      "tier": "recommended",
+      "status": "candidate"
+    },
+    {
+      "id": "elevenlabs",
+      "kind": "mcp",
+      "source": "elevenlabs/elevenlabs-mcp",
+      "installer": "uvx elevenlabs-mcp",
+      "commit": null,
+      "agents": [
+        "editor"
+      ],
+      "requires": [
+        "uv",
+        "ELEVENLABS_API_KEY"
+      ],
+      "purpose": "Voice, cloning, sound effects and music",
+      "tier": "optional",
+      "status": "candidate"
+    },
+    {
+      "id": "claude-vision",
+      "kind": "skill",
+      "source": "mikefutia/claude-vision",
+      "installer": "git clone",
+      "commit": null,
+      "agents": [
+        "qa",
+        "writer"
+      ],
+      "requires": [
+        "python",
+        "GEMINI_API_KEY"
+      ],
+      "purpose": "Analyze a full video scene by scene with Gemini",
+      "tier": "optional",
+      "status": "candidate"
+    },
+    {
+      "id": "davinci-resolve",
+      "kind": "mcp",
+      "source": "Tooflex/davinci-resolve-mcp",
+      "installer": "mcp",
+      "commit": null,
+      "agents": [
+        "editor"
+      ],
+      "requires": [
+        "DaVinci Resolve Studio",
+        "python>=3.10"
+      ],
+      "purpose": "Leave the project assembled in Resolve for manual finishing",
+      "tier": "optional",
+      "status": "candidate"
+    },
+    {
+      "id": "clipify",
+      "kind": "skill",
+      "source": "louisedesadeleer/clipify",
+      "installer": "git clone",
+      "commit": null,
+      "agents": [
+        "editor"
+      ],
+      "requires": [],
+      "purpose": "Reels from long videos",
+      "tier": "optional",
+      "status": "candidate"
+    },
+    {
+      "id": "manim",
+      "kind": "skill",
+      "source": "Yusuke710/manim-skill",
+      "installer": "git clone",
+      "commit": null,
+      "agents": [
+        "motion"
+      ],
+      "requires": [
+        "python",
+        "manim"
+      ],
+      "purpose": "Math and engineering animations",
+      "tier": "optional",
+      "status": "candidate"
+    }
+  ]
+}
