@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1000" width="1440" height="1000" font-family="Inter, Segoe UI, system-ui, sans-serif" role="img" aria-labelledby="t d">
+<title id="t">cutroom · reel-families — spec-driven reel orchestration</title>
+<desc id="d">Three phases: pre-construction (repo analysis, onetake criteria benchmark, rules, spec.md), core SDD construction (router, guidelines, references, variation engine, summary tool, compression), post-deployment and CI/CD (integrate, run, git, lint/test/bench/fuzz) with a feedback loop to spec.md.</desc>
+<style>
+.node{transition:filter .15s ease,stroke-width .15s ease}.node:hover{filter:brightness(1.35)}
+.h{font-size:15px;font-weight:700;fill:#e6edf3}.t{font-size:12.5px;fill:#c9d1d9}.m{font-size:12px;fill:#8b949e}
+.c{font-family:JetBrains Mono,SFMono-Regular,Consolas,monospace;font-size:11.5px;fill:#c9d1d9}
+.ph{font-size:13px;font-weight:800;letter-spacing:1.5px}
+.flow{stroke-dasharray:7 6;animation:dash 1.6s linear infinite}@keyframes dash{to{stroke-dashoffset:-26}}
+@media (prefers-reduced-motion:reduce){.flow{animation:none}}
+</style>
+<defs>
+<marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#58a6ff"/></marker>
+<marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#a371f7"/></marker>
+<marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#3fb950"/></marker>
+<marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f0883e"/></marker>
+<linearGradient id="spec" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f2d47"/><stop offset="1" stop-color="#2a1f47"/></linearGradient></defs><rect width="1440" height="1000" fill="#0d1117"/>
+<text x="40" y="54" font-size="26" font-weight="800" fill="#e6edf3">cutroom · reel-families — spec-driven reel orchestration</text>
+<text x="40" y="82" class="m" font-size="14">summary → family choice or invention → rhythm-legal variations → video-direction pipeline · ≤ 3 user turns · spec.md is the single source of truth</text>
+<rect x="1010" y="40" width="12" height="12" rx="3" fill="#58a6ff"/><text x="1028" y="51" class="m">pre-construction</text>
+<rect x="1140" y="40" width="12" height="12" rx="3" fill="#a371f7"/><text x="1158" y="51" class="m">SDD construction</text>
+<rect x="1275" y="40" width="12" height="12" rx="3" fill="#3fb950"/><text x="1293" y="51" class="m">CI/CD</text>
+<rect x="1010" y="62" width="12" height="12" rx="3" fill="#f0883e"/><text x="1028" y="73" class="m">feedback loop → spec.md (amend, new ID, re-derive)</text>
+<rect x="40" y="110" width="440" height="760" rx="16" fill="#111722" stroke="#1f3a5f"/><text x="62" y="142" class="ph" fill="#58a6ff">01 · PRE-CONSTRUCTION</text>
+<rect x="500" y="110" width="440" height="760" rx="16" fill="#130f1f" stroke="#3b2a63"/><text x="522" y="142" class="ph" fill="#a371f7">02 · CORE SDD CONSTRUCTION</text>
+<rect x="960" y="110" width="440" height="760" rx="16" fill="#0f1a14" stroke="#1f4a2c"/><text x="982" y="142" class="ph" fill="#3fb950">03 · POST-DEPLOYMENT &amp; CI/CD</text>
+<g class="node"><title>Read the repo; the data feeds the summary tool later.</title><rect x="62" y="162" width="396" height="170" rx="12" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="80" y="188" class="h">Repository analysis · blokxz/cutroom</text>
+<text x="80" y="212" class="c">commands/video.md · reel.md   orchestrators</text>
+<text x="80" y="231" class="c">skills/video-direction/         creative rules</text>
+<text x="80" y="250" class="c">tools/pipeline.py · verify.py    gates · verdicts</text>
+<text x="80" y="269" class="c">remotion-base/src/moves          12 moves</text>
+<text x="80" y="288" class="c">docs/benchmark.md · ci.yml       gaps · checks</text>
+</g>
+<path d="M260 332V352" fill="none" stroke="#58a6ff" stroke-width="2" marker-end="url(#a1)"/>
+<g class="node"><title>Targets Q-01..Q-08 derive from cutroom's own review of onetake's published criteria.</title><rect x="62" y="356" width="396" height="134" rx="12" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="80" y="382" class="h">Benchmark · onetake-level criteria</text>
+<text x="80" y="406" class="t">criteria from docs/benchmark.md only (14 modules)</text>
+<text x="80" y="425" class="t">onetake itself is never run or copied  (G-02)</text>
+<text x="80" y="444" class="t">gaps → Q-04 Q-06 Q-07 Q-08 stay visible</text>
+<text x="80" y="463" class="t">parity is never claimed  (G-05)</text>
+</g>
+<path d="M260 490V510" fill="none" stroke="#58a6ff" stroke-width="2" marker-end="url(#a1)"/>
+<g class="node"><title>Constraints applied before any derived file is written.</title><rect x="62" y="514" width="396" height="124" rx="12" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+<text x="80" y="540" class="h">Rule enforcement</text>
+<text x="80" y="564" class="t">▸ Linux-native: POSIX paths, python3, no bin/</text>
+<text x="80" y="583" class="t">▸ Strict English · no AI attribution  (G-07)</text>
+<text x="80" y="602" class="t">▸ Router ≤ 40 lines / 350 words</text>
+<text x="80" y="621" class="t">▸ Tables + key-value; zero filler</text>
+</g>
+<path d="M260 638V658" fill="none" stroke="#58a6ff" stroke-width="2" marker-end="url(#a1)"/>
+<g class="node"><title>spec.md: intent, scope, contracts C-NN, family model F-NN, quality targets Q-NN, loop L-NN, guardrails G-NN.</title><rect x="62" y="662" width="396" height="190" rx="12" fill="url(#spec)" stroke="#79c0ff" stroke-width="2"/><text x="82" y="692" class="h" font-size="17">spec.md — single source of truth</text>
+<text x="82" y="718" class="c">C-01…06  contracts (registry, beat sheet, summary)</text>
+<text x="82" y="739" class="c">F-01…05  family model · novelty · promotion</text>
+<text x="82" y="760" class="c">Q-01…08  onetake-level targets + open gaps</text>
+<text x="82" y="781" class="c">L-01…04  summary first · ≤ 3 turns · batch</text>
+<text x="82" y="802" class="c">G-01…08  guardrails · determinism</text>
+<text x="82" y="836" class="m">31 IDs · each cited directly downstream (CI)</text></g>
+<path d="M458 760H490V222H528" fill="none" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<g class="node"><title>Every derived file cites rule IDs.</title><rect x="530" y="162" width="390" height="62" rx="12" fill="#1c1530" stroke="#a371f7" stroke-width="1.5"/>
+<text x="548" y="188" class="h">Derive from spec.md</text>
+<text x="548" y="212" class="t">cite [C F Q L G -NN] · no rule without an ID</text>
+</g>
+<path d="M548 224V820" fill="none" stroke="#a371f7" stroke-width="1.5" opacity=".55"/>
+<line x1="548" y1="284" x2="566" y2="284" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<line x1="548" y1="396" x2="566" y2="396" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<line x1="548" y1="520" x2="566" y2="520" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<line x1="548" y1="654" x2="566" y2="654" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<line x1="548" y1="776" x2="566" y2="776" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<g class="node"><title>Minimal orchestrator; heavy logic is loaded on demand.</title><rect x="570" y="244" width="350" height="84" rx="12" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+<text x="588" y="270" class="h">SKILL.md · router</text>
+<text x="588" y="294" class="t">5-step flow table → what to load</text>
+<text x="588" y="313" class="t">dynamic loading, ≤ 3 user turns</text>
+</g>
+<g class="node"><title>Execution rules for invention, modification and multi-family orchestration.</title><rect x="570" y="344" width="350" height="106" rx="12" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+<text x="588" y="370" class="h">guidelines.md · procedures</text>
+<text x="588" y="394" class="t">§1 summary first  §2 choose families</text>
+<text x="588" y="413" class="t">§3 synthesize variations  §4 invent / modify</text>
+<text x="588" y="432" class="t">§5 hand off  §6 environment</text>
+</g>
+<g class="node"><title>High-density schemas and samples, loaded per step.</title><rect x="570" y="466" width="350" height="108" rx="12" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+<text x="588" y="492" class="h">references/ · data</text>
+<text x="588" y="516" class="c">families.json (28) · family-taxonomy</text>
+<text x="588" y="535" class="c">template-schema · variation-rules</text>
+<text x="588" y="554" class="c">onetake-benchmark · summary-report · examples</text>
+</g>
+<g class="node"><title>Structure is generated and checked by code; the model writes the creative sentence.</title><rect x="570" y="590" width="350" height="128" rx="12" fill="#1c1530" stroke="#d2a8ff" stroke-width="1.5"/>
+<text x="588" y="616" class="h">Engines (deterministic)</text>
+<text x="588" y="640" class="c">tools/variation.py  sheet · invent · check</text>
+<text x="588" y="659" class="c">  seeded beats: ratio ≥ 3, rest ≥ 0.8 s,</text>
+<text x="588" y="678" class="c">  CTA hold ≥ 1.5 s, survivor per beat</text>
+<text x="588" y="697" class="c">tools/reel_summary.py  data → P0/P1/P2</text>
+</g>
+<g class="node"><title>Same rules, fewer tokens per turn.</title><rect x="570" y="734" width="350" height="86" rx="12" fill="#1c1530" stroke="#d2a8ff" stroke-width="1.5"/>
+<text x="588" y="760" class="h">Instruction compression</text>
+<text x="588" y="784" class="t">prose → tables · key-value · imperatives</text>
+<text x="588" y="803" class="t">per-step loading instead of one 167-line skill</text>
+</g>
+<path d="M920 777H945V202H978" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a3)"/>
+<g class="node"><title>Load the plugin locally.</title><rect x="982" y="162" width="396" height="76" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+<text x="1000" y="188" class="h">Integrate · local env / repo</text>
+<text x="1000" y="212" class="c">claude --plugin-dir .   /cutroom:reel</text>
+<text x="1000" y="231" class="c">claude plugin validate --strict .</text>
+</g>
+<path d="M1180 238V254" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a3)"/>
+<g class="node"><title>Run one request end to end.</title><rect x="982" y="258" width="396" height="76" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+<text x="1000" y="284" class="h">Execution testing</text>
+<text x="1000" y="308" class="c">reel_summary.py → variation.py sheet|check</text>
+<text x="1000" y="327" class="c">pipeline.py render &lt;brief&gt; → 0 FAIL</text>
+</g>
+<path d="M1180 334V350" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a3)"/>
+<g class="node"><title>No AI attribution anywhere.</title><rect x="982" y="354" width="396" height="76" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+<text x="1000" y="380" class="h">Git control</text>
+<text x="1000" y="404" class="t">branch → commit as repo owner → push</text>
+<text x="1000" y="423" class="t">no Co-Authored-By · English · CHANGELOG</text>
+</g>
+<path d="M1180 430V446" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a3)"/>
+<g class="node"><title>.github/workflows/ci.yml on every push (Linux + Windows).</title><rect x="982" y="450" width="396" height="370" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/><text x="1002" y="478" class="h">CI pipeline · .github/workflows/ci.yml</text><text x="1002" y="498" class="m">ubuntu + windows · every push and PR</text>
+<rect x="998" y="512" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/><text x="1012" y="534" class="ph" fill="#56d364" font-size="12">LINT</text>
+<text x="1012" y="558" class="c">plugin validate</text>
+<text x="1012" y="576" class="c">check_plugin.py</text>
+<text x="1012" y="594" class="c"> └ check_skill.py</text>
+<text x="1012" y="612" class="c">tsc --noEmit</text>
+<rect x="1186" y="512" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/><text x="1200" y="534" class="ph" fill="#56d364" font-size="12">TEST</text>
+<text x="1200" y="558" class="c">pytest tools/tests</text>
+<text x="1200" y="576" class="c"> └ test_variation</text>
+<text x="1200" y="594" class="c">  (registry, rhythm)</text>
+<text x="1200" y="612" class="c">npm test (moves)</text>
+<rect x="998" y="642" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/><text x="1012" y="664" class="ph" fill="#56d364" font-size="12">BENCH</text>
+<text x="1012" y="688" class="c">render every sample</text>
+<text x="1012" y="706" class="c">brief → verify 0 FAIL</text>
+<text x="1012" y="724" class="c">reel_summary.py: P0=0</text>
+<text x="1012" y="742" class="c">doctor.py frame (Win)</text>
+<rect x="1186" y="642" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/><text x="1200" y="664" class="ph" fill="#56d364" font-size="12">FUZZ</text>
+<text x="1200" y="688" class="c">seeded sheets: 28</text>
+<text x="1200" y="706" class="c">families × 4 durations</text>
+<text x="1200" y="724" class="c">× 8 seeds → check OK</text>
+<text x="1200" y="742" class="c">12 spec-ID mutations</text>
+<text x="1002" y="796" class="m">failure in any job blocks the merge</text></g>
+<path class="flow" d="M1180 820V920H260V856" fill="none" stroke="#f0883e" stroke-width="2.5" marker-end="url(#a4)"/>
+<rect x="340" y="902" width="760" height="36" rx="18" fill="#2a1a0d" stroke="#f0883e"/><text x="720" y="925" text-anchor="middle" font-size="13" font-weight="700" fill="#ffa657">FEEDBACK · summary actions / FAIL / untraced ID / shipped invention (F-05) → amend spec.md → re-derive</text>
+<text x="40" y="975" class="m">Hover a node for detail · purple = derivation · green = delivery · orange = continuous feedback</text></svg>

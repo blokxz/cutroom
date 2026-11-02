@@ -1,0 +1,505 @@
+{
+ "version": 1,
+ "carry_kinds": [
+  "object",
+  "camera",
+  "shape",
+  "light",
+  "text",
+  "surface"
+ ],
+ "boundaries": [
+  "morph",
+  "iris",
+  "window",
+  "mask",
+  "wipe",
+  "flip",
+  "fall",
+  "camera",
+  "contact",
+  "match",
+  "none"
+ ],
+ "families": [
+  {
+   "id": "transforming_object",
+   "name": "Transforming object",
+   "kind": "generic",
+   "carry_kind": "object",
+   "boundary": "morph",
+   "carry": "the object",
+   "moves": [
+    "Morph"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    6
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "scale_camera",
+   "name": "Scale camera move",
+   "kind": "generic",
+   "carry_kind": "camera",
+   "boundary": "camera",
+   "carry": "the camera",
+   "moves": [
+    "pushThrough"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    6
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "cause_effect",
+   "name": "Cause and effect",
+   "kind": "generic",
+   "carry_kind": "object",
+   "boundary": "contact",
+   "carry": "the cause",
+   "moves": [],
+   "needs": [],
+   "beats": [
+    4,
+    6
+   ],
+   "status": "needs-move"
+  },
+  {
+   "id": "physical_metaphor",
+   "name": "Physical metaphor",
+   "kind": "generic",
+   "carry_kind": "object",
+   "boundary": "morph",
+   "carry": "the prop",
+   "moves": [
+    "Morph"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    6
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "typographic_system",
+   "name": "Typographic system",
+   "kind": "generic",
+   "carry_kind": "text",
+   "boundary": "mask",
+   "carry": "the words",
+   "moves": [
+    "SplitText",
+    "Typewriter",
+    "MaskReveal"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    6
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "window",
+   "name": "Window",
+   "kind": "photo",
+   "carry_kind": "shape",
+   "boundary": "window",
+   "carry": "window outline + opening point",
+   "moves": [
+    "ArchWindow"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "postcards",
+   "name": "Postcards",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "fall",
+   "carry": "the pile",
+   "moves": [
+    "PostcardDrop"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "day_arc",
+   "name": "Day arc",
+   "kind": "photo",
+   "carry_kind": "light",
+   "boundary": "iris",
+   "carry": "disc of light",
+   "moves": [
+    "LightArc",
+    "IrisOpen"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "trail",
+   "name": "Trail",
+   "kind": "photo",
+   "carry_kind": "camera",
+   "boundary": "camera",
+   "carry": "camera + trail",
+   "moves": [
+    "PathCamera",
+    "PathTrail"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "living_map",
+   "name": "Living map",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "iris",
+   "carry": "map + pins",
+   "moves": [
+    "Morph",
+    "IrisOpen"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "coffee_to_evening",
+   "name": "Coffee to evening",
+   "kind": "photo",
+   "carry_kind": "light",
+   "boundary": "morph",
+   "carry": "time of day",
+   "moves": [
+    "LightArc",
+    "Postcard"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "entering",
+   "name": "Entering",
+   "kind": "photo",
+   "carry_kind": "camera",
+   "boundary": "camera",
+   "carry": "the single camera move",
+   "moves": [
+    "pushThrough",
+    "PathCamera"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "small_details",
+   "name": "Small details",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "morph",
+   "carry": "the grid",
+   "moves": [
+    "Morph"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "logbook",
+   "name": "Logbook",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "mask",
+   "carry": "page + ink line",
+   "moves": [
+    "Handwriting",
+    "MaskReveal"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "key",
+   "name": "Key",
+   "kind": "photo",
+   "carry_kind": "object",
+   "boundary": "iris",
+   "carry": "key + rotation",
+   "moves": [
+    "KeySvg",
+    "KeyholeIris",
+    "DoorSwing"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "written_postcard",
+   "name": "Written postcard",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "flip",
+   "carry": "the card",
+   "moves": [
+    "Handwriting",
+    "Postcard",
+    "Stamp"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "light_clock",
+   "name": "Light clock",
+   "kind": "photo",
+   "carry_kind": "light",
+   "boundary": "none",
+   "carry": "the frame",
+   "moves": [
+    "LightArc"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "before_after_rest",
+   "name": "Before / after rest",
+   "kind": "photo",
+   "carry_kind": "shape",
+   "boundary": "mask",
+   "carry": "the seam",
+   "moves": [
+    "MaskReveal"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "match_cut",
+   "name": "Match cut",
+   "kind": "photo",
+   "carry_kind": "shape",
+   "boundary": "match",
+   "carry": "matched shape + position",
+   "moves": [
+    "Morph"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "object_wipe",
+   "name": "Object wipe",
+   "kind": "photo",
+   "carry_kind": "object",
+   "boundary": "wipe",
+   "carry": "wiping object + direction",
+   "moves": [],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "needs-move"
+  },
+  {
+   "id": "film_strip",
+   "name": "Film strip",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "morph",
+   "carry": "the strip",
+   "moves": [],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "needs-move"
+  },
+  {
+   "id": "scrapbook",
+   "name": "Scrapbook",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "fall",
+   "carry": "the page",
+   "moves": [
+    "PostcardDrop"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "chain_reaction",
+   "name": "Chain reaction",
+   "kind": "photo",
+   "carry_kind": "object",
+   "boundary": "contact",
+   "carry": "the cause, always visible",
+   "moves": [],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "needs-move"
+  },
+  {
+   "id": "dive_through_scale",
+   "name": "Dive through scale",
+   "kind": "photo",
+   "carry_kind": "camera",
+   "boundary": "camera",
+   "carry": "anchor point",
+   "moves": [
+    "pushThrough"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "calendar",
+   "name": "Calendar",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "wipe",
+   "carry": "calendar block",
+   "moves": [],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "needs-move"
+  },
+  {
+   "id": "letters_as_windows",
+   "name": "Letters as windows",
+   "kind": "photo",
+   "carry_kind": "text",
+   "boundary": "window",
+   "carry": "letterforms",
+   "moves": [
+    "pushThrough",
+    "MaskReveal"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "thread",
+   "name": "Thread",
+   "kind": "photo",
+   "carry_kind": "object",
+   "boundary": "wipe",
+   "carry": "the thread",
+   "moves": [
+    "PathTrail"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
+  },
+  {
+   "id": "depth",
+   "name": "Depth",
+   "kind": "photo",
+   "carry_kind": "camera",
+   "boundary": "camera",
+   "carry": "camera + nearest plane",
+   "moves": [],
+   "needs": [
+    "layer masks"
+   ],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "needs-move"
+  }
+ ]
+}

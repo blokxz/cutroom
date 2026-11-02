@@ -17,10 +17,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SKILL_MAX_LINES = 40
 SKILL_MAX_WORDS = 350
-ID = r"[CGR]-\d{2}"
+ID = r"(?<![A-Za-z0-9])[A-Z]-\d{2}(?!\d)"
 DEFINE = re.compile(rf"^\|\s*({ID})\s*\|", re.M)
 RANGE = re.compile(rf"({ID})\s*(?:…|\.\.\.)\s*({ID})")
 CITE = re.compile(ID)
+PREFIX = re.compile(r"^[A-Z]-")
 PATHS = re.compile(r"(?<![\w/.-])((?:tools|schemas)/[\w./-]+\.(?:py|json)|scripts/[\w.-]+\.mjs)")
 LOCAL = re.compile(r"(?<![\w/.-])((?:references/[\w.-]+|guidelines|spec)\.md|references/[\w.-]+\.md)")
 

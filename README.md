@@ -34,7 +34,7 @@ The project's `.claude/settings.json` already lists the marketplace and enables 
 
 ## How a video is made
 
-`/cutroom:video` loads the `video-direction` skill (spec-driven: `spec.md` → `SKILL.md` router, `guidelines.md`, `references/`; diagram in [`docs/skill-architecture.svg`](docs/skill-architecture.svg)) and walks one brief through seven stages with `tools/pipeline.py`. A stage can't be skipped: `advance` refuses until its gate passes.
+`/cutroom:reel` (skill `reel-families`: template families, seeded variations, invented concepts, summary-first, ≤ 3 user turns; diagram in [`docs/reel-families-architecture.svg`](docs/reel-families-architecture.svg)) hands its choice to the same pipeline. `/cutroom:video` loads the `video-direction` skill (spec-driven: `spec.md` → `SKILL.md` router, `guidelines.md`, `references/`; diagram in [`docs/skill-architecture.svg`](docs/skill-architecture.svg)) and walks one brief through seven stages with `tools/pipeline.py`. A stage can't be skipped: `advance` refuses until its gate passes.
 
 | stage | what happens | gate to leave it |
 |---|---|---|
@@ -149,6 +149,7 @@ Every platform number lives in `tools/quality/platforms/specs/<platform>.json`, 
 python3 -m pytest tools/tests -q                    # 48 cases: verifier + pipeline gates (~2 min)
 cd remotion-base && npx tsc --noEmit && npm test    # types + 39 unit tests
 python3 tools/check_plugin.py                       # plugin packaging + skill spec trace (tools/check_skill.py)
+python3 tools/reel_summary.py                       # operational summary + prioritized actions
 claude plugin validate --strict .                   # full plugin check (local)
 ```
 

@@ -32,6 +32,11 @@ def test_repo_skill_conforms():
     assert check_skill.check(SKILL) == []
 
 
+@pytest.mark.parametrize("d", check_skill.skill_dirs())
+def test_every_spec_driven_skill_conforms(d):
+    assert check_skill.check(d) == []
+
+
 def test_every_skill_with_spec_is_checked():
     assert SKILL in check_skill.skill_dirs()
 
