@@ -7,7 +7,7 @@ This repo is **cutroom**: a Claude Code plugin plus the working kit it drives. `
 1. **Never add Claude as a co-author or contributor.** No `Co-Authored-By` trailers, no "Generated with Claude Code" lines, no session links, and no Claude/Anthropic attribution of any kind in commit messages, PR titles or descriptions, tags, release notes, `CHANGELOG.md`, `CONTRIBUTORS`, `package.json` or file headers. Commits are authored only by the repo owner (`blokxz`). `.claude/settings.json` disables Claude Code's automatic attribution; never re-enable it or add attribution by hand.
 2. **Reply to the user in Spanish (Rioplatense, voseo).** The user writes in English; answer in Spanish anyway, every time.
 3. **Everything in the repo is in English.** Code, identifiers, comments, CLI output, error messages, templates, tests, docs, examples, file and folder names, commit messages and PR text.
-4. **Never use the `onetake` skill or its scripts** to make videos or animations, and never copy its code. cutroom's criteria and checks are its own implementation.
+4. **Never copy or reuse `onetake` code.** Don't paste its code into cutroom and don't run its scripts to produce cutroom's videos, animations or tools. Reading it to learn what it offers and designing a better implementation of our own is allowed and encouraged; write what you learn as ideas in `docs/benchmark.md`. cutroom's criteria and checks stay its own implementation.
 
 ## Layout
 

@@ -5,7 +5,7 @@ Execution procedure derived from `spec.md`. IDs in brackets point to spec rules.
 ## 0 · Every stage [G-01 G-10 G-11]
 
 - Loop: `python3 tools/pipeline.py status <brief>` → do `next:` → `python3 tools/pipeline.py advance <brief>`; refused ⇒ fix the listed gaps [G-01].
-- Own tools only; no `onetake` skill, scripts or copied code [G-10].
+- Own implementation only; may study `onetake` for ideas, never copy or run its code [G-10].
 - Files, code, comments, commit text in English (client copy excepted); never commit `remotion-base/out/`, `deliveries/`, `tools/models/` [G-11].
 
 ## 1 · Brief [C-01 C-02 C-03 G-05 G-06 G-07]

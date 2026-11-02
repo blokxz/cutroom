@@ -45,4 +45,4 @@ Procedure derived from `spec.md`; IDs in brackets. `video-direction` owns brief,
 - Linux/POSIX paths, `python3`, no `bin/`; machine paths only in `.env`.
 - Repo text in English; client copy is the only exception.
 - Commits authored by the repo owner, no co-author or generated-by lines.
-- Benchmark input is `docs/benchmark.md` only; never open, run or copy `onetake`.
+- Benchmark source is `docs/benchmark.md`; refresh it by studying `onetake` for ideas (capabilities, numbers, what it rejects), then design our own better version. Never copy or run its code.

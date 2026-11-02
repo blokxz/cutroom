@@ -57,7 +57,7 @@
   <text x="82" y="430" class="t">▸ Strict English in repo · no AI attribution  (G-11)</text>
   <text x="82" y="452" class="t">▸ Token budget: router ≤ 40 lines / ≤ 350 words</text>
   <text x="82" y="474" class="t">▸ Tables + key-value over prose; zero filler</text>
-  <text x="82" y="496" class="t">▸ Own implementation only, never onetake  (G-10)</text>
+  <text x="82" y="496" class="t">▸ Own implementation; never copy onetake code  (G-10)</text>
 </g>
 <line x1="260" y1="504" x2="260" y2="532" stroke="#58a6ff" stroke-width="2" marker-end="url(#a1)"/>
 

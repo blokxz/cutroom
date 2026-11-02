@@ -4,7 +4,7 @@ Single source of truth. `SKILL.md`, `guidelines.md`, `references/` derive from i
 
 ## 1 · Intent
 
-Turn one request into a legal, original Reel in the fewest prompts: summarize the current state, pick or invent a template family, synthesize a rhythm-legal beat sheet per variation, hand the chosen one to the `video-direction` pipeline. Benchmarked against `onetake`-level production standards using cutroom's own criteria (`docs/benchmark.md`); onetake itself is never run.
+Turn one request into a legal, original Reel in the fewest prompts: summarize the current state, pick or invent a template family, synthesize a rhythm-legal beat sheet per variation, hand the chosen one to the `video-direction` pipeline. Benchmarked against `onetake`-level production standards using cutroom's own criteria (`docs/benchmark.md`), which may be refreshed by studying onetake; its code is never copied or run.
 
 ## 2 · Scope
 
@@ -12,7 +12,7 @@ Turn one request into a legal, original Reel in the fewest prompts: summarize th
 |---|---|
 | Family registry, variation synthesis, concept invention, operational summary, improvement actions | Voice, subtitles, second language (parked, benchmark phase 3) |
 | Reels / stories / posts for instagram, tiktok, youtube_shorts | Long-form, 16:9, UI screen recordings |
-| Deterministic structure (`tools/variation.py`); creative sentence by the model | The `onetake` skill, scripts or code (never) |
+| Deterministic structure (`tools/variation.py`); creative sentence by the model | Copying or running `onetake` code (studying it for ideas is allowed) |
 
 ## 3 · Contracts
 
@@ -64,7 +64,7 @@ Parity is never claimed; open gaps surface as actions in the summary (L-01).
 | ID | Rule |
 |---|---|
 | G-01 | Stage progression only through `tools/pipeline.py`; never edit `status`; never approve for the user. |
-| G-02 | Never run `onetake` or copy its code; benchmark = `docs/benchmark.md` criteria only. |
+| G-02 | Never copy or run `onetake` code; studying it for ideas is allowed, findings go to `docs/benchmark.md`, which stays the benchmark source. |
 | G-03 | A beat sheet must pass `variation.py check` before any code is written. |
 | G-04 | Never fill a previous piece with new material; every piece gets freshly written concepts. |
 | G-05 | Never claim a render passed without verifier output showing 0 FAIL; never claim onetake parity. |

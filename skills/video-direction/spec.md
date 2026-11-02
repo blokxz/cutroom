@@ -13,7 +13,7 @@ Direct one short motion piece (story, reel, feed post, Short, TikTok) in Remotio
 | Social video/image ≤ platform `dur` max; 9:16, 4:5 | Long-form, 16:9 launch films, UI screen recordings |
 | Client brand from `client.json`; copy from brief | Inventing brand, contact or claims |
 | Licensed / client / synthesized audio | Unlicensed music, voice-over, subtitles (not built) |
-| cutroom tools: `tools/*.py`, `remotion-base/` | `onetake` skill or its code (never) |
+| cutroom tools: `tools/*.py`, `remotion-base/` | Copying or running `onetake` code (studying it for ideas is allowed) |
 
 ## 3 · Contracts
 
@@ -51,7 +51,7 @@ Direct one short motion piece (story, reel, feed post, Short, TikTok) in Remotio
 | G-07 | Only licensed media: music listed in `LIBRARY.json` with licence; fonts with licence. |
 | G-08 | Deterministic frames: everything from `useCurrentFrame()`; no CSS transitions/animations, no `Math.random()`. |
 | G-09 | Never fill a previous piece (or `SamplePost`) with new material; every piece starts from its own brief. |
-| G-10 | Never use the `onetake` skill or its code. |
+| G-10 | Never copy or reuse `onetake` code or run its scripts to make output; studying it for ideas is allowed, recorded in `docs/benchmark.md`. |
 | G-11 | Repo text in English; renders, deliveries, models never committed. |
 
 ## 6 · Creative rules (checked by verifier or checklist)

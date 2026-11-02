@@ -35,8 +35,8 @@
 <path d="M260 332V352" fill="none" stroke="#58a6ff" stroke-width="2" marker-end="url(#a1)"/>
 <g class="node"><title>Targets Q-01..Q-08 derive from cutroom's own review of onetake's published criteria.</title><rect x="62" y="356" width="396" height="134" rx="12" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
 <text x="80" y="382" class="h">Benchmark · onetake-level criteria</text>
-<text x="80" y="406" class="t">criteria from docs/benchmark.md only (14 modules)</text>
-<text x="80" y="425" class="t">onetake itself is never run or copied  (G-02)</text>
+<text x="80" y="406" class="t">criteria from docs/benchmark.md (14 modules)</text>
+<text x="80" y="425" class="t">onetake studied for ideas; its code never copied  (G-02)</text>
 <text x="80" y="444" class="t">gaps → Q-04 Q-06 Q-07 Q-08 stay visible</text>
 <text x="80" y="463" class="t">parity is never claimed  (G-05)</text>
 </g>

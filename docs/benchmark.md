@@ -2,7 +2,7 @@
 
 Reviewed 2026-10-26 against cutroom 0.4 (branch `v0.4-render-setup`) and the onetake skill as published
 (SKILL.md, references, script docstrings). This is a comparison of criteria and capabilities, not of code:
-cutroom never uses onetake or copies its code (see `.claude/CLAUDE.md`, rule 4).
+cutroom studies onetake for ideas and writes its own implementation; it never copies or runs its code (see `.claude/CLAUDE.md`, rule 4).
 
 Where cutroom is weaker, the gap becomes work in one of the improvement phases below. Re-run this review
 when a phase closes.

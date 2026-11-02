@@ -1,6 +1,6 @@
 # Quality benchmark [Q-03 Q-04 Q-05 Q-06 Q-07 Q-08 G-02 G-05]
 
-Source: `docs/benchmark.md` (cutroom's own review of onetake's published criteria, reviewed 2026-10-26). onetake is not run and not copied (G-02). Targets are criteria, not parity claims (G-05).
+Source: `docs/benchmark.md` (cutroom's own review of onetake's published criteria, reviewed 2026-10-26). onetake may be studied for ideas and the table refreshed; its code is never copied or run (G-02). Targets are criteria, not parity claims (G-05).
 
 | Q | Criterion | cutroom today | Where closed |
 |---|---|---|---|
