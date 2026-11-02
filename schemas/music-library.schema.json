@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Music library",
+  "description": "Index of a client's music. Lives at clients/<slug>/assets/music/LIBRARY.json next to the audio files. Only royalty-free or client-supplied tracks. List it with `python3 tools/brief.py music <slug>`.",
+  "type": "object",
+  "required": ["tracks"],
+  "additionalProperties": false,
+  "properties": {
+    "tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "file", "licence"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "file": { "type": "string", "minLength": 1, "description": "Audio file, relative to assets/music/" },
+          "licence": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Licence name (e.g. \"CC0\", \"Pixabay Content License\", \"supplied by the client\") or a licence file relative to assets/music/ (.txt, .pdf, .md, .html), which must exist"
+          },
+          "source": { "type": "string", "description": "Where it came from: URL, author, or \"client\"" },
+          "mood": {
+            "description": "A few words: calm, warm, upbeat …",
+            "oneOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }]
+          },
+          "bpm": { "type": "number", "exclusiveMinimum": 0 },
+          "duration_s": { "type": "number", "exclusiveMinimum": 0 },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

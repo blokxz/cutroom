@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material analysis",
+  "description": "Read-only analysis of one batch of a client's original photos and videos. Written by `tools/material.py analyze` to clients/<slug>/material/<batch>/analysis.json; ids are the numbers shown on contact_sheet.png / video_sheet.png and used by `tools/material.py select`.",
+  "type": "object",
+  "required": ["version", "client", "batch", "created", "sources", "thresholds", "sharpness_median", "photos", "videos", "sheets"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"const": 1},
+    "client": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "batch": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "created": {"type": "string", "description": "ISO 8601 timestamp"},
+    "sources": {"type": "array", "items": {"type": "string"}, "description": "Absolute folders the inputs came from (read-only)"},
+    "thresholds": {"type": "object", "additionalProperties": {"type": "number"}},
+    "sharpness_median": {"type": "number", "description": "Median Laplacian variance of the photos in the batch"},
+    "skipped": {"type": "array", "items": {"type": "string"}, "description": "Files found but not analysed (e.g. videos without --videos)"},
+    "sheets": {
+      "type": "object",
+      "required": ["photos", "videos"],
+      "additionalProperties": false,
+      "properties": {
+        "photos": {"type": ["string", "null"], "description": "File name next to analysis.json"},
+        "videos": {"type": ["string", "null"]}
+      }
+    },
+    "photos": {"type": "array", "items": {"$ref": "#/$defs/photo"}},
+    "videos": {"type": "array", "items": {"$ref": "#/$defs/video"}}
+  },
+  "$defs": {
+    "notes": {"type": "array", "items": {"type": "string"}},
+    "photo": {
+      "type": "object",
+      "required": ["id", "source", "file", "width", "height", "orientation", "focus", "crop_9x16", "sharpness",
+                   "exposure", "saturation", "horizon_tilt_deg", "upscale_9x16", "hash", "duplicates", "score", "rank",
+                   "warnings", "errors"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "source": {"type": "string", "description": "Absolute path of the original"},
+        "file": {"type": "string", "description": "Path relative to its source folder"},
+        "width": {"type": "integer", "minimum": 1, "description": "After EXIF rotation"},
+        "height": {"type": "integer", "minimum": 1},
+        "orientation": {"enum": ["portrait", "landscape", "square"]},
+        "focus": {
+          "type": "object",
+          "required": ["x", "y", "strength"],
+          "additionalProperties": false,
+          "properties": {
+            "x": {"type": "number", "minimum": 0, "maximum": 1},
+            "y": {"type": "number", "minimum": 0, "maximum": 1},
+            "strength": {"type": "number", "minimum": 0, "maximum": 1, "description": "How peaked the saliency map is (a clear subject)"}
+          }
+        },
+        "crop_9x16": {
+          "type": "object",
+          "description": "Largest 9:16 window centred on the focus, normalised to the image (use for objectPosition / crop)",
+          "required": ["x", "y", "w", "h"],
+          "additionalProperties": false,
+          "properties": {
+            "x": {"type": "number"}, "y": {"type": "number"}, "w": {"type": "number"}, "h": {"type": "number"}
+          }
+        },
+        "sharpness": {
+          "type": "object",
+          "required": ["laplacian", "relative"],
+          "additionalProperties": false,
+          "properties": {
+            "laplacian": {"type": "number", "description": "Variance of the Laplacian at long side 800 px"},
+            "relative": {"type": "number", "description": "laplacian / batch median"}
+          }
+        },
+        "exposure": {
+          "type": "object",
+          "required": ["mean_luma", "clipped_shadows", "clipped_highlights"],
+          "additionalProperties": false,
+          "properties": {
+            "mean_luma": {"type": "number", "minimum": 0, "maximum": 255},
+            "clipped_shadows": {"type": "number", "minimum": 0, "maximum": 1},
+            "clipped_highlights": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        },
+        "saturation": {"type": "number", "minimum": 0, "maximum": 1},
+        "horizon_tilt_deg": {"type": ["number", "null"]},
+        "upscale_9x16": {"type": "number", "description": "Scale factor to cover 1080x1920; > 1 means upscaling"},
+        "hash": {"type": "string", "pattern": "^[0-9a-f]{16}$", "description": "64-bit difference hash"},
+        "duplicates": {"type": "array", "items": {"type": "integer"}, "description": "Ids of near-identical photos"},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "rank": {"type": "integer", "minimum": 1},
+        "warnings": {"$ref": "#/$defs/notes"},
+        "errors": {"$ref": "#/$defs/notes"}
+      }
+    },
+    "window": {
+      "type": "object",
+      "required": ["start", "end", "duration", "score"],
+      "properties": {
+        "start": {"type": "number", "minimum": 0},
+        "end": {"type": "number", "minimum": 0},
+        "duration": {"type": "number", "minimum": 0},
+        "score": {"type": "number", "minimum": 0},
+        "sharpness": {"type": "number"},
+        "luma": {"type": "number"},
+        "jitter": {"type": "number"},
+        "motion": {"type": "number"},
+        "change": {"type": "number"}
+      }
+    },
+    "video": {
+      "type": "object",
+      "required": ["id", "source", "file", "width", "height", "duration_s", "fps", "hdr", "class", "windows", "warnings", "errors"],
+      "properties": {
+        "id": {"type": "integer", "minimum": 1},
+        "source": {"type": "string"},
+        "file": {"type": "string"},
+        "width": {"type": "integer", "minimum": 0, "description": "After rotation"},
+        "height": {"type": "integer", "minimum": 0},
+        "rotation": {"type": "integer"},
+        "fps": {"type": "number", "minimum": 0},
+        "duration_s": {"type": "number", "minimum": 0},
+        "codec": {"type": ["string", "null"]},
+        "pix_fmt": {"type": ["string", "null"]},
+        "has_audio": {"type": "boolean"},
+        "hdr": {"type": "boolean"},
+        "hdr_format": {"type": ["string", "null"]},
+        "color": {"type": "object"},
+        "orientation": {"enum": ["portrait", "landscape", "square"]},
+        "class": {"enum": ["slideshow", "motion", "mixed", "unknown"]},
+        "still_fraction": {"type": "number"},
+        "motion_fraction": {"type": "number"},
+        "transition_fraction": {"type": "number"},
+        "cuts": {"type": "array", "items": {"type": "number"}, "description": "Times (s) of hard scene cuts"},
+        "windows": {"type": "array", "items": {"$ref": "#/$defs/window"}, "description": "Best 2-4 s windows without cuts, best first"},
+        "warnings": {"$ref": "#/$defs/notes"},
+        "errors": {"$ref": "#/$defs/notes"}
+      }
+    }
+  }
+}

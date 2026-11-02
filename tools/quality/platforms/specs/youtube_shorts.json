@@ -1,0 +1,46 @@
+{
+  "platform": "youtube_shorts",
+  "label": "YouTube Shorts",
+  "reviewed": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://support.google.com/youtube/answer/15424877",
+      "covers": "Shorts are up to 3 minutes and need a square or vertical aspect ratio (uploads from 15 Oct 2024); wider videos stay long-form"
+    },
+    {
+      "url": "https://support.google.com/youtube/answer/1722171",
+      "covers": "recommended upload encoding: MP4 with moov at the front, H.264 progressive 4:2:0, closed GOP, AAC-LC 48 kHz stereo, ~8 Mbps for 1080p (12 Mbps at 48-60 fps)"
+    },
+    {
+      "url": "https://www.clipspeed.ai/blog/youtube-shorts-size.html",
+      "covers": "1080x1920 recommended, playback capped at 1080p; codecs H.264/H.265/VP9 (creator guidance)"
+    },
+    {
+      "url": "https://www.upload-post.com/tools/safe-zone-checker/",
+      "covers": "safe-zone margins at 1080x1920: top 288, bottom 672, left 48, right 192 (derived from ad guidance)"
+    },
+    {
+      "url": "https://reap.video/blog/short-form-video-safe-zones",
+      "covers": "cross-platform working margins (top 15 %, bottom 25-35 %)"
+    }
+  ],
+  "source_note": "Length and aspect are official (YouTube Help). Encoding values are YouTube's recommended upload settings (recommendations, not hard limits). YouTube publishes no Shorts safe zones: ui (FAIL) is the area the title, channel row, subscribe button and action column always cover; ui_caution (WARN) is the more conservative creator guidance where a long title or the description can reach. rec_dur is creator guidance.",
+  "video": {
+    "containers": ["mp4", "mov", "webm"],
+    "vcodecs": ["h264", "hevc", "vp9", "av1"],
+    "fps": [23, 60],
+    "max_side": 3840,
+    "acodecs": ["aac", "opus"],
+    "max_sr": 96000,
+    "max_ch": 2,
+    "rec_vbr": 8000000,
+    "rec_vbr_hfr": 12000000,
+    "max_ratio": 1.0,
+    "moov_note": "YouTube recommends it at the front (ffmpeg -movflags +faststart)"
+  },
+  "formats": {
+    "short": {"kind": "video", "rec": [1080, 1920], "dur": [1, 180], "rec_dur": [15, 60], "max_mb": 256000,
+              "ui": [240, 480, 48, 192], "ui_caution": [288, 672, 48, 192],
+              "end_hold": "WARN", "min_text": 36, "hook": true, "loop": true}
+  }
+}

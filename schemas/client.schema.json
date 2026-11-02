@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Client",
+  "description": "Everything that stays the same across a client's videos. Lives at clients/<slug>/client.json; assets live next to it in assets/, references in references/.",
+  "type": "object",
+  "required": [
+    "slug",
+    "name",
+    "brand"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "description": "BCP-47, e.g. es-AR",
+      "default": "es-AR"
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "whatsapp": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "instagram": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "brand": {
+      "type": "object",
+      "required": [
+        "colors"
+      ],
+      "properties": {
+        "colors": {
+          "type": "object",
+          "required": [
+            "ground",
+            "ink",
+            "accent"
+          ],
+          "properties": {
+            "ground": {
+              "$ref": "#/$defs/hex"
+            },
+            "paper": {
+              "$ref": "#/$defs/hex"
+            },
+            "ink": {
+              "$ref": "#/$defs/hex"
+            },
+            "soft": {
+              "$ref": "#/$defs/hex"
+            },
+            "accent": {
+              "$ref": "#/$defs/hex"
+            },
+            "accent2": {
+              "$ref": "#/$defs/hex"
+            },
+            "line": {
+              "$ref": "#/$defs/hex"
+            }
+          }
+        },
+        "fonts": {
+          "type": "object",
+          "properties": {
+            "display": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "script": {
+              "type": "string"
+            },
+            "files": {
+              "type": "array",
+              "description": "Font files in assets/fonts/",
+              "items": {
+                "type": "object",
+                "required": [
+                  "family",
+                  "file"
+                ],
+                "properties": {
+                  "family": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "type": "string"
+                  },
+                  "style": {
+                    "enum": [
+                      "normal",
+                      "italic"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "logo": {
+          "type": "string",
+          "description": "Path relative to the client folder, e.g. assets/logo.png"
+        },
+        "taglines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "voice": {
+      "type": "string",
+      "description": "How the brand talks: tone, words to use and avoid"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "source_folders": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Folders where the client's original material lives, as absolute paths on this machine. cutroom only reads from them: every tool refuses to write inside (tools/media/guard.py). They are machine-specific, so put them in the git-ignored clients/<slug>/client.local.json (same keys, merged over client.json), not in the committed client.json. Relative entries are an error."
+    },
+    "voice_guide": {
+      "type": "object",
+      "description": "Detailed voice for captions and on-screen copy",
+      "properties": {
+        "tone": {
+          "type": "string"
+        },
+        "person": {
+          "type": "string",
+          "description": "e.g. 'voseo, second person singular'"
+        },
+        "use": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avoid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "emojis": {
+          "type": "string",
+          "description": "e.g. '1-3 per caption, nature-related'"
+        },
+        "hashtags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cta": {
+          "type": "string",
+          "description": "Standard call to action, e.g. 'Reservas por WhatsApp · link en bio'"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "hex": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    }
+  }
+}

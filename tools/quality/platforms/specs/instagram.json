@@ -1,0 +1,46 @@
+{
+  "platform": "instagram",
+  "label": "Instagram",
+  "reviewed": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+      "covers": "video and image publishing limits (containers, codecs, fps, width, bitrate, audio, file size, durations, carousel items)"
+    },
+    {
+      "url": "https://oktopost.com/blog/instagram-grid-size-guide",
+      "covers": "the 3:4 crop the profile grid applies to posts"
+    }
+  ],
+  "source_note": "Technical limits follow the Graph API publishing path (the strictest; the app accepts a bit more). UI margins (ui = top, bottom, left, right in px at the recommended size) are measured from the app, not published by Instagram. rec_dur is creator guidance.",
+  "video": {
+    "containers": ["mp4", "mov"],
+    "vcodecs": ["h264", "hevc"],
+    "fps": [23, 60],
+    "max_w": 1920,
+    "max_vbr": 25000000,
+    "acodecs": ["aac"],
+    "max_sr": 48000,
+    "max_ch": 2,
+    "moov_note": "required at the front for API publishing (ffmpeg -movflags +faststart)"
+  },
+  "image": {
+    "formats": ["JPEG"],
+    "max_mb": 8,
+    "min_w": 320,
+    "max_w": 1440,
+    "ratio": [0.8, 1.91]
+  },
+  "formats": {
+    "reel": {"kind": "video", "rec": [1080, 1920], "dur": [3, 900], "rec_dur": [5, 90], "max_mb": 300, "ui": [250, 400, 64, 140],
+             "grid_crop": true, "end_hold": "WARN", "min_text": 36, "hook": true, "loop": true},
+    "story": {"kind": "video", "rec": [1080, 1920], "dur": [3, 60], "rec_dur": [5, 15], "max_mb": 100, "ui": [250, 320, 64, 64],
+              "grid_crop": false, "end_hold": "FAIL", "min_text": 36},
+    "feed_video": {"kind": "video", "rec": [1080, 1350], "dur": [3, 900], "rec_dur": [5, 60], "max_mb": 300, "ui": [60, 60, 64, 64],
+                   "grid_crop": true, "end_hold": "WARN", "min_text": 28},
+    "story_image": {"kind": "image", "rec": [1080, 1920], "ui": [250, 320, 64, 64], "grid_crop": false},
+    "feed_image": {"kind": "image", "rec": [1080, 1350], "ui": [60, 60, 64, 64], "grid_crop": true},
+    "reel_cover": {"kind": "image", "rec": [1080, 1920], "ui": [0, 0, 0, 0], "grid_crop": true},
+    "carousel": {"kind": "dir", "items": [2, 20]}
+  }
+}

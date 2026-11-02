@@ -1,0 +1,34 @@
+# Renders and synced assets are local work: never in the repo.
+remotion-base/out/
+remotion-base/public/clients/
+remotion-base/.cache/
+clients/*/briefs/*.gate.json
+
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+
+# Tooling and OS noise
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.log
+.DS_Store
+Thumbs.db
+
+# Delivery packages are built per job, never committed
+deliveries/
+
+# Downloaded models (fetched by tools/models.py, verified by hash)
+tools/models/*
+!tools/models/LICENSES.md
+
+# Material analyses are per job (rebuilt by tools/material.py analyze)
+clients/*/material/
+
+# Machine-specific client settings (e.g. source_folders with absolute paths)
+clients/*/client.local.json

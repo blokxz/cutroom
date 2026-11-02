@@ -1,0 +1,52 @@
+{
+  "platform": "tiktok",
+  "label": "TikTok",
+  "reviewed": "2026-10-25",
+  "sources": [
+    {
+      "url": "https://developers.tiktok.com/doc/content-posting-api-media-transfer-guide",
+      "covers": "video restrictions of the Content Posting API (containers, codecs, frame rate, picture size, 10 min, 4 GB) — the strictest publishing path"
+    },
+    {
+      "url": "https://ads.tiktok.com/help/article/tiktok-auction-in-feed-ads",
+      "covers": "in-feed ads: 9:16 >= 540x960, up to 10 min, <= 500 MB, >= 516 kbps, mp4/mov/mpeg/3gp/avi"
+    },
+    {
+      "url": "https://postfa.st/sizes/tiktok/video",
+      "covers": "secondary summary of the Help Center FAQs and API docs: app uploads up to 60 min, API 10 min / 4 GB, 1080x1920 recommended, mobile-app file limits (iOS ~288 MB, unofficial)"
+    },
+    {
+      "url": "https://www.upload-post.com/tools/safe-zone-checker/",
+      "covers": "safe-zone margins at 1080x1920 (top 240, bottom 660, left/right 120, action column 300 px wide from y 840) derived from TikTok's ad safe-zone overlays"
+    },
+    {
+      "url": "https://reap.video/blog/short-form-video-safe-zones",
+      "covers": "cross-platform working margins (bottom 25-35 %)"
+    }
+  ],
+  "source_note": "Technical limits are official (Content Posting API, Ads Help Center). TikTok publishes safe zones only as downloadable overlay images, not numbers, so the ui margins are widely cited creator guidance: ui (FAIL) = the area the caption, handle and buttons always cover; ui_caution (WARN) = where a long caption or the full action column can reach. rec_dur is creator guidance. App uploads accept up to 60 min; the 10 min limit used here is the API's.",
+  "video": {
+    "containers": ["mp4", "mov", "webm"],
+    "vcodecs": ["h264", "hevc", "vp8", "vp9"],
+    "fps": [23, 60],
+    "min_side": 360,
+    "max_side": 4096,
+    "acodecs": ["aac", "mp3", "opus"],
+    "max_sr": 48000,
+    "max_ch": 2,
+    "rec_vbr": 6000000,
+    "warn_mb": 287,
+    "moov_note": "put it at the front so uploads and the API can start processing early (ffmpeg -movflags +faststart)"
+  },
+  "formats": {
+    "video": {"kind": "video", "rec": [1080, 1920], "dur": [3, 600], "rec_dur": [10, 60], "max_mb": 4000,
+              "ui": [240, 480, 120, 120], "ui_blocks": {"right action buttons": [920, 840, 1080, 1440]},
+              "ui_caution": [240, 660, 120, 120], "ui_caution_blocks": {"right action column": [780, 840, 1080, 1440]},
+              "end_hold": "WARN", "min_text": 36, "hook": true, "loop": true},
+    "ad": {"kind": "video", "rec": [1080, 1920], "min_res": [540, 960], "dur": [3, 600], "rec_dur": [9, 60], "max_mb": 500,
+           "min_vbr": 516000, "containers": ["mp4", "mov", "mpeg", "3gp", "avi"],
+           "ui": [240, 480, 120, 120], "ui_blocks": {"right action buttons": [920, 840, 1080, 1440]},
+           "ui_caution": [240, 660, 120, 120], "ui_caution_blocks": {"right action column": [780, 840, 1080, 1440]},
+           "end_hold": "FAIL", "min_text": 36, "hook": true, "loop": false}
+  }
+}

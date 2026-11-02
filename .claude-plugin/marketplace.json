@@ -1,0 +1,17 @@
+{
+  "name": "blokxz",
+  "description": "blokxz's plugins for video production with Claude Code.",
+  "owner": {
+    "name": "Alejandro M. Ceccheto",
+    "url": "https://github.com/blokxz"
+  },
+  "plugins": [
+    {
+      "name": "cutroom",
+      "source": "./",
+      "description": "Brief-driven Remotion videos with a per-platform quality verifier.",
+      "category": "media",
+      "tags": ["video", "reels", "motion"]
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Video brief",
+  "description": "One video. Lives at clients/<slug>/briefs/<id>.json. The agent fills it from the user's free prompt and asks only for what is missing (tools/brief.py check lists it).",
+  "type": "object",
+  "required": [
+    "id",
+    "client",
+    "platform",
+    "format",
+    "goal",
+    "cta"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "client": {
+      "type": "string",
+      "description": "Client slug (folder under clients/)"
+    },
+    "platform": {
+      "enum": [
+        "instagram",
+        "tiktok",
+        "youtube_shorts"
+      ],
+      "default": "instagram"
+    },
+    "format": {
+      "type": "string",
+      "description": "A format of the chosen platform (tools/brief.py check validates it): instagram reel, story, feed_video, story_image, feed_image, reel_cover, carousel; tiktok video, ad; youtube_shorts short"
+    },
+    "duration_s": {
+      "type": "number",
+      "minimum": 1
+    },
+    "goal": {
+      "type": "string",
+      "description": "What the piece is for, in one sentence"
+    },
+    "audience": {
+      "type": "string"
+    },
+    "cta": {
+      "type": "object",
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "What the viewer must do"
+        },
+        "contact": {
+          "type": "string",
+          "description": "Exact contact data shown on screen (defaults to the client's)"
+        }
+      }
+    },
+    "copy": {
+      "type": "object",
+      "description": "Every on-screen text, exactly as it must appear",
+      "properties": {
+        "headline": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avoid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Words that must not appear"
+        }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "description": "Paths relative to the client folder",
+      "properties": {
+        "photos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "music": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Path relative to the client folder, usually assets/music/<file>. Royalty-free or client-supplied; its licence goes in a file next to it or in its assets/music/LIBRARY.json entry"
+        }
+      }
+    },
+    "reference": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A clip whose rhythm to match (relative to the client folder)"
+    },
+    "material": {
+      "type": "object",
+      "description": "The client's material chosen for this piece (paths relative to the client folder). Leaving the 'material' stage requires the analysis file to exist and every selected photo to be in assets.photos; no material and no photos/videos means a typography-only piece",
+      "properties": {
+        "batch": {
+          "type": "string",
+          "description": "Name of the material batch (a folder of the client's photos and videos)"
+        },
+        "analysis": {
+          "type": "string",
+          "description": "Analysis file of the batch, relative to the client folder"
+        },
+        "selected": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": "Ids of the photos chosen from the analysis (the numbers on its contact sheet); `tools/material.py select` exports each to assets/photos/<batch>-<id>.jpg"
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "start",
+              "file"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Video id in the analysis"
+              },
+              "start": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Seconds into the source clip"
+              },
+              "dur": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Seconds used (or give end)"
+              },
+              "end": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Second of the source clip where the cut ends"
+              },
+              "mode": {
+                "enum": [
+                  "vertical",
+                  "card"
+                ],
+                "description": "How tools/material.py prepared the clip: vertical crop or card on a blurred ground"
+              },
+              "file": {
+                "type": "string",
+                "description": "Prepared clip, relative to the client folder"
+              }
+            }
+          }
+        }
+      }
+    },
+    "concepts": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "idea"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "idea": {
+            "type": "string",
+            "description": "One sentence about the picture"
+          },
+          "carry": {
+            "type": "string",
+            "description": "What survives every scene change"
+          },
+          "rules_out": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "chosen_concept": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "beats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "t",
+          "beat"
+        ],
+        "properties": {
+          "t": {
+            "type": "string",
+            "description": "e.g. 0.0–0.8"
+          },
+          "beat": {
+            "type": "string"
+          },
+          "moves": {
+            "type": "string"
+          },
+          "holds": {
+            "type": "string"
+          },
+          "carries": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "composition": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Remotion composition id once built"
+    },
+    "status": {
+      "enum": [
+        "brief",
+        "material",
+        "concepts",
+        "building",
+        "review",
+        "approved",
+        "delivered"
+      ],
+      "default": "brief"
+    },
+    "delivery": {
+      "type": "object",
+      "description": "Publishing package built by tools/deliver.py",
+      "properties": {
+        "caption": {
+          "type": "string",
+          "description": "Caption file, relative to the repo (default deliveries/<id>/caption.md)"
+        },
+        "cover_time": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Second of the cover frame; null = picked automatically"
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Choices made without asking, to show the user"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "render": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Render settings for this piece",
+      "properties": {
+        "blur_engine": {
+          "enum": [
+            "camera",
+            "canvas"
+          ],
+          "description": "Motion-blur engine; default from CUTROOM_BLUR_ENGINE (camera)"
+        }
+      }
+    }
+  }
+}

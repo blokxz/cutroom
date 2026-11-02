@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": false,
+    "pr": false,
+    "sessionUrl": false
+  },
+  "includeCoAuthoredBy": false,
+  "extraKnownMarketplaces": {
+    "blokxz": {
+      "source": { "source": "github", "repo": "blokxz/cutroom" }
+    }
+  },
+  "enabledPlugins": {
+    "cutroom@blokxz": true
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "slug": "sample",
+  "name": "Estudio Ejemplo",
+  "language": "es-AR",
+  "contact": {
+    "whatsapp": "+54 9 11 0000-0000",
+    "instagram": "@estudio.ejemplo"
+  },
+  "brand": {
+    "colors": {
+      "ground": "#F3F1EC",
+      "paper": "#FBFAF7",
+      "ink": "#2B2D33",
+      "soft": "#6B6E78",
+      "accent": "#3C4678",
+      "accent2": "#B8643C",
+      "line": "#D8D5CE"
+    },
+    "fonts": {
+      "display": "DM Serif Display",
+      "text": "Inter",
+      "script": "Caveat",
+      "files": [
+        {
+          "family": "DM Serif Display",
+          "file": "DMSerifDisplay-400.woff2",
+          "weight": "400"
+        },
+        {
+          "family": "DM Serif Display",
+          "file": "DMSerifDisplay-400i.woff2",
+          "weight": "400",
+          "style": "italic"
+        },
+        {
+          "family": "Inter",
+          "file": "Inter-400.woff2",
+          "weight": "400"
+        },
+        {
+          "family": "Inter",
+          "file": "Inter-600.woff2",
+          "weight": "600"
+        },
+        {
+          "family": "Caveat",
+          "file": "Caveat-400.woff2"
+        }
+      ]
+    },
+    "logo": "assets/logo.png",
+    "taglines": [
+      "Diseño · Color · Detalle"
+    ]
+  },
+  "voice": "Fictional sample client for tests, CI and demos. Warm and plain, voseo rioplatense, short sentences, no urgency.",
+  "notes": "Not a real business: every asset in this folder is synthetic (generated photos and logo, SIL OFL fonts, generated music). Replace it with a real client through /cutroom:video.",
+  "voice_guide": {
+    "tone": "Cercano y simple, frases cortas; se muestra el trabajo más que los adjetivos. Nunca presión ni urgencia falsa.",
+    "person": "voseo rioplatense, segunda persona singular",
+    "use": [
+      "hecho a mano",
+      "a medida",
+      "detalle"
+    ],
+    "avoid": [
+      "garantizado",
+      "el mejor",
+      "el único",
+      "oferta sin vigencia"
+    ],
+    "emojis": "1–2 por caption: ✨ 🎨 · funcionales: 📍 💬",
+    "hashtags": [
+      "#EstudioEjemplo",
+      "#HechoAMano",
+      "#Diseño",
+      "#Detalle",
+      "#Color",
+      "#Taller",
+      "#DiseñoLocal",
+      "#ObjetosConAlma"
+    ],
+    "cta": "💬 Escribinos por WhatsApp · link en bio"
+  }
+}

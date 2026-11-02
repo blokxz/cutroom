@@ -1,0 +1,7 @@
+# Python dependencies of tools/ (verify.py, brief.py, brand.py, sfx.py, master.py) and its tests.
+# Also needed on PATH (or via FFMPEG / FFPROBE): ffmpeg and ffprobe.
+opencv-python-headless==5.0.0.93
+numpy==2.5.3
+pillow==12.3.0
+jsonschema==4.26.0
+pytest==9.1.1

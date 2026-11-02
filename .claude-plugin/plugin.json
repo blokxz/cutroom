@@ -1,0 +1,14 @@
+{
+  "name": "cutroom",
+  "displayName": "cutroom · Video Studio",
+  "version": "0.4.0",
+  "description": "Direct short motion videos (stories, reels, posts) in Remotion that read as original pieces: brief, three concepts, beat sheet, build, render and an automatic quality check per platform (Instagram, TikTok, YouTube Shorts).",
+  "author": {
+    "name": "Alejandro M. Ceccheto",
+    "url": "https://github.com/blokxz"
+  },
+  "homepage": "https://github.com/blokxz/cutroom#readme",
+  "repository": "https://github.com/blokxz/cutroom",
+  "license": "MIT",
+  "keywords": ["video", "reels", "motion", "remotion", "instagram", "tiktok", "shorts", "quality"]
+}

@@ -1,0 +1,83 @@
+{
+  "id": "sample-post",
+  "client": "sample",
+  "platform": "instagram",
+  "format": "feed_video",
+  "duration_s": 8,
+  "goal": "Feed post that introduces the studio with its three words.",
+  "cta": {
+    "text": "Escribinos por WhatsApp",
+    "contact": "+54 9 11 0000-0000"
+  },
+  "copy": {
+    "headline": "Hecho / a mano",
+    "lines": [
+      "Diseño",
+      "Color",
+      "Detalle"
+    ],
+    "avoid": []
+  },
+  "assets": {
+    "photos": [
+      "assets/photos/sample-2.jpg"
+    ],
+    "videos": [],
+    "music": null
+  },
+  "reference": null,
+  "concepts": [
+    {
+      "name": "Sistema tipográfico",
+      "idea": "Las tres palabras del estudio son el decorado y vuelan hasta la tarjeta.",
+      "carry": "las palabras"
+    },
+    {
+      "name": "Collage",
+      "idea": "Recortes que se apilan hasta formar la tarjeta.",
+      "carry": "la pila"
+    },
+    {
+      "name": "Sello",
+      "idea": "Un sello estampa la tarjeta.",
+      "carry": "el sello"
+    }
+  ],
+  "chosen_concept": 0,
+  "beats": [
+    {
+      "t": "0.0–1.3",
+      "beat": "Diseño"
+    },
+    {
+      "t": "1.3–1.8",
+      "beat": "rest"
+    },
+    {
+      "t": "1.8–2.5",
+      "beat": "Color"
+    },
+    {
+      "t": "2.5–3.2",
+      "beat": "Detalle"
+    },
+    {
+      "t": "3.2–4.3",
+      "beat": "rest on the stack"
+    },
+    {
+      "t": "4.3–5.5",
+      "beat": "words into the tagline"
+    },
+    {
+      "t": "5.5–8.0",
+      "beat": "CTA hold"
+    }
+  ],
+  "composition": "SamplePost",
+  "status": "delivered",
+  "decisions": [
+    "Reading-time WARN on the CTA accepted: the phone number counts as 4 words; the CTA holds still at the end, long enough to read it."
+  ],
+  "notes": "Example brief of the fictional sample client."
+}

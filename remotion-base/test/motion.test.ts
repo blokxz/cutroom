@@ -1,0 +1,178 @@
+import { describe, expect, it } from "vitest";
+import {
+  CamKey,
+  EASE,
+  cameraAt,
+  drift,
+  land,
+  settle,
+  tween,
+} from "../src/lib/motion";
+import { progress } from "../src/moves";
+
+const FPS = 30;
+const range = (a: number, b: number) =>
+  Array.from({ length: b - a + 1 }, (_, i) => a + i);
+const nonDecreasing = (xs: number[]) =>
+  xs.every((x, i) => i === 0 || x >= xs[i - 1] - 1e-9);
+
+describe("EASE", () => {
+  it.each(Object.entries(EASE))("%s maps 0→0, 1→1 and is monotonic", (_, e) => {
+    expect(e(0)).toBeCloseTo(0, 6);
+    expect(e(1)).toBeCloseTo(1, 6);
+    expect(nonDecreasing(range(0, 100).map((i) => e(i / 100)))).toBe(true);
+  });
+
+  it("snap does most of the move early, in does it late", () => {
+    expect(EASE.snap(0.3)).toBeGreaterThan(0.6);
+    expect(EASE.in(0.3)).toBeLessThan(0.1);
+  });
+});
+
+describe("tween", () => {
+  it("hits both ends and clamps outside the range", () => {
+    expect(tween(10, [10, 20], [0, 100])).toBe(0);
+    expect(tween(20, [10, 20], [0, 100])).toBe(100);
+    expect(tween(-50, [10, 20], [0, 100])).toBe(0);
+    expect(tween(500, [10, 20], [0, 100])).toBe(100);
+  });
+
+  it.each(Object.entries(EASE))(
+    "stays in range and is monotonic with %s",
+    (_, e) => {
+      const vs = range(0, 30).map((f) => tween(f, [5, 25], [3, 9], e));
+      expect(Math.min(...vs)).toBeGreaterThanOrEqual(3);
+      expect(Math.max(...vs)).toBeLessThanOrEqual(9);
+      expect(nonDecreasing(vs)).toBe(true);
+    },
+  );
+
+  it("works for decreasing values", () => {
+    const vs = range(0, 20).map((f) => tween(f, [0, 20], [1, 0]));
+    expect(vs[0]).toBe(1);
+    expect(vs[20]).toBe(0);
+    expect(nonDecreasing(vs.map((v) => -v))).toBe(true);
+  });
+
+  it("defaults to EASE.out", () => {
+    expect(tween(5, [0, 10], [0, 1])).toBeCloseTo(EASE.out(0.5), 9);
+  });
+});
+
+describe("land", () => {
+  const vs = range(0, 120).map((f) => land(f, FPS, 10));
+
+  it("is 0 before it starts and settles at 1", () => {
+    expect(vs.slice(0, 11).every((v) => v === 0)).toBe(true);
+    expect(vs[120]).toBeCloseTo(1, 2);
+  });
+
+  it("overshoots a little, but not much", () => {
+    const peak = Math.max(...vs);
+    expect(peak).toBeGreaterThan(1);
+    expect(peak).toBeLessThan(1.25);
+  });
+
+  it("overshoots less with more damping", () => {
+    const peak = (damping: number) =>
+      Math.max(...range(0, 120).map((f) => land(f, FPS, 0, { damping })));
+    expect(peak(20)).toBeLessThan(peak(8));
+  });
+});
+
+describe("settle", () => {
+  const vs = range(0, 120).map((f) => settle(f, FPS, 10));
+
+  it("goes 0 → 1 without bouncing", () => {
+    expect(vs[0]).toBe(0);
+    expect(vs[10]).toBe(0);
+    expect(vs[120]).toBeCloseTo(1, 2);
+    expect(Math.max(...vs)).toBeLessThanOrEqual(1 + 1e-6);
+    expect(nonDecreasing(vs)).toBe(true);
+  });
+});
+
+describe("drift", () => {
+  it("is deterministic and bounded by its amplitude", () => {
+    for (const f of range(0, 300)) {
+      const d = drift(f, FPS, 6);
+      expect(d).toEqual(drift(f, FPS, 6));
+      expect(Math.abs(d.x)).toBeLessThanOrEqual(6 + 1e-9);
+      expect(Math.abs(d.y)).toBeLessThanOrEqual(6 + 1e-9);
+      expect(Math.abs(d.r)).toBeLessThanOrEqual(6 / 20 + 1e-9);
+    }
+  });
+
+  it("is still with zero amplitude", () => {
+    expect(drift(42, FPS, 0)).toEqual({ x: 0, y: 0, r: 0 });
+  });
+
+  it("differs between seeds", () => {
+    expect(drift(42, FPS, 6, "a")).not.toEqual(drift(42, FPS, 6, "b"));
+  });
+});
+
+describe("cameraAt", () => {
+  const linear = (t: number) => t;
+  const keys: CamKey[] = [
+    { f: 10, fx: 100, fy: 200, z: 1 },
+    { f: 30, fx: 300, fy: 200, z: 4, ease: linear },
+    { f: 60, fx: 300, fy: 500, z: 2, rot: 10 },
+  ];
+
+  it("holds the first key before it and the last key after it", () => {
+    expect(cameraAt(0, keys)).toMatchObject({ fx: 100, fy: 200, z: 1 });
+    expect(cameraAt(10, keys)).toMatchObject({ fx: 100, fy: 200, z: 1 });
+    expect(cameraAt(100, keys)).toMatchObject({ fx: 300, fy: 500, z: 2 });
+  });
+
+  it("passes through every key", () => {
+    for (const k of keys) {
+      const c = cameraAt(k.f, keys);
+      expect(c.fx).toBeCloseTo(k.fx, 9);
+      expect(c.fy).toBeCloseTo(k.fy, 9);
+      expect(c.z).toBeCloseTo(k.z, 9);
+    }
+  });
+
+  it("uses the arriving key's easing; zoom interpolates multiplicatively", () => {
+    const mid = cameraAt(20, keys);
+    expect(mid.fx).toBeCloseTo(200, 9); // linear
+    expect(mid.z).toBeCloseTo(2, 9); // geometric mean of 1 and 4
+  });
+
+  it("moves monotonically between two keys and stays within them", () => {
+    const seg = range(30, 60).map((f) => cameraAt(f, keys));
+    expect(nonDecreasing(seg.map((c) => c.fy))).toBe(true);
+    expect(nonDecreasing(seg.map((c) => -c.z))).toBe(true);
+    expect(nonDecreasing(seg.map((c) => c.rot ?? 0))).toBe(true);
+    for (const c of seg) {
+      expect(c.z).toBeGreaterThanOrEqual(2 - 1e-9);
+      expect(c.z).toBeLessThanOrEqual(4 + 1e-9);
+    }
+  });
+
+  it("defaults the easing to EASE.glide", () => {
+    const c = cameraAt(45, keys); // halfway through the 30 → 60 segment
+    expect(c.fy).toBeCloseTo(200 + 300 * EASE.glide(0.5), 9);
+  });
+});
+
+describe("progress (moves)", () => {
+  it("is a clamped, monotonic 0 → 1 over the stretch", () => {
+    const vs = range(0, 40).map((f) => progress(f, 10, 30));
+    expect(vs[0]).toBe(0);
+    expect(vs[10]).toBe(0);
+    expect(vs[30]).toBe(1);
+    expect(vs[40]).toBe(1);
+    expect(nonDecreasing(vs)).toBe(true);
+  });
+
+  it("matches tween with the same easing", () => {
+    for (const f of range(0, 40))
+      expect(progress(f, 10, 30, EASE.snap)).toBeCloseTo(
+        tween(f, [10, 30], [0, 1], EASE.snap),
+        12,
+      );
+  });
+});
