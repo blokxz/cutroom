@@ -17,6 +17,7 @@ claude --plugin-dir .    # load the plugin locally to try it
 - [ ] `cd remotion-base && npx tsc --noEmit && npm test` passes.
 - [ ] If you touched a composition, the move library or the verifier: render the examples (`node scripts/render.mjs --brief ../clients/sample/briefs/<id>.json`) and check there is no FAIL.
 - [ ] If you changed a platform's numbers: update its `tools/quality/platforms/specs/<platform>.json`, including `reviewed` and `sources`.
+- [ ] If you changed a skill: edit its `spec.md` first (new rule ⇒ new ID), then `SKILL.md` / `guidelines.md` / `references/`, and run `python3 tools/check_skill.py`.
 - [ ] If the visible behavior changed, update `README.md` and `CHANGELOG.md`.
 
 ## Rules

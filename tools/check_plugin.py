@@ -55,6 +55,12 @@ for f in sorted(os.listdir(os.path.join(ROOT, "commands"))):
             if not os.path.exists(os.path.join(base, script)):
                 errors.append(f"commands/{f} references missing {script}")
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import check_skill  # noqa: E402
+
+for d in check_skill.skill_dirs(ROOT):
+    errors.extend(check_skill.check(d, ROOT))
+
 for e in errors:
     print("ERROR", e)
 print("plugin packaging OK" if not errors else f"{len(errors)} problem(s)")

@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 930" width="1440" height="930" font-family="Inter, Segoe UI, system-ui, -apple-system, sans-serif" role="img" aria-labelledby="t d">
+<title id="t">cutroom · video-direction skill — spec-driven architecture</title>
+<desc id="d">Three phases: pre-construction (repo analysis, rule enforcement, spec.md), core SDD construction (SKILL.md router, guidelines.md, references/, compression), post-deployment and CI/CD (integrate, execute, git, lint/test/bench/fuzz) with a feedback loop back to spec.md.</desc>
+<style>
+  .node { transition: filter .15s ease, stroke-width .15s ease; cursor: default; }
+  .node:hover { filter: brightness(1.35); stroke-width: 2.5; }
+  .h { font-size: 15px; font-weight: 700; fill: #e6edf3; }
+  .t { font-size: 12.5px; fill: #c9d1d9; }
+  .m { font-size: 12px; fill: #8b949e; }
+  .c { font-family: JetBrains Mono, SFMono-Regular, Consolas, monospace; font-size: 11.5px; fill: #c9d1d9; }
+  .ph { font-size: 13px; font-weight: 800; letter-spacing: 1.5px; }
+  .flow { stroke-dasharray: 7 6; animation: dash 1.6s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset: -26; } }
+  @media (prefers-reduced-motion: reduce) { .flow { animation: none; } }
+</style>
+<defs>
+  <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#58a6ff"/></marker>
+  <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#a371f7"/></marker>
+  <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#3fb950"/></marker>
+  <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f0883e"/></marker>
+  <linearGradient id="spec" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f2d47"/><stop offset="1" stop-color="#2a1f47"/></linearGradient>
+</defs>
+
+<rect width="1440" height="930" fill="#0d1117"/>
+
+<!-- header -->
+<text x="40" y="54" font-size="26" font-weight="800" fill="#e6edf3">cutroom · video-direction — spec-driven skill architecture</text>
+<text x="40" y="82" class="m" font-size="14">spec.md is the single source of truth · every derived file cites rule IDs · tools/check_skill.py enforces the trace in CI</text>
+<g transform="translate(1040,40)">
+  <rect width="12" height="12" rx="3" fill="#58a6ff"/><text x="18" y="11" class="m">pre-construction</text>
+  <rect x="130" width="12" height="12" rx="3" fill="#a371f7"/><text x="148" y="11" class="m">SDD construction</text>
+  <rect x="265" width="12" height="12" rx="3" fill="#3fb950"/><text x="283" y="11" class="m">CI/CD</text>
+  <rect y="22" width="12" height="12" rx="3" fill="#f0883e"/><text x="18" y="33" class="m">feedback loop → spec.md (amend, new ID, re-derive)</text>
+</g>
+
+<!-- ============ PHASE 1 ============ -->
+<rect x="40" y="110" width="440" height="690" rx="16" fill="#111722" stroke="#1f3a5f"/>
+<text x="62" y="142" class="ph" fill="#58a6ff">01 · PRE-CONSTRUCTION</text>
+
+<g class="node">
+  <title>Read the repo: orchestrator command, monolithic skill, pipeline gates, verifier, CI and contribution rules.</title>
+  <rect x="62" y="162" width="396" height="160" rx="12" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="82" y="190" class="h">Repository analysis · blokxz/cutroom</text>
+  <text x="82" y="216" class="c">commands/video.md</text><text x="262" y="216" class="m">orchestrator</text>
+  <text x="82" y="238" class="c">skills/video-direction/</text><text x="262" y="238" class="m">167-line monolith</text>
+  <text x="82" y="260" class="c">tools/pipeline.py</text><text x="262" y="260" class="m">7 gated stages</text>
+  <text x="82" y="282" class="c">tools/verify.py</text><text x="262" y="282" class="m">FAIL / WARN / INFO</text>
+  <text x="82" y="304" class="c">ci.yml · CONTRIBUTING.md</text><text x="262" y="304" class="m">checks + rules</text>
+</g>
+<line x1="260" y1="322" x2="260" y2="350" stroke="#58a6ff" stroke-width="2" marker-end="url(#a1)"/>
+
+<g class="node">
+  <title>Constraints applied before writing a single derived file.</title>
+  <rect x="62" y="354" width="396" height="150" rx="12" fill="#161b22" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="82" y="382" class="h">Rule enforcement</text>
+  <text x="82" y="408" class="t">▸ Linux-native: POSIX paths, python3 / bash, no bin/</text>
+  <text x="82" y="430" class="t">▸ Strict English in repo · no AI attribution  (G-11)</text>
+  <text x="82" y="452" class="t">▸ Token budget: router ≤ 40 lines / ≤ 350 words</text>
+  <text x="82" y="474" class="t">▸ Tables + key-value over prose; zero filler</text>
+  <text x="82" y="496" class="t">▸ Own implementation only, never onetake  (G-10)</text>
+</g>
+<line x1="260" y1="504" x2="260" y2="532" stroke="#58a6ff" stroke-width="2" marker-end="url(#a1)"/>
+
+<g class="node">
+  <title>spec.md — intent, scope, contracts, gates, guardrails, creative rules, severity, change control. Wins on conflict.</title>
+  <rect x="62" y="536" width="396" height="236" rx="12" fill="url(#spec)" stroke="#79c0ff" stroke-width="2"/>
+  <text x="82" y="566" class="h" font-size="17">spec.md  —  single source of truth</text>
+  <text x="82" y="594" class="c">§1–2  intent · in / out of scope</text>
+  <text x="82" y="616" class="c">§3    contracts       C-01 … C-07</text>
+  <text x="82" y="638" class="c">§4    stage gates     brief → … → delivered</text>
+  <text x="82" y="660" class="c">§5    guardrails      G-01 … G-11</text>
+  <text x="82" y="682" class="c">§6    creative rules  R-01 … R-15</text>
+  <text x="82" y="704" class="c">§7    severity        FAIL · WARN · INFO</text>
+  <text x="82" y="726" class="c">§8    change control  new rule ⇒ new ID</text>
+  <text x="82" y="754" class="m">33 IDs · each must be cited directly downstream</text>
+</g>
+
+<!-- spec → phase 2 -->
+<path d="M458 600 H492 V222 H528" fill="none" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+
+<!-- ============ PHASE 2 ============ -->
+<rect x="500" y="110" width="440" height="690" rx="16" fill="#130f1f" stroke="#3b2a63"/>
+<text x="522" y="142" class="ph" fill="#a371f7">02 · CORE SDD CONSTRUCTION</text>
+
+<g class="node">
+  <title>Every derived file is written from the spec and cites its IDs in brackets.</title>
+  <rect x="530" y="162" width="390" height="62" rx="12" fill="#1c1530" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="550" y="188" class="h">Derive from spec.md</text>
+  <text x="550" y="210" class="m">cite [C-NN G-NN R-NN] · no rule without an ID</text>
+</g>
+<path d="M548 224 V700" fill="none" stroke="#a371f7" stroke-width="1.5" opacity=".55"/>
+<line x1="548" y1="288" x2="566" y2="288" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<line x1="548" y1="408" x2="566" y2="408" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<line x1="548" y1="560" x2="566" y2="560" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+<line x1="548" y1="700" x2="566" y2="700" stroke="#a371f7" stroke-width="2" marker-end="url(#a2)"/>
+
+<g class="node">
+  <title>SKILL.md: frontmatter + a stage-to-load table. Loads guidelines sections and references only when the stage needs them.</title>
+  <rect x="570" y="244" width="350" height="100" rx="12" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="590" y="270" class="h">SKILL.md · router</text>
+  <text x="590" y="294" class="t">brief.status → { do, load }  table</text>
+  <text x="590" y="314" class="t">dynamic loading: refs per stage only</text>
+  <text x="590" y="334" class="m">17 content lines · budget-checked</text>
+</g>
+
+<g class="node">
+  <title>guidelines.md: step-by-step procedures per stage, edge cases, delivery checklist.</title>
+  <rect x="570" y="362" width="350" height="100" rx="12" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="590" y="388" class="h">guidelines.md · procedures</text>
+  <text x="590" y="412" class="t">§0 every stage · §1–8 brief → delivery</text>
+  <text x="590" y="432" class="t">edge cases · unattended decisions</text>
+  <text x="590" y="452" class="m">numbered imperative steps + checklist</text>
+</g>
+
+<g class="node">
+  <title>references/: heavy data loaded on demand.</title>
+  <rect x="570" y="480" width="350" height="164" rx="12" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="590" y="506" class="h">references/ · on-demand data</text>
+  <text x="590" y="530" class="c">brief-contract.md</text><text x="760" y="530" class="m">fields · client tree</text>
+  <text x="590" y="550" class="c">concept-families.md</text><text x="760" y="550" class="m">28 families</text>
+  <text x="590" y="570" class="c">beat-sheet.md</text><text x="760" y="570" class="m">table · beat kinds</text>
+  <text x="590" y="590" class="c">remotion-kit.md</text><text x="760" y="590" class="m">moves · motion · clips</text>
+  <text x="590" y="610" class="c">platform-layout.md</text><text x="760" y="610" class="m">safe zones · type px</text>
+  <text x="590" y="630" class="c">verifier.md · examples.md</text>
+</g>
+
+<g class="node">
+  <title>Instruction compression: same rules, fewer tokens on every turn.</title>
+  <rect x="570" y="662" width="350" height="112" rx="12" fill="#1c1530" stroke="#d2a8ff" stroke-width="1.5"/>
+  <text x="590" y="688" class="h">Instruction compression</text>
+  <text x="590" y="712" class="t">prose → tables · key-value · imperatives</text>
+  <text x="590" y="732" class="t">always-loaded: 167 lines → 17-line router</text>
+  <text x="590" y="752" class="m">rest paid only at the stage that needs it</text>
+</g>
+
+<!-- phase 2 → phase 3 -->
+<path d="M920 718 H945 V202 H978" fill="none" stroke="#3fb950" stroke-width="2" marker-end="url(#a3)"/>
+
+<!-- ============ PHASE 3 ============ -->
+<rect x="960" y="110" width="440" height="690" rx="16" fill="#0f1a14" stroke="#1f4a2c"/>
+<text x="982" y="142" class="ph" fill="#3fb950">03 · POST-DEPLOYMENT &amp; CI/CD</text>
+
+<g class="node">
+  <title>Load the plugin locally and validate both manifests.</title>
+  <rect x="982" y="162" width="396" height="76" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="1002" y="188" class="h">Integrate · local env / repo</text>
+  <text x="1002" y="210" class="c">claude --plugin-dir .</text>
+  <text x="1002" y="228" class="c">claude plugin validate --strict .</text>
+</g>
+<line x1="1180" y1="238" x2="1180" y2="254" stroke="#3fb950" stroke-width="2" marker-end="url(#a3)"/>
+
+<g class="node">
+  <title>Run the orchestrator end to end on the sample brief; gates refuse stale or failing renders.</title>
+  <rect x="982" y="258" width="396" height="76" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="1002" y="284" class="h">Execution testing</text>
+  <text x="1002" y="306" class="c">/cutroom:video → pipeline.py status|advance</text>
+  <text x="1002" y="324" class="c">render.mjs --brief …/sample-post.json</text>
+</g>
+<line x1="1180" y1="334" x2="1180" y2="350" stroke="#3fb950" stroke-width="2" marker-end="url(#a3)"/>
+
+<g class="node">
+  <title>Branch, commit as the repo owner, push. No AI attribution anywhere.</title>
+  <rect x="982" y="354" width="396" height="76" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="1002" y="380" class="h">Git control</text>
+  <text x="1002" y="402" class="t">feature branch → commit (author blokxz) → push</text>
+  <text x="1002" y="420" class="m">no Co-Authored-By · English messages · CHANGELOG</text>
+</g>
+<line x1="1180" y1="430" x2="1180" y2="446" stroke="#3fb950" stroke-width="2" marker-end="url(#a3)"/>
+
+<g class="node">
+  <title>.github/workflows/ci.yml — Linux + Windows jobs on every push.</title>
+  <rect x="982" y="450" width="396" height="324" rx="12" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="1002" y="478" class="h">CI pipeline · .github/workflows/ci.yml</text>
+  <text x="1002" y="498" class="m">ubuntu + windows · every push and PR</text>
+
+  <rect x="998" y="512" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/>
+  <text x="1012" y="534" class="ph" fill="#56d364" font-size="12">LINT</text>
+  <text x="1012" y="556" class="c">plugin validate</text>
+  <text x="1012" y="574" class="c">check_plugin.py</text>
+  <text x="1012" y="592" class="c"> └ check_skill.py</text>
+  <text x="1012" y="610" class="c">tsc --noEmit</text>
+
+  <rect x="1186" y="512" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/>
+  <text x="1200" y="534" class="ph" fill="#56d364" font-size="12">TEST</text>
+  <text x="1200" y="556" class="c">pytest tools/tests</text>
+  <text x="1200" y="574" class="c"> └ test_skill_spec</text>
+  <text x="1200" y="592" class="c">npm test (moves)</text>
+  <text x="1200" y="610" class="m">unit + gate tests</text>
+
+  <rect x="998" y="642" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/>
+  <text x="1012" y="664" class="ph" fill="#56d364" font-size="12">BENCH</text>
+  <text x="1012" y="686" class="c">real render of</text>
+  <text x="1012" y="704" class="c">every sample brief</text>
+  <text x="1012" y="722" class="c">verify → 0 FAIL</text>
+  <text x="1012" y="740" class="m">doctor.py frame (Win)</text>
+
+  <rect x="1186" y="642" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/>
+  <text x="1200" y="664" class="ph" fill="#56d364" font-size="12">FUZZ</text>
+  <text x="1200" y="686" class="c">seeded spec-ID</text>
+  <text x="1200" y="704" class="c">mutation (12 seeds)</text>
+  <text x="1200" y="722" class="c">seeded synthetic</text>
+  <text x="1200" y="740" class="c">media in verifier</text>
+</g>
+
+<!-- ============ FEEDBACK LOOP ============ -->
+<path class="flow" d="M1180 774 V860 H260 V778" fill="none" stroke="#f0883e" stroke-width="2.5" marker-end="url(#a4)"/>
+<rect x="396" y="842" width="648" height="36" rx="18" fill="#2a1a0d" stroke="#f0883e"/>
+<text x="720" y="865" text-anchor="middle" font-size="13" font-weight="700" fill="#ffa657">FEEDBACK · FAIL / WARN / untraced ID / stale platform spec → amend spec.md → re-derive</text>
+<text x="40" y="910" class="m">Hover a node for detail · arrows: derivation (purple), delivery (green), continuous feedback (orange) · source: docs/skill-architecture.svg</text>
+</svg>

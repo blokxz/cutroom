@@ -17,6 +17,9 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 - Move `Key`: a key that goes into the lock and turns with a click (`keyTurn`, `keyTurns`), the next scene opening out of the keyhole (`KeyholeIris`), and a door that swings open (`DoorSwing`). Demo: `MovesDemo-Key`.
 - Move `WrittenPostcard`: handwriting that writes itself (`Handwriting`, `writeSchedule`), a perforated photo stamp with a postmark (`Stamp`) and a two-sided card that flips (`Postcard`, `flipAngle`). Demo: `MovesDemo-WrittenPostcard`.
 
+- `video-direction` is now spec-driven: `spec.md` (single source of truth: contracts C-NN, guardrails G-NN, creative rules R-NN, stage gates, severity), a 17-line `SKILL.md` router that loads per stage, `guidelines.md` (procedures, edge cases, checklist) and `references/` (brief contract, concept families, beat sheet, Remotion kit, platform layout, verifier, worked example). Diagram: `docs/skill-architecture.svg`.
+- `tools/check_skill.py` (run by `check_plugin.py` in CI) and `tools/tests/test_skill_spec.py`: every spec ID must be cited directly downstream, every citation must exist, every reference must be routed, the router stays within budget; seeded mutation tests prove the check catches a dropped rule.
+
 ### Removed
 
 - The worked-example client and its four pieces: every client asset, brief and example built for it. The kit now ships only a fictional `sample` client (generated photos and logo, SIL OFL fonts, generated music) and one example, `SamplePost`, used by the tests, CI and `doctor.py`. Real clients are created from scratch through `/cutroom:video`.

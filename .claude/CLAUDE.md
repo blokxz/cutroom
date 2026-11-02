@@ -14,12 +14,12 @@ This repo is **cutroom**: a Claude Code plugin plus the working kit it drives. `
 ```
 .claude-plugin/    plugin.json + marketplace.json (marketplace "blokxz")
 commands/video.md  /cutroom:video — the orchestrator: drives tools/pipeline.py stage by stage
-skills/            video-direction — the creative process and rules
+skills/            video-direction — spec.md (single source of truth) → SKILL.md (router), guidelines.md, references/
 schemas/           client.json, brief.json, music LIBRARY.json
 clients/<slug>/    client.json, assets/ (logo, photos, fonts, music), briefs/, references/
 remotion-base/     Remotion project: src/{lib,moves,components,examples,clients}, scripts/{render,config,sync-clients}.mjs
 tools/             pipeline.py, brief.py, material.py (+ media/), verify.py (+ quality/ core, claims, platforms/), deliver.py,
-                   brand.py, sfx.py, master.py, models.py, setup.py, doctor.py, check_plugin.py
+                   brand.py, sfx.py, master.py, models.py, setup.py, doctor.py, check_plugin.py, check_skill.py
 deliveries/<id>/   publish-ready packages built by tools/deliver.py (git-ignored)
 ```
 
@@ -28,6 +28,7 @@ deliveries/<id>/   publish-ready packages built by tools/deliver.py (git-ignored
 - The brief is the single source of on-screen text; `client.json` of contact and brand. Compositions read the brief through `useCopy()` in `src/lib/brief.ts`, and contact/brand through the generated `src/clients/<slug>/brand.ts` — re-run `python3 tools/brief.py client ts <slug>` after every `client.json` edit.
 - Fonts and music live only in `clients/<slug>/assets/`; `sync-clients.mjs` copies them into `remotion-base/public/clients/<slug>/` (git-ignored).
 - Platform limits live in `tools/quality/platforms/specs/<platform>.json` with a `reviewed` date; re-check the official pages when the verifier warns they are stale.
+- Skill rules live in `skills/<name>/spec.md` with IDs (C-/G-/R-NN). Change the spec first, then the derived files; `tools/check_skill.py` (run by `check_plugin.py`) fails on an uncited or undefined ID, an unrouted reference, or a router over budget.
 - New platform = a module in `tools/quality/platforms/` + its specs JSON + tests (see `tools/quality/README.md`).
 - No `bin/` directory at the plugin root (it blocks installing from claude.ai) and no `CLAUDE.md` at the root.
 - Machine-specific paths go in a git-ignored `.env` (see `.env.example`), never in code.
