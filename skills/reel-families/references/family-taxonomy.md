@@ -1,6 +1,6 @@
 # Family taxonomy [F-01 F-02 F-03 F-04 C-02]
 
-Data: `families.json` (28 families; this table mirrors it — the JSON wins). Creative description of each family: `skills/video-direction/references/concept-families.md`.
+Data: `families.json` (30 families; this table mirrors it — the JSON wins). Creative description of each family: `skills/video-direction/references/concept-families.md`.
 
 | Axis | Values |
 |---|---|
@@ -40,5 +40,7 @@ Pick by material: photos → `kind: photo`; no photos → `generic`; clips → a
 | letters_as_windows | photo | text | window | letterforms | pushThrough, MaskReveal | ready |
 | thread | photo | object | wipe | the thread | PathTrail | ready |
 | depth | photo | camera | camera | camera + nearest plane | — | needs-move |
+| light_flood | photo | light | iris | the field of light | — | needs-move |
+| continuous_surface | photo | surface | camera | the belt | — | needs-move |
 
 Set rule (F-04): 3 concepts ⇒ ≥ 2 distinct `carry_kind`, ≥ 2 distinct `boundary`, 3 distinct ids.

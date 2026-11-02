@@ -27,7 +27,7 @@ Each action = `{priority, what, do}`; `do` is the command or file to touch. Loop
 ```
 # cutroom summary
 briefs 1 · stages {'delivered': 1} · platforms {'instagram': 1}
-families 22/28 ready · failing 0 · stuck 0 · stale specs 0 · benchmark gaps 4
+families 22/30 ready · failing 0 · stuck 0 · stale specs 0 · benchmark gaps 4
 ## actions
 - P1 family 'object_wipe' has no buildable move → `design a move in remotion-base/src/moves + unit test, …`
 ```

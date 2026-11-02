@@ -40,4 +40,6 @@ Per concept record: `name`, `idea` (1 sentence about the picture), `carry`; also
 | Calendar | Desk calendar pages tear off, each reveals a place; last page blank "your dates" + contact. | calendar block |
 | Letters as windows | Huge headline, each letter a window onto a photo; camera flies through a counter into the next place. | letterforms |
 | Thread | Brand-colour thread runs through every scene, wraps objects, ties a bow on logo/gift card. | the thread |
+| Light flood | The ground itself is the punctuation: a field of warm light rises, floods the frame and drains in rings that open the next place. | the field of light |
+| Continuous surface | One belt or carousel of places moves at constant speed and slows to settle on each; nothing cuts. | the belt |
 | Depth | Photo split into planes moving at different speeds; dolly through foreground into next photo. Needs layer masks. | camera + nearest plane |

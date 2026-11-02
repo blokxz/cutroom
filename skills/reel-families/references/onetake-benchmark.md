@@ -11,6 +11,8 @@ Source: `docs/benchmark.md` (cutroom's own review of onetake's published criteri
 | Q-07 | Move variety | families `ready` count in `reel_summary.py` | phase 2 |
 | Q-08 | Proof: cases per piece | none yet | phase 4 |
 
+Study 2026-11-02 (findings in `docs/benchmark.md`): cutroom's rhythm checks already match or exceed onetake's; open gaps are the camera helpers, event-driven sound, 2 missing families (`light_flood`, `continuous_surface`) and case write-ups.
+
 Parked by decision: voice, subtitles, second language (benchmark phase 3).
 
 Statement template for delivery: "Targets met: Q-01…; open: Q-04, Q-06, Q-07, Q-08." Never "onetake level".

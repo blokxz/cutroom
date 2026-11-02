@@ -500,6 +500,36 @@
     7
    ],
    "status": "needs-move"
+  },
+  {
+   "id": "light_flood",
+   "name": "Light flood",
+   "kind": "photo",
+   "carry_kind": "light",
+   "boundary": "iris",
+   "carry": "the field of light",
+   "moves": [],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "needs-move"
+  },
+  {
+   "id": "continuous_surface",
+   "name": "Continuous surface",
+   "kind": "photo",
+   "carry_kind": "surface",
+   "boundary": "camera",
+   "carry": "the belt",
+   "moves": [],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "needs-move"
   }
  ]
 }

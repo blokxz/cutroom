@@ -80,7 +80,7 @@
 </g>
 <g class="node"><title>High-density schemas and samples, loaded per step.</title><rect x="570" y="466" width="350" height="108" rx="12" fill="#161b22" stroke="#a371f7" stroke-width="1.5"/>
 <text x="588" y="492" class="h">references/ · data</text>
-<text x="588" y="516" class="c">families.json (28) · family-taxonomy</text>
+<text x="588" y="516" class="c">families.json (30) · family-taxonomy</text>
 <text x="588" y="535" class="c">template-schema · variation-rules</text>
 <text x="588" y="554" class="c">onetake-benchmark · summary-report · examples</text>
 </g>
@@ -132,7 +132,7 @@
 <text x="1012" y="724" class="c">reel_summary.py: P0=0</text>
 <text x="1012" y="742" class="c">doctor.py frame (Win)</text>
 <rect x="1186" y="642" width="178" height="120" rx="10" fill="#0d1117" stroke="#2ea043"/><text x="1200" y="664" class="ph" fill="#56d364" font-size="12">FUZZ</text>
-<text x="1200" y="688" class="c">seeded sheets: 28</text>
+<text x="1200" y="688" class="c">seeded sheets: 30</text>
 <text x="1200" y="706" class="c">families × 4 durations</text>
 <text x="1200" y="724" class="c">× 8 seeds → check OK</text>
 <text x="1200" y="742" class="c">12 spec-ID mutations</text>

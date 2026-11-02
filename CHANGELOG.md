@@ -22,6 +22,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - Skill `reel-families` + command `/cutroom:reel`: spec-driven orchestration of template families. `references/families.json` registers 28 families (carry kind, boundary, moves, status); `tools/variation.py` synthesizes seeded, rhythm-legal beat sheets (longest ≥ 3× shortest, rest ≥ 0.8 s, CTA hold ≥ 1.5 s, a survivor per beat) and invents novel (carry kind × boundary) concepts from buildable moves; `tools/reel_summary.py` gathers briefs, verdicts, stale platform specs, families without a move and benchmark gaps into one report with P0/P1/P2 actions. Fuzz tests cover every family × duration × seed. Diagram: `docs/reel-families-architecture.svg`.
 
+- `docs/benchmark.md`: first direct study of onetake (what it is, counts side by side, where cutroom is ahead, ten ideas to build our own way, what is out of scope). New families `light_flood` and `continuous_surface` (30 in total, both `needs-move`) and creative rule R-16 (every concept states the claim its picture makes).
+
 ### Removed
 
 - The worked-example client and its four pieces: every client asset, brief and example built for it. The kit now ships only a fictional `sample` client (generated photos and logo, SIL OFL fonts, generated music) and one example, `SamplePost`, used by the tests, CI and `doctor.py`. Real clients are created from scratch through `/cutroom:video`.

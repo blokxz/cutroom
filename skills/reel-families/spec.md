@@ -42,11 +42,11 @@ Turn one request into a legal, original Reel in the fewest prompts: summarize th
 | Q-01 | Uneven rhythm, longest ≥ 3× shortest, ≥ 1 rest ≥ 0.8 s, CTA hold ≥ 1.5 s | `variation.py check`, verifier rhythm | enforced |
 | Q-02 | Every boundary has a visible survivor | `variation.py check` (`carries`), verifier continuity | enforced |
 | Q-03 | Motion curves differ by intent (t80 spread), no single easing | verifier curves | enforced |
-| Q-04 | Operated camera: key ahead, settle, drift in holds, still on CTA | review + `<Camera>` | manual |
+| Q-04 | Operated camera: key ahead of the subject (~0.1 s), whip keyed at the landing, hand float that stops in holds, decaying shake on landings, a far grid on empty ground | review + `<Camera>` | manual; helpers missing |
 | Q-05 | Motion blur on fast travel, final ≥ 12 samples | verifier blur, `<MotionBlur>` | enforced |
-| Q-06 | One sound room; events placed from beats, music ducked, −16 LUFS | verifier audio | partial (events by hand) |
+| Q-06 | One sound room; events placed from beats (no two within 40 ms), panned by screen x, music ducked, −16 LUFS, true peak safe after AAC | verifier audio | partial (events by hand) |
 | Q-07 | Move variety: every family `ready` | `reel_summary.py` | gap (see summary) |
-| Q-08 | Proof: a case write-up per shipped piece | `docs/cases/<piece>.md` | gap |
+| Q-08 | Proof: a case write-up per shipped piece (beat sheet, numbers, what was rejected and why) | `docs/cases/<piece>.md` | gap |
 
 Parity is never claimed; open gaps surface as actions in the summary (L-01).
 

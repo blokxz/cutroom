@@ -68,7 +68,7 @@ def behind_modules(root):
     except OSError:
         return []
     rows = re.findall(r"^\|\s*(\d+)\s*\|\s*([^|]+?)\s*\|[^|]*\|[^|]*\|\s*([^|]+?)\s*\|\s*$", text, re.M)
-    return [(int(n), m) for n, m, v in rows if "behind" in v and int(n) not in PARKED]
+    return [(int(n), m) for n, m, v in rows if "behind" in v and "ahead" not in v.split("behind")[0] and int(n) not in PARKED]
 
 
 def gather(root=ROOT, client=None, today=None):

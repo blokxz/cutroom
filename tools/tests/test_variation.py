@@ -16,7 +16,7 @@ FAMS = [f["id"] for f in REG["families"]]
 
 def test_registry_is_consistent():
     ck, bd = set(REG["carry_kinds"]), set(REG["boundaries"])
-    assert len(set(FAMS)) == len(FAMS) == 28
+    assert len(set(FAMS)) == len(FAMS) >= 30
     for f in REG["families"]:
         assert f["carry_kind"] in ck and f["boundary"] in bd, f["id"]
         assert f["beats"][0] <= f["beats"][1]
@@ -99,5 +99,6 @@ def test_summary_of_the_repo_is_readable_and_sorted():
     d = reel_summary.gather(today=datetime.date(2026, 11, 2))
     acts = reel_summary.actions(d)
     assert [p for p, _, _ in acts] == sorted(p for p, _, _ in acts)
-    assert d["families_total"] == 28
+    assert d["families_total"] == len(FAMS)
     assert all(n != 8 for n, _ in d["behind"]), "parked modules are not actions"
+    assert all(n != 3 for n, _ in d["behind"]), "mixed verdicts (ahead for brands) are not gaps"

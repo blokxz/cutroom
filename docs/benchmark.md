@@ -1,6 +1,6 @@
 # cutroom vs onetake — module by module
 
-Reviewed 2026-10-26 against cutroom 0.4 (branch `v0.4-render-setup`) and the onetake skill as published
+Reviewed 2026-10-26 (studied directly 2026-11-02, see the end) against cutroom 0.4 (branch `v0.4-render-setup`) and the onetake skill as published
 (SKILL.md, references, script docstrings). This is a comparison of criteria and capabilities, not of code:
 cutroom studies onetake for ideas and writes its own implementation; it never copies or runs its code (see `.claude/CLAUDE.md`, rule 4).
 
@@ -79,3 +79,56 @@ Module 14.
 ≈ 1 day.
 
 **Total left without phase 3: about 8–9 days of work** (4–5 without the ten new families), plus review rounds.
+
+## Study of onetake — 2026-11-02
+
+First direct reading of the published skill (SKILL.md, six references, `lib/motion.js` outline, `looks.json`, ten case READMEs, the verifier's legs). Everything below is our own summary of what it does and the design we would build for photo-led social pieces; none of its code is copied or run. Its licence (PolyForm Noncommercial 1.0.0) would not allow reuse anyway.
+
+### What it is
+
+- A film is **one HTML file** that is a pure function of time (`__seek(t)`), built on a **39-move library** in five groups: enter (7), carry (8), contact (6 + 4 live sims), camera (≈10), fluid (5: light field, ripples, silk, belt, SwiftUI-style springs).
+- Rendered frame by frame with **real shutter blur**: several seeks across the open shutter averaged in linear light, sample count sized by the farthest on-screen travel the comp declares (camera included); still stretches skip it; several browsers in parallel; 1080p30 drafts, 4K60 final.
+- An **oracle** for acceptance: cadence, rest, burst, audio, then (with the comp) carry score, curves and framing.
+- Targets product launches (10–30 s, demos to 60 s): real UI recorded or rebuilt, narration, subtitles, second language by time-warping the audio onto one composition.
+
+### Counts, side by side
+
+| Thing | onetake | cutroom |
+|---|---|---|
+| Moves | 39 | 12 + motion helpers |
+| Named concept types | ≈7 (element transforms, camera through scale, before/after split, chain reaction, physical metaphor, continuous surface, typographic system) | 30 families |
+| Case films with write-ups | 10 | 1 sample, no write-up |
+| Look presets | 6, measured from accepted films | brand from logo/screens (`brand.py`) |
+| Sound materials | 6 synthesized, one room | 9 synthesized effects (`sfx.py`), one family per piece |
+
+Families and move counts are not the same unit: a family is a creative idea built from several moves. Every concept type onetake names exists in cutroom (transforming object, scale camera / dive, before–after rest, chain reaction, physical metaphor, typographic system). Two of its case films use ideas we lacked: a **continuous belt of places** and a **field of light that floods and drains in rings onto the next scene**; both are now registered as families (`continuous_surface`, `light_flood`, status `needs-move`).
+
+### Where cutroom is already at or past it
+
+- Rhythm: beat-length variation must be CV ≥ 0.3 (theirs 0.25); hard cuts, motion curves (t80), end hold, reading time and per-platform limits are checked; theirs has no platform specs, safe zones, claims check, covers or caption package.
+- Gates: `pipeline.py` refuses stale or failing renders; theirs is a protocol in prose.
+- Same lessons arrived at independently: no particle decoration, never cut on a metronome, a survivor at every boundary, small elements on a big ground, one sound room, deterministic frames.
+
+### Ideas worth building ourselves (own design)
+
+| # | Idea | Why it matters | Maps to |
+|---|---|---|---|
+| 1 | **Operated camera helpers**: key the subject ~0.1 s ahead, key the landing before a snap, a slow hand float that is zero in holds, a decaying seeded shake on landings | their one-dot film was rejected with a still camera and accepted with a chasing one | phase 2 camera; Q-04 |
+| 2 | **A far grid on empty ground** so camera moves read against something | moves on an empty ground do not read | phase 2 camera |
+| 3 | **Depth from one camera**: layers at different depths moved by one view matrix, blur by distance from the focus plane | gives `Depth` family a path that needs fewer masks | phase 2; family `depth` |
+| 4 | **Blur samples sized by declared travel** (camera travel adds to each element's) from `track.json`, not a fixed count | fewer renders wasted on holds, no bands on whips | `MotionBlur` |
+| 5 | **Events from the composition**: sounds placed from its own event list, none within 40 ms of another, panned by screen x, a room shared by all | one room, fewer sounds than beats | Q-06; phase 2 sound |
+| 6 | **True-peak margin for AAC**: their finals needed a −3.5 to −4 dBTP ceiling before the AAC re-encode stayed under −3 dBFS; we master at −1.5 dBTP, so measure the encoded file (the verifier already reads it) before trusting the master | avoids a late audio FAIL | `master.py` |
+| 7 | **Case write-ups** per piece: concept, beat sheet, measured numbers, what was rejected and why (with the client's own words) | their strongest teaching asset; we have none | phase 4; Q-08 |
+| 8 | **Meaning built into the picture**: a film that was "beautiful but says nothing" only worked once the idea was in the artwork; labels added to explain made it worse | new creative rule R-16 in `video-direction` | R-16 |
+| 9 | **Do not show whole pages as thumbnails**: show a component live, or full-frame with the cause visible | applies to our photo-led pieces as: full-frame photo or a detail, never a tiny postage stamp of a place | `video-direction` §4 |
+| 10 | **Fluid set**: a light field as the ground, rings that drain onto the next scene, a belt that slows with its own clock, domain-warped noise "silk" fills | each is a new family seed; only `light_flood` and `continuous_surface` registered so far | phase 2 moves |
+
+### Not for cutroom (for now)
+
+- Recording or rebuilding UI, narration, word timing, subtitles, second language by time warp: parked with phase 3.
+- 4K60 as the default final: our platforms top out at 1080p; `--master-4k` stays optional.
+
+### Verdict changes
+
+None of the 14 rows flips. Row 11 (Verifier) stays **ahead**; row 6 (Move library) stays **behind** and now names fluid, contact and camera helpers as the missing kinds; row 14 (Proof) stays **behind** with the case template described above.

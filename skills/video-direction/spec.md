@@ -72,6 +72,7 @@ Direct one short motion piece (story, reel, feed post, Short, TikTok) in Remotio
 | R-12 | Type at 1080 wide: headline ≥ 84 px, support ≥ 44 px, CTA/phone ≥ 72 px. | px |
 | R-13 | Originality: no reuse of previous look; no decorative particles/confetti/flares; no stock transition carousel; "kinetic words → list → logo" is never the default; visible cause. | — |
 | R-14 | Sound: few events, one material family, one room; music ducks under effects; master −16 LUFS, −1.5 dBTP. | LUFS |
+| R-16 | Meaning: every concept states the claim its picture makes; art that is only pretty, or a label added to explain it, is rejected — build the idea into the picture. | 1 claim per concept |
 | R-15 | Tracking: `<TrackRoot>`, `<Beats>` with `kind` ∈ `move rest hold cut`, `<Track>` on subject, texts, logo. | — |
 
 ## 7 · Severity contract

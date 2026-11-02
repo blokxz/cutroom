@@ -34,6 +34,7 @@ Edge cases:
 3. `python3 tools/material.py select <brief> 3,7,2 [--videos 1]`. Typography-only piece ⇒ no selection needed.
 4. Write 3 concepts into `brief.concepts` (`name`, `idea`, `carry`). Families: `references/concept-families.md` — a starting point, never a template [G-09].
 5. Reject a set where concepts differ only by palette or type [R-01].
+6. Each concept names the claim its picture makes; a label bolted on to explain it means the idea is not in the picture [R-16].
 
 ## 3 · Choice and beat sheet [R-03…R-07]
 
