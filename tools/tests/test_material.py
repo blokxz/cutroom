@@ -60,7 +60,11 @@ def write_client(clients, slug="demo", source_folders=()):
 
 def lavfi_video(path, spec, extra=(), dur=2):
     cmd = [ffmpeg(), "-v", "error", "-y", "-f", "lavfi", "-i", f"{spec}:duration={dur}", *extra,
-           "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p", path]
+           "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p"]
+    if "-color_trc" in extra:  # newer ffmpeg builds do not carry -color_trc into the stream; x264 writes it itself
+        trc = extra[extra.index("-color_trc") + 1]
+        cmd += ["-x264-params", f"colorprim=bt2020:transfer={trc}:colormatrix=bt2020nc"]
+    cmd.append(path)
     subprocess.run(cmd, check=True)
     return path
 
@@ -356,7 +360,8 @@ def check_clip(path, w=1080, h=1920, frames=None):
     assert s["codec_name"] == "h264" and s["pix_fmt"] == "yuv420p"
     assert (s["width"], s["height"]) == (w, h)
     assert s["r_frame_rate"] == "30/1" and s["avg_frame_rate"] == "30/1"
-    assert s.get("color_space") == "bt709" and s.get("color_transfer") == "bt709" and s.get("color_primaries") == "bt709"
+    colors = (s.get("color_space"), s.get("color_transfer"), s.get("color_primaries"))
+    assert colors == ("bt709",) * 3, f"colors {colors}; stream {s}"
     if frames:
         assert int(s["nb_frames"]) == frames
     return s

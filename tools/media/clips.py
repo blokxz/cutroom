@@ -109,7 +109,10 @@ def prepare(src, out, start=0.0, dur=3.0, mode="vertical", crop_top=0.0, focus_x
            "-c:v", "libx264", "-preset", preset, "-crf", str(crf), "-profile:v", "high",
            "-g", str(GOP), "-keyint_min", str(GOP), "-sc_threshold", "0", "-bf", "2",
            "-pix_fmt", "yuv420p", "-color_range", "tv", "-colorspace", "bt709", "-color_primaries", "bt709",
-           "-color_trc", "bt709", "-r", str(OUT_FPS), "-movflags", "+faststart", out]
+           "-color_trc", "bt709",
+           # also write the VUI through x264 itself: newer ffmpeg builds no longer carry -color_trc into the stream
+           "-x264-params", "colorprim=bt709:transfer=bt709:colormatrix=bt709",
+           "-r", str(OUT_FPS), "-movflags", "+faststart", out]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("ffmpeg failed:\n" + r.stderr[-1200:])
