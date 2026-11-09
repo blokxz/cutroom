@@ -32,6 +32,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - Moves `Entrances` (`entrancePose`: rise, drop with squash, slide, pop, swing; all settle exactly at rest), `Gather` (a cast flies into one target, one after another; new family `gather`, 31 in total) and `Silk` (flowing translucent ribbons as a background that loops exactly). Demos `MovesDemo-Gather` and `MovesDemo-Silk`.
 
+- `CarouselSlide` composition (4:5 still, shared layout and a segmented progress bar) for photo carousels, rendered one still per slide and checked with `verify.py <folder>`.
+
 - `tools/move_sheet.py`: a speed graph (px/frame per tracked element, beats and the 80 px/frame blur limit marked) under a contact sheet; first sheets in `docs/moves/`.
 
 - `tools/sound_events.py`: sound cues placed from a render's `.track.json` (at most one per beat, 0.04 s apart, text never sounds, pan from screen x) with an optional stereo `score.wav` mixed from the `sfx.py` palette. Contract C-07 in the `reel-families` spec.

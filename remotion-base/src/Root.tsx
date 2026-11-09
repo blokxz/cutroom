@@ -2,6 +2,7 @@ import React from "react";
 import { Composition, Folder } from "remotion";
 import { FORMATS } from "./lib/formats";
 import { SAMPLE_POST_FRAMES, SamplePost } from "./examples/sample/SamplePost";
+import { CAROUSEL_DEFAULTS, CarouselSlide } from "./examples/sample/CarouselSlide";
 import { SAMPLE_DATES_FRAMES, SampleDates } from "./examples/sample/SampleDates";
 import {
   BeltDemo,
@@ -34,6 +35,15 @@ export const RemotionRoot: React.FC = () => {
           fps={FORMATS.post.fps}
           durationInFrames={SAMPLE_POST_FRAMES}
           defaultProps={{ showSafeZones: false }}
+        />
+        <Composition
+          id="CarouselSlide"
+          component={CarouselSlide}
+          width={FORMATS.post.width}
+          height={FORMATS.post.height}
+          fps={FORMATS.post.fps}
+          durationInFrames={1}
+          defaultProps={CAROUSEL_DEFAULTS}
         />
         <Composition
           id="SampleDates"
