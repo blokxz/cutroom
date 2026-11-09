@@ -41,7 +41,12 @@ export const stripOffset = (
 export const cellRect = (p: number, from: Rect, to: Rect): Rect => {
   const q = Math.min(1, Math.max(0, p));
   const m = (a: number, b: number) => a + (b - a) * q;
-  return { x: m(from.x, to.x), y: m(from.y, to.y), w: m(from.w, to.w), h: m(from.h, to.h) };
+  return {
+    x: m(from.x, to.x),
+    y: m(from.y, to.y),
+    w: m(from.w, to.w),
+    h: m(from.h, to.h),
+  };
 };
 
 export const FilmStrip: React.FC<{
@@ -57,8 +62,25 @@ export const FilmStrip: React.FC<{
   /** the frame (index) that grows to `fill` from `growAt` for `growS` seconds */
   grow?: { index: number; at: number; growS?: number; fill: Rect };
   stripColor?: string;
+  /** easing of the growing frame (default: a glide) */
+  growEase?: (t: number) => number;
   trackId?: string;
-}> = ({ frames, cell, gap = 36, y, x0, stops, moveS, grow, stripColor = "#161616", trackId }) => {
+  /** mark the strip as blurred for the verifier: put the strip inside <MotionBlur> when it moves fast */
+  blurred?: boolean;
+}> = ({
+  frames,
+  cell,
+  gap = 36,
+  y,
+  x0,
+  stops,
+  moveS,
+  grow,
+  stripColor = "#161616",
+  growEase = EASE.glide,
+  trackId,
+  blurred,
+}) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const spacing = cell.w + gap;
@@ -99,10 +121,17 @@ export const FilmStrip: React.FC<{
         const at = x0 - rolled + i * spacing;
         const growing = grow && grow.index === i;
         const p = growing
-          ? Math.min(1, Math.max(0, (f - grow.at) / ((grow.growS ?? 0.8) * fps)))
+          ? Math.min(
+              1,
+              Math.max(0, (f - grow.at) / ((grow.growS ?? 0.8) * fps)),
+            )
           : 0;
         const r = growing
-          ? cellRect(EASE.glide(p), { x: at - cell.w / 2, y: y - cell.h / 2, w: cell.w, h: cell.h }, grow.fill)
+          ? cellRect(
+              growEase(p),
+              { x: at - cell.w / 2, y: y - cell.h / 2, w: cell.w, h: cell.h },
+              grow.fill,
+            )
           : { x: at - cell.w / 2, y: y - cell.h / 2, w: cell.w, h: cell.h };
         return (
           <div
@@ -125,7 +154,7 @@ export const FilmStrip: React.FC<{
     </>
   );
   return trackId ? (
-    <Track id={trackId} kind="shape">
+    <Track id={trackId} kind="shape" blurred={blurred}>
       {strip}
     </Track>
   ) : (

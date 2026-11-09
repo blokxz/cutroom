@@ -1,0 +1,175 @@
+{
+  "id": "termas-cinta",
+  "client": "termas-concordia",
+  "platform": "instagram",
+  "format": "reel",
+  "duration_s": 12,
+  "goal": "Reel that shows the thermal baths through one day, sunrise to sunset.",
+  "audience": "Families looking for a weekend at the baths.",
+  "cta": {
+    "text": "Reservá tu visita",
+    "contact": ""
+  },
+  "copy": {
+    "headline": "Termas • Bosque • Familia",
+    "subtitle": "",
+    "lines": [],
+    "avoid": [
+      "window openings, irises and keyholes"
+    ]
+  },
+  "assets": {
+    "photos": [
+      "assets/photos/sunrise.jpg",
+      "assets/photos/steam.jpg",
+      "assets/photos/sky.jpg",
+      "assets/photos/indoor.jpg",
+      "assets/photos/aerial.jpg",
+      "assets/photos/sunset.jpg"
+    ],
+    "videos": [],
+    "music": null
+  },
+  "reference": null,
+  "concepts": [
+    {
+      "name": "Un día en las termas",
+      "idea": "Un disco de luz cruza el cielo mientras las fotos van del amanecer al atardecer.",
+      "carry": "la luz"
+    },
+    {
+      "name": "El arroyo",
+      "idea": "Una línea de agua recorre el predio y la cámara la sigue de foto en foto.",
+      "carry": "la línea"
+    },
+    {
+      "name": "Cinta de recuerdos",
+      "idea": "Una tira de fotos rueda y la última crece hasta llenar la pantalla.",
+      "carry": "la tira"
+    }
+  ],
+  "chosen_concept": 2,
+  "beats": [
+    {
+      "t": "0.0–1.0",
+      "beat": "la cinta",
+      "kind": "move",
+      "moves": "strip slides in",
+      "holds": "ground",
+      "carries": "the strip"
+    },
+    {
+      "t": "1.0–2.2",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "the strip",
+      "carries": "the strip"
+    },
+    {
+      "t": "2.2–2.9",
+      "beat": "roll → vapor",
+      "kind": "move",
+      "moves": "strip rolls",
+      "holds": "ground",
+      "carries": "the strip"
+    },
+    {
+      "t": "2.9–3.6",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "the strip",
+      "carries": "the strip"
+    },
+    {
+      "t": "3.6–4.3",
+      "beat": "roll → cielo",
+      "kind": "move",
+      "moves": "strip rolls",
+      "holds": "ground",
+      "carries": "the strip"
+    },
+    {
+      "t": "4.3–5.1",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "the strip",
+      "carries": "the strip"
+    },
+    {
+      "t": "5.1–5.8",
+      "beat": "roll → interior",
+      "kind": "move",
+      "moves": "strip rolls",
+      "holds": "ground",
+      "carries": "the strip"
+    },
+    {
+      "t": "5.8–6.5",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "the strip",
+      "carries": "the strip"
+    },
+    {
+      "t": "6.5–7.2",
+      "beat": "roll → vista aérea",
+      "kind": "move",
+      "moves": "strip rolls",
+      "holds": "ground",
+      "carries": "the strip"
+    },
+    {
+      "t": "7.2–7.9",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "the strip",
+      "carries": "the strip"
+    },
+    {
+      "t": "7.9–8.6",
+      "beat": "roll → atardecer",
+      "kind": "move",
+      "moves": "strip rolls",
+      "holds": "ground",
+      "carries": "the strip"
+    },
+    {
+      "t": "8.6–9.1",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "the strip",
+      "carries": "the strip"
+    },
+    {
+      "t": "9.1–9.9",
+      "beat": "grow",
+      "kind": "move",
+      "moves": "last photo grows to full frame",
+      "holds": "ground",
+      "carries": "the photo"
+    },
+    {
+      "t": "9.9–12.0",
+      "beat": "logo hold",
+      "kind": "hold",
+      "moves": "closing card",
+      "holds": "everything",
+      "carries": "—"
+    }
+  ],
+  "composition": "TermasCinta",
+  "status": "brief",
+  "decisions": [
+    "No contact on screen: none was given. The closing card shows the logo, the tagline and 'Reservá tu visita'. Add a number when the client sends it.",
+    "Logo: the Termas Concordia logo file was not supplied as a file, so the closing card falls back to the name in type until clients/termas-concordia/assets/logo.png exists.",
+    "Family: film_strip (FilmStrip); the user asked for plans A, B and C and no window family. Film sprocket holes could read as frames; flagged to the user.",
+    "Photos with a @termasconcordia watermark were cropped at the bottom."
+  ],
+  "notes": ""
+}

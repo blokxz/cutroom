@@ -25,7 +25,11 @@ def encode(video, dest, lufs, tp):
     m = json.loads(p1.stderr[p1.stderr.rindex("{"): p1.stderr.rindex("}") + 1])
     af = (f"loudnorm={target}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
           f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
-    subprocess.run([ffmpeg(), "-v", "error", "-y", "-i", video, "-c:v", "copy", "-af", af, "-ar", "48000", "-c:a", "aac", "-b:a", "192k",
+    # the audio must not outlast the picture (a score with a tail made the file longer than the render)
+    vdur = subprocess.run([ffprobe(), "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=duration", "-of", "csv=p=0", video],
+                          capture_output=True, text=True).stdout.strip()
+    limit = ["-t", vdur] if re.fullmatch(r"\d+(\.\d+)?", vdur or "") else []
+    subprocess.run([ffmpeg(), "-v", "error", "-y", "-i", video, *limit, "-c:v", "copy", "-af", af, "-ar", "48000", "-c:a", "aac", "-b:a", "192k",
                     "-movflags", "+faststart", dest], check=True)
     return m
 

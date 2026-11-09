@@ -1,0 +1,75 @@
+{
+  "slug": "termas-concordia",
+  "name": "Termas Concordia",
+  "language": "es-AR",
+  "contact": {},
+  "brand": {
+    "colors": {
+      "ground": "#F6F1E7",
+      "paper": "#FFFFFF",
+      "ink": "#12324A",
+      "soft": "#5A7184",
+      "accent": "#1F7FB8",
+      "accent2": "#E8894A",
+      "line": "#D5DDE0"
+    },
+    "fonts": {
+      "display": "DM Serif Display",
+      "text": "Inter",
+      "script": "Caveat",
+      "files": [
+        {
+          "family": "DM Serif Display",
+          "file": "DMSerifDisplay-400.woff2",
+          "weight": "400"
+        },
+        {
+          "family": "DM Serif Display",
+          "file": "DMSerifDisplay-400i.woff2",
+          "weight": "400",
+          "style": "italic"
+        },
+        {
+          "family": "Inter",
+          "file": "Inter-400.woff2",
+          "weight": "400"
+        },
+        {
+          "family": "Inter",
+          "file": "Inter-600.woff2",
+          "weight": "600"
+        },
+        {
+          "family": "Caveat",
+          "file": "Caveat-400.woff2"
+        }
+      ]
+    },
+    "logo": "assets/logo.png",
+    "taglines": [
+      "Termas • Bosque • Familia"
+    ]
+  },
+  "voice": "Calm and warm; voseo rioplatense; short sentences; show the place, never press.",
+  "notes": "Photos supplied by the client; kept out of git. The logo file assets/logo.png is not in the repo.",
+  "voice_guide": {
+    "tone": "Cercano y simple, frases cortas; se muestra el trabajo más que los adjetivos. Nunca presión ni urgencia falsa.",
+    "person": "voseo rioplatense, segunda persona singular",
+    "use": [
+      "termas",
+      "bosque",
+      "familia"
+    ],
+    "avoid": [
+      "garantizado",
+      "el mejor",
+      "el único",
+      "oferta sin vigencia"
+    ],
+    "emojis": "1 por caption: ♨️ 🌿",
+    "hashtags": [
+      "#TermasConcordia"
+    ],
+    "cta": "💬 Escribinos por WhatsApp · link en bio"
+  }
+}

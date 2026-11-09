@@ -2,6 +2,9 @@ import React from "react";
 import { Composition, Folder } from "remotion";
 import { FORMATS } from "./lib/formats";
 import { SAMPLE_POST_FRAMES, SamplePost } from "./examples/sample/SamplePost";
+import { TERMAS_DIA_FRAMES, TermasDia } from "./examples/termas/TermasDia";
+import { TERMAS_ARROYO_FRAMES, TermasArroyo } from "./examples/termas/TermasArroyo";
+import { TERMAS_CINTA_FRAMES, TermasCinta } from "./examples/termas/TermasCinta";
 import { CAROUSEL_DEFAULTS, COVER_DEFAULTS, CarouselCover, CarouselSlide } from "./examples/sample/CarouselSlide";
 import { SAMPLE_DATES_FRAMES, SampleDates } from "./examples/sample/SampleDates";
 import {
@@ -53,6 +56,33 @@ export const RemotionRoot: React.FC = () => {
           fps={FORMATS.post.fps}
           durationInFrames={1}
           defaultProps={COVER_DEFAULTS}
+        />
+        <Composition
+          id="TermasDia"
+          component={TermasDia}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={TERMAS_DIA_FRAMES}
+          defaultProps={{ showSafeZones: false }}
+        />
+        <Composition
+          id="TermasArroyo"
+          component={TermasArroyo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={TERMAS_ARROYO_FRAMES}
+          defaultProps={{ showSafeZones: false }}
+        />
+        <Composition
+          id="TermasCinta"
+          component={TermasCinta}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={TERMAS_CINTA_FRAMES}
+          defaultProps={{ showSafeZones: false }}
         />
         <Composition
           id="SampleDates"

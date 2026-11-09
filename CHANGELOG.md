@@ -36,6 +36,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - `remotion-base/covers/carousel-cover.html`: a carousel cover in plain HTML and SVG (logo, a full-width photo under a wavy edge, title, progress bar; parameters in the query string) and `scripts/html-still.mjs`, which screenshots any HTML page with the same headless Chrome as `render.mjs`.
 
+- Three reels for the Termas Concordia client (`clients/termas-concordia`, 12 s each, photos and logo kept out of git): `TermasDia` (light_clock), `TermasArroyo` (trail) and `TermasCinta` (film_strip), each from brief to a mastered render with 0 FAIL. The closing card falls back to the name in type while `assets/logo.png` is missing. `FilmStrip` gains `blurred` and `growEase`.
+
 - `tools/move_sheet.py`: a speed graph (px/frame per tracked element, beats and the 80 px/frame blur limit marked) under a contact sheet; first sheets in `docs/moves/`.
 
 - `tools/sound_events.py`: sound cues placed from a render's `.track.json` (at most one per beat, 0.04 s apart, text never sounds, pan from screen x) with an optional stereo `score.wav` mixed from the `sfx.py` palette. Contract C-07 in the `reel-families` spec.
@@ -50,6 +52,7 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 ### Fixed
 
+- `tools/master.py` cuts the audio at the picture's length, so a score with a tail no longer makes the file longer than the render.
 - `tools/master.py` measures the true peak of the encoded AAC file and encodes again with a lower ceiling when AAC overshoots (the first-pass measurement could not see that).
 - Clips and the HLG test source keep their colour transfer on ffmpeg builds that no longer carry `-color_trc` into the stream (x264 now writes the VUI itself).
 - Windows: `material`, `variation`, `reel_summary`, `sound_events`, `check_skill` and `models` print UTF-8 on legacy code pages; the read-only guard no longer lowercases paths when its check is case-sensitive; tests tolerate a repo on another drive.
