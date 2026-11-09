@@ -40,6 +40,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - Move `Stream` (`StreamRibbon`): a meandering stream seen from above with pools and riffles, grass and wet-stone banks, a deep channel, irregular flow glints and pebbles, drawn as one continuous course, windowed around the camera so its cut edges stay off-screen (a stream that is still being revealed gets a tapered tip); pure math (`streamCenter`, `streamWidthAt`, `ribbonSides`, `headTaper`) unit-tested. The closing card falls back to the name in type while `assets/logo.png` is missing. `FilmStrip` gains `blurred` and `growEase`, and its sprocket holes are now large enough to read as film.
 
+- `remotion-base/covers/photo-post.html`: a static 4:5 feed post in plain HTML (full-bleed photo, scrim, brand mark or name in type, tagline), parameters in the query string; checked with `verify.py --format feed_image`.
+
 - `tools/move_sheet.py`: a speed graph (px/frame per tracked element, beats and the 80 px/frame blur limit marked) under a contact sheet; first sheets in `docs/moves/`.
 
 - `tools/sound_events.py`: sound cues placed from a render's `.track.json` (at most one per beat, 0.04 s apart, text never sounds, pan from screen x) with an optional stereo `score.wav` mixed from the `sfx.py` palette. Contract C-07 in the `reel-families` spec.
