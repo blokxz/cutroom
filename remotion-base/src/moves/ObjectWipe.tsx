@@ -99,7 +99,7 @@ export const ObjectWipe: React.FC<{
   );
   return (
     <>
-      {from}
+      <div style={{ position: "absolute", inset: 0 }}>{from}</div>
       <div
         style={{
           position: "absolute",

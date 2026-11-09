@@ -29,7 +29,7 @@
 <text x="80" y="212" class="c">commands/video.md · reel.md   orchestrators</text>
 <text x="80" y="231" class="c">skills/video-direction/         creative rules</text>
 <text x="80" y="250" class="c">tools/pipeline.py · verify.py    gates · verdicts</text>
-<text x="80" y="269" class="c">remotion-base/src/moves          12 moves</text>
+<text x="80" y="269" class="c">remotion-base/src/moves          16 moves</text>
 <text x="80" y="288" class="c">docs/benchmark.md · ci.yml       gaps · checks</text>
 </g>
 <path d="M260 332V352" fill="none" stroke="#58a6ff" stroke-width="2" marker-end="url(#a1)"/>

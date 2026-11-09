@@ -116,6 +116,25 @@ def test_mix_is_stereo_panned_and_peaks_at_minus_three(tmp_path):
         assert w.getnframes() == len(stereo)
 
 
+def test_mix_is_deterministic_and_order_independent():
+    """The docstring promises the same audio for the same track: noise must not depend on history."""
+    cl = [c for c in se.cues(track()) if c["effect"] in ("tap", "air-in", "chime")]
+    assert len({c["effect"] for c in cl}) >= 2
+    a = se.mix(cl, 3.0)
+    b = se.mix(cl, 3.0)  # second call in the same process
+    assert np.array_equal(a, b)
+    taps = [dict(c) for c in cl if c["effect"] == "tap"]
+    alone = se.mix(taps, 3.0)
+    again = se.mix(list(reversed(cl)), 3.0)
+    assert np.array_equal(a, again)  # cue order does not change the audio
+    assert np.max(np.abs(alone)) > 0
+
+
+def test_mix_covers_a_cue_after_the_given_duration():
+    late = [{"f": 300, "t": 10.0, "effect": "click", "volume": 0.7, "pan": 0.0, "why": "x"}]
+    assert len(se.mix(late, 1.0)) >= int(10.0 * 48000)
+
+
 def test_cli_writes_cues_and_wav(tmp_path, capsys):
     tp = tmp_path / "x.track.json"
     tp.write_text(json.dumps(track()), encoding="utf-8")

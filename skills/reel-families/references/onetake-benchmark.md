@@ -11,7 +11,7 @@ Source: `docs/benchmark.md` (cutroom's own review of onetake's published criteri
 | Q-07 | Move variety | families `ready` count in `reel_summary.py` | phase 2 |
 | Q-08 | Proof: cases per piece | `docs/cases/sample-post.md` + template; one per shipped piece | phase 4 |
 
-Study 2026-11-02 (findings in `docs/benchmark.md`): cutroom's rhythm checks already match or exceed onetake's; open gaps are the camera helpers, event-driven sound, 2 missing families (`light_flood`, `continuous_surface`) and case write-ups.
+Study 2026-11-02 (findings in `docs/benchmark.md`): cutroom's rhythm checks already match or exceed onetake's. Closed since: camera helpers, event-driven sound cues, four of the eight moves families lacked, the sample case. Still open: the AAC true-peak margin check, depth layers, moves for `cause_effect`, `film_strip`, `chain_reaction` and `depth`, wiring the cues into a piece.
 
 Parked by decision: voice, subtitles, second language (benchmark phase 3).
 

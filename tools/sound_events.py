@@ -19,6 +19,7 @@ import json
 import os
 import sys
 import wave
+import zlib
 
 import numpy as np
 
@@ -103,8 +104,14 @@ def mix(cue_list, duration_s, sr=48000):
 
     makers = {"air-in": sfx.air_in, "pop": sfx.pop, "paper-slide": sfx.paper_slide, "tap": sfx.tap,
               "chime": sfx.chime, "click": sfx.click}
-    fx = {name: sfx.norm(makers[name]()) for name in sorted({c["effect"] for c in cue_list})}
+    fx = {}
+    for name in sorted({c["effect"] for c in cue_list}):
+        # tools/sfx.py draws noise from one module-level generator; reseed per effect so a given
+        # effect sounds the same whatever else was generated before it, in this process or another
+        sfx.rng = np.random.default_rng(zlib.crc32(name.encode()))
+        fx[name] = sfx.norm(makers[name]())
     tail = max([len(v) for v in fx.values()] + [0])
+    duration_s = max([duration_s] + [c["t"] for c in cue_list])  # never shorter than the last cue
     out = np.zeros((int(duration_s * sr) + tail, 2))
     for c in cue_list:
         x = fx[c["effect"]] * c["volume"]
