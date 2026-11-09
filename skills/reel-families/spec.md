@@ -23,6 +23,7 @@ Turn one request into a legal, original Reel in the fewest prompts: summarize th
 | C-03 | **Beat sheet** (`variation.py sheet`): JSON list shaped like brief `beats` (`t beat moves holds carries`) plus `kind` ∈ `move rest hold`. Deterministic per `(family, duration, seed)`. |
 | C-04 | **Invented concept** (`variation.py invent`): `{name, carry_kind, boundary, carry, moves, parents, idea}`; `idea` is a TODO the model must replace with one sentence. |
 | C-05 | **Summary** (`reel_summary.py [--json]`): counts + prioritized actions `{priority, what, do}`. Read-only. |
+| C-07 | **Sound cues** (`sound_events.py <track.json>`): `{f, t, effect, volume, pan, why}` derived from the render's beats and element records — ≤ 1 cue per beat, ≥ 0.04 s apart, text never sounds, pan from screen x (±0.6); optional stereo `score.wav`. |
 | C-06 | **Output**: brief with 3 concepts, chosen concept, legal `beats`, `composition`, then the `video-direction` delivery (`deliveries/<id>/`). |
 
 ## 4 · Family model
@@ -44,7 +45,7 @@ Turn one request into a legal, original Reel in the fewest prompts: summarize th
 | Q-03 | Motion curves differ by intent (t80 spread), no single easing | verifier curves | enforced |
 | Q-04 | Operated camera: key ahead of the subject (~0.1 s), whip keyed at the landing, hand float that stops in holds, decaying shake on landings, a far grid on empty ground | review + `<Camera>` | helpers done (`leadKeys`, `whipKeys`, `shake`, `holdFactor`, `Lattice`); use is manual |
 | Q-05 | Motion blur on fast travel, final ≥ 12 samples | verifier blur, `<MotionBlur>` | enforced |
-| Q-06 | One sound room; events placed from beats (no two within 40 ms), panned by screen x, music ducked, −16 LUFS, true peak safe after AAC | verifier audio | partial (events by hand) |
+| Q-06 | One sound room; events placed from beats (no two within 40 ms), panned by screen x, music ducked, −16 LUFS, true peak safe after AAC | verifier audio | tool done (`sound_events.py`); wiring into the piece is manual; the −16 LUFS master stays in `master.py` |
 | Q-07 | Move variety: every family `ready` | `reel_summary.py` | gap (see summary) |
 | Q-08 | Proof: a case write-up per shipped piece (beat sheet, numbers, what was rejected and why) | `docs/cases/<piece>.md` | gap |
 

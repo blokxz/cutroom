@@ -36,9 +36,10 @@ Procedure derived from `spec.md`; IDs in brackets. `video-direction` owns brief,
 ## 5 · Hand off [G-01 G-05 G-06 C-06]
 
 1. Write `chosen_concept` + `beats` into the brief; run the `video-direction` flow (`python3 tools/pipeline.py status|advance|render <brief>`).
-2. Quality targets Q-03…Q-06 are met in the build: curves by intent, operated camera, `<MotionBlur>`, one sound room (see `video-direction` references). Open gaps (Q-07, Q-08) are reported, not hidden.
-3. State results only from verifier output [G-05]. Never say "onetake level"; say which targets passed and which are open.
-4. Delivery note: summary delta (actions closed / still open), families + seeds, decisions.
+2. Sound: after the draft render run `python3 tools/sound_events.py remotion-base/out/<id>/<Composition>-draft.track.json --json cues.json --out score.wav` [C-07]; use `score.wav` as one `<Audio>` (or place `<Audio>` by frame from the cues), re-render, re-verify.
+3. Quality targets Q-03…Q-06 are met in the build: curves by intent, operated camera, `<MotionBlur>`, one sound room (see `video-direction` references). Open gaps (Q-07, Q-08) are reported, not hidden.
+4. State results only from verifier output [G-05]. Never say "onetake level"; say which targets passed and which are open.
+5. Delivery note: summary delta (actions closed / still open), families + seeds, decisions.
 
 ## 6 · Environment [G-02 G-07]
 

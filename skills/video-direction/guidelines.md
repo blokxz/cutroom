@@ -61,6 +61,7 @@ Edge cases:
 ## 6 · Sound [R-14 G-07]
 
 - `python3 tools/sfx.py` — synthesized, licence-free: air-in/out, pop, paper-slide, tap, flip, chime, click, riser, shimmer.
+- Event-driven option: `python3 tools/sound_events.py <track.json> --out score.wav --json cues.json` places ≤ 1 cue per beat from the render's own track data (see `reel-families` C-07) [R-14].
 - `<Music duckAt={[…effect frames]}>`. `tools/sfx.py --music clients/<slug>/assets/music` = draft test bed only.
 - Final mastering automatic (`tools/master.py`).
 - Instagram story may ship without music; tell the client to add it from Instagram's library.

@@ -29,6 +29,17 @@
 | `carries` | required on every `move`/`rest`; the survivor into the next beat |
 | determinism | `(family, duration, seed)` ⇒ identical output (G-08) |
 
+## Sound cue (`sound_events.py`) [C-07]
+
+```json
+{"f": 147, "t": 4.9, "effect": "tap", "volume": 0.9, "pan": 0.0, "why": "'card' appears"}
+```
+
+| Field | Rule |
+|---|---|
+| `effect` | `chime` (hold) · `tap` / `paper-slide` / `pop` (subject·shape / image / logo first visible) · `click` (cut) · `air-in` (move boundary) |
+| limits | ≤ 1 per beat, ≥ 0.04 s apart, none for text or rests, `pan` ∈ [−0.6, 0.6] from x |
+
 ## Invented concept (`variation.py invent`)
 
 ```json

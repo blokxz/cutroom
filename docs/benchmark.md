@@ -56,8 +56,7 @@ every move is designed and written from scratch for cutroom's families and photo
       (chain reaction, a dive through scale); designed for photo-led pieces · 3–4 days
 - [x] Camera: follow helper (`leadKeys`), whip to a landing (`whipKeys`, `EASE.whip`), hand float that stops in holds (`holds`),
       shake on landings (`shakes`), a far grid so moves read on an empty ground (`Lattice`) · done 2026-11-09. Depth layers still open.
-- [ ] Event-driven sound: effects placed from the beats in `track.json` instead of by hand, one material
-      family per piece, music ducked under the hits · 4 h
+- [x] Event-driven sound: effects placed from the beats and element records in `track.json` instead of by hand (`tools/sound_events.py`: ≤ 1 per beat, 40 ms spacing, pan by x) · done 2026-11-09. Wiring into a piece and music ducking from the cues stay manual.
 - [ ] Move sheets: a still strip + speed graph per move, generated from the Studio demos · 3 h
 
 ≈ 6–7 days with the ten new families (≈ 3 without them).
@@ -117,7 +116,7 @@ Families and move counts are not the same unit: a family is a creative idea buil
 | 2 | **A far grid on empty ground** so camera moves read against something | moves on an empty ground do not read | phase 2 camera |
 | 3 | **Depth from one camera**: layers at different depths moved by one view matrix, blur by distance from the focus plane | gives `Depth` family a path that needs fewer masks | phase 2; family `depth` |
 | 4 | **Blur samples sized by declared travel** (done: `<MotionBlur travel>`; the composition declares the travel, `track.json` is not read back) (camera travel adds to each element's) from `track.json`, not a fixed count | fewer renders wasted on holds, no bands on whips | `MotionBlur` |
-| 5 | **Events from the composition**: sounds placed from its own event list, none within 40 ms of another, panned by screen x, a room shared by all | one room, fewer sounds than beats | Q-06; phase 2 sound |
+| 5 | **Events from the composition** (done: `tools/sound_events.py`; the AAC true-peak margin is still open): sounds placed from its own event list, none within 40 ms of another, panned by screen x, a room shared by all | one room, fewer sounds than beats | Q-06; phase 2 sound |
 | 6 | **True-peak margin for AAC**: their finals needed a −3.5 to −4 dBTP ceiling before the AAC re-encode stayed under −3 dBFS; we master at −1.5 dBTP, so measure the encoded file (the verifier already reads it) before trusting the master | avoids a late audio FAIL | `master.py` |
 | 7 | **Case write-ups** per piece: concept, beat sheet, measured numbers, what was rejected and why (with the client's own words) | their strongest teaching asset; we have none | phase 4; Q-08 |
 | 8 | **Meaning built into the picture**: a film that was "beautiful but says nothing" only worked once the idea was in the artwork; labels added to explain made it worse | new creative rule R-16 in `video-direction` | R-16 |
