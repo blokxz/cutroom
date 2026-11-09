@@ -4,9 +4,14 @@ import {
   EASE,
   cameraAt,
   drift,
+  holdFactor,
   land,
+  latticePoints,
+  leadKeys,
   settle,
+  shake,
   tween,
+  whipKeys,
 } from "../src/lib/motion";
 import { progress } from "../src/moves";
 
@@ -174,5 +179,74 @@ describe("progress (moves)", () => {
         tween(f, [10, 30], [0, 1], EASE.snap),
         12,
       );
+  });
+});
+
+describe("operated-camera helpers", () => {
+  const keys: CamKey[] = [
+    { f: 0, fx: 0, fy: 0, z: 1 },
+    { f: 60, fx: 100, fy: 0, z: 1.2 },
+    { f: 120, fx: 200, fy: 50, z: 1 },
+  ];
+
+  it("leadKeys moves keys earlier, keeps the first and stays strictly increasing", () => {
+    const l = leadKeys(keys, 3);
+    expect(l.map((k) => k.f)).toEqual([0, 57, 117]);
+    expect(leadKeys(keys, 0).map((k) => k.f)).toEqual([0, 60, 120]);
+    const tight = leadKeys(
+      [
+        { f: 0, fx: 0, fy: 0, z: 1 },
+        { f: 2, fx: 1, fy: 0, z: 1 },
+        { f: 3, fx: 2, fy: 0, z: 1 },
+      ],
+      10,
+    ).map((k) => k.f);
+    expect(tight.every((f, i) => i === 0 || f > tight[i - 1])).toBe(true);
+  });
+
+  it("whipKeys waits, then reaches the target exactly at the landing frame", () => {
+    const from: CamKey = { f: 10, fx: 0, fy: 0, z: 1 };
+    const ks = whipKeys(from, { fx: 500, fy: 80, z: 1.5 }, 100, 6);
+    expect(cameraAt(90, ks).fx).toBe(0); // still waiting
+    expect(cameraAt(100, ks).fx).toBeCloseTo(500, 6);
+    expect(cameraAt(97, ks).fx).toBeGreaterThan(0);
+    expect(cameraAt(97, ks).fx).toBeLessThan(500);
+    expect(nonDecreasing(ks.map((k) => k.f))).toBe(true);
+  });
+
+  it("shake is zero before the hit, deterministic, and decays", () => {
+    expect(shake(9, FPS, 10)).toEqual({ x: 0, y: 0, r: 0 });
+    expect(shake(14, FPS, 10, { seed: "a" })).toEqual(
+      shake(14, FPS, 10, { seed: "a" }),
+    );
+    const mag = (f: number) => {
+      const s = shake(f, FPS, 10, { amp: 20, seed: "a" });
+      return Math.hypot(s.x, s.y);
+    };
+    const early = Math.max(...range(10, 16).map(mag));
+    const late = Math.max(...range(60, 66).map(mag));
+    expect(early).toBeGreaterThan(5);
+    expect(late).toBeLessThan(early / 10);
+  });
+
+  it("holdFactor is 1 outside holds, 0 inside, and ramps smoothly", () => {
+    const holds: [number, number][] = [[100, 150]];
+    expect(holdFactor(0, FPS, holds)).toBe(1);
+    expect(holdFactor(120, FPS, holds)).toBe(0);
+    const edge = holdFactor(95, FPS, holds);
+    expect(edge).toBeGreaterThan(0);
+    expect(edge).toBeLessThan(1);
+    expect(holdFactor(500, FPS, [])).toBe(1);
+  });
+
+  it("latticePoints are aligned to the spacing and inside the bounds", () => {
+    const p = latticePoints({ x0: -50, y0: 0, x1: 250, y1: 100 }, 100);
+    expect(p.length).toBe(3 * 2); // x: 0, 100, 200 · y: 0, 100
+    for (const q of p) {
+      expect(q.x % 100).toBe(0);
+      expect(q.y % 100).toBe(0);
+      expect(q.x).toBeGreaterThanOrEqual(-50);
+      expect(q.x).toBeLessThanOrEqual(250);
+    }
   });
 });

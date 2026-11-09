@@ -24,6 +24,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - `docs/benchmark.md`: first direct study of onetake (what it is, counts side by side, where cutroom is ahead, ten ideas to build our own way, what is out of scope). New families `light_flood` and `continuous_surface` (30 in total, both `needs-move`) and creative rule R-16 (every concept states the claim its picture makes).
 
+- Operated-camera helpers in `lib/motion.ts` (`leadKeys`, `whipKeys`, `shake`, `holdFactor`, `latticePoints`, `EASE.whip`); `<Camera>` gains optional `holds` and `shakes`, and `<Lattice>` draws a far grid. `<MotionBlur travel>` sizes the blur samples by the declared travel (`samplesFor`). All optional: existing pieces render unchanged.
+
 ### Removed
 
 - The worked-example client and its four pieces: every client asset, brief and example built for it. The kit now ships only a fictional `sample` client (generated photos and logo, SIL OFL fonts, generated music) and one example, `SamplePost`, used by the tests, CI and `doctor.py`. Real clients are created from scratch through `/cutroom:video`.

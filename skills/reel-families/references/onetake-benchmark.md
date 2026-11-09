@@ -5,7 +5,7 @@ Source: `docs/benchmark.md` (cutroom's own review of onetake's published criteri
 | Q | Criterion | cutroom today | Where closed |
 |---|---|---|---|
 | Q-03 | Curves by intent; t80 spread | verifier curves check; `EASE.snap/glide`, springs | build |
-| Q-04 | Operated camera (key ahead, settle, drift, still on CTA) | `Camera` + `drift`; no chase helper, shake or depth | build; helper = phase 2 |
+| Q-04 | Operated camera (key ahead, settle, drift, still on CTA) | `Camera` with `leadKeys`, `whipKeys`, `holds`, `shakes`, `Lattice`; no depth layers yet | build; helper = phase 2 |
 | Q-05 | Motion blur on fast travel | `MotionBlur` (camera engine, canvas opt-in); final 12 samples | build |
 | Q-06 | One room of sound, ducked, −16 LUFS | `sfx.py`, `Music duckAt`, `master.py`; events placed by hand | build; event-driven = phase 2 |
 | Q-07 | Move variety | families `ready` count in `reel_summary.py` | phase 2 |

@@ -49,13 +49,13 @@ every move is designed and written from scratch for cutroom's families and photo
 - [ ] Moves the families are missing, by kind: entrances that land (squash, settle), carries (a container
       that becomes the next scene, a cast that gathers into the logo lockup), contact (a light shake on
       impact), each wired into at least one family · 1 day
-- [ ] Logbook, Light clock, Before / after rest · 4–6 h
+- [x] Logbook, Light clock, Before / after rest — covered by existing moves (`Handwriting` + `MaskReveal`, `LightArc`, `MaskReveal`), registered as `ready` families; a dedicated move is added only if a shipped piece shows the gap (decision 2026-11-09)
 - [ ] Moves for the ten families added on 2026-10-26 (match cut, object wipe, film strip, scrapbook,
       chain reaction, dive through scale, calendar, letters as windows, thread, depth). Ideas drawn from
       travel-reel transition trends (object masking, match cuts, whip pans) and onetake's concept types
       (chain reaction, a dive through scale); designed for photo-led pieces · 3–4 days
-- [ ] Camera: follow helper (key ahead of the subject), whip to a landing, hand float that stops in holds,
-      shake on landings, a depth layer so moves read on an empty ground · 4 h
+- [x] Camera: follow helper (`leadKeys`), whip to a landing (`whipKeys`, `EASE.whip`), hand float that stops in holds (`holds`),
+      shake on landings (`shakes`), a far grid so moves read on an empty ground (`Lattice`) · done 2026-11-09. Depth layers still open.
 - [ ] Event-driven sound: effects placed from the beats in `track.json` instead of by hand, one material
       family per piece, music ducked under the hits · 4 h
 - [ ] Move sheets: a still strip + speed graph per move, generated from the Studio demos · 3 h
@@ -116,7 +116,7 @@ Families and move counts are not the same unit: a family is a creative idea buil
 | 1 | **Operated camera helpers**: key the subject ~0.1 s ahead, key the landing before a snap, a slow hand float that is zero in holds, a decaying seeded shake on landings | their one-dot film was rejected with a still camera and accepted with a chasing one | phase 2 camera; Q-04 |
 | 2 | **A far grid on empty ground** so camera moves read against something | moves on an empty ground do not read | phase 2 camera |
 | 3 | **Depth from one camera**: layers at different depths moved by one view matrix, blur by distance from the focus plane | gives `Depth` family a path that needs fewer masks | phase 2; family `depth` |
-| 4 | **Blur samples sized by declared travel** (camera travel adds to each element's) from `track.json`, not a fixed count | fewer renders wasted on holds, no bands on whips | `MotionBlur` |
+| 4 | **Blur samples sized by declared travel** (done: `<MotionBlur travel>`; the composition declares the travel, `track.json` is not read back) (camera travel adds to each element's) from `track.json`, not a fixed count | fewer renders wasted on holds, no bands on whips | `MotionBlur` |
 | 5 | **Events from the composition**: sounds placed from its own event list, none within 40 ms of another, panned by screen x, a room shared by all | one room, fewer sounds than beats | Q-06; phase 2 sound |
 | 6 | **True-peak margin for AAC**: their finals needed a −3.5 to −4 dBTP ceiling before the AAC re-encode stayed under −3 dBFS; we master at −1.5 dBTP, so measure the encoded file (the verifier already reads it) before trusting the master | avoids a late audio FAIL | `master.py` |
 | 7 | **Case write-ups** per piece: concept, beat sheet, measured numbers, what was rejected and why (with the client's own words) | their strongest teaching asset; we have none | phase 4; Q-08 |

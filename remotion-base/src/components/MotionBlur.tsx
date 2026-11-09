@@ -50,19 +50,44 @@ export const blurSettings = (
   return { engine, samples };
 };
 
+/** Samples that keep copies at most `gapPx` apart for something travelling `travelPx` per frame.
+ *  0 means the move is too small to blur (the children render untouched). */
+export const samplesFor = (travelPx: number, gapPx = 24, minSamples = 2) => {
+  if (!(travelPx > 1)) return 0;
+  return Math.max(minSamples, Math.ceil(travelPx / Math.max(1, gapPx)) + 1);
+};
+
+/** The sample count to use: the render's request, lowered (never raised) by the declared travel. */
+export const samplesWithTravel = (
+  requested: number,
+  travelPx?: number,
+  gapPx = 24,
+): number => {
+  if (travelPx === undefined) return requested;
+  const need = samplesFor(travelPx, gapPx);
+  return need === 0 ? 0 : Math.min(requested, need);
+};
+
 export const MotionBlur: React.FC<{
   children: React.ReactNode;
   /** exposure: 180 = half a frame (film look); 0 disables the blur */
   shutterAngle?: number;
   /** samples when the render doesn't specify them */
   samples?: number;
-}> = ({ children, shutterAngle = 180, samples = 6 }) => {
+  /** the farthest anything inside travels per frame, in px (camera included). When given, slow
+   *  stretches get fewer samples and a move under 1 px renders without blur. */
+  travel?: number;
+  /** max distance between blur copies, px (with `travel`) */
+  gap?: number;
+}> = ({ children, shutterAngle = 180, samples = 6, travel, gap = 24 }) => {
   const { width, height } = useVideoConfig();
-  const { engine, samples: n } = blurSettings(
+  const { engine, samples: requested } = blurSettings(
     getRemotionEnvironment(),
     inputs(),
     samples,
   );
+  const n = samplesWithTravel(requested, travel, gap);
+  if (n === 0) return <>{children}</>;
   if (engine === "canvas") {
     return (
       <HtmlInCanvasMotionBlur

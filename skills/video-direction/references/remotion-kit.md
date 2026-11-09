@@ -30,8 +30,8 @@
 | Landing / arrival | `spring`, low damping | R-08 |
 | Snap / whip | `EASE.snap` | R-08 |
 | Camera / drift | `EASE.glide`, `drift()` | R-08 R-09 |
-| Camera | `<Camera>` keyed slightly ahead, settle after landings, drift in holds, still on CTA | R-09 |
-| Fast travel > ~60 px/frame | `<MotionBlur>`; drafts few samples, final 12; `CUTROOM_BLUR_ENGINE=canvas` only after `scripts/blur-ab.mjs` passes | R-10 |
+| Camera | `<Camera>`: `leadKeys(keys, n)` keys ahead of the subject; `whipKeys(from, to, landFrame)` waits then whips; `holds` = frame ranges with zero drift; `shakes` = decaying seeded shake per landing; `<Lattice>` = far dots for an empty ground; `EASE.whip` | R-09 |
+| Fast travel > ~60 px/frame | `<MotionBlur travel={px}>` (optional: fewer samples on slow stretches, none under 1 px; `samplesFor`); drafts few samples, final 12; `CUTROOM_BLUR_ENGINE=canvas` only after `scripts/blur-ab.mjs` passes | R-10 |
 | Determinism | `useCurrentFrame()` + `interpolate()`/`spring()`; `random(seed)` | G-08 |
 
 ## Clips
