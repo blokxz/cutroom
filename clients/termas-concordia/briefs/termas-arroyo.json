@@ -55,9 +55,9 @@
       "t": "0.0–1.0",
       "beat": "el arroyo",
       "kind": "move",
-      "moves": "line draws, first photo lands",
+      "moves": "first photo lands on the flowing stream",
       "holds": "ground",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
       "t": "1.0–2.2",
@@ -65,82 +65,82 @@
       "kind": "rest",
       "moves": "drift",
       "holds": "the photo",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "2.2–3.1",
+      "t": "2.2–3.4",
       "beat": "→ aérea",
       "kind": "move",
-      "moves": "camera walks the line",
+      "moves": "camera follows the stream",
       "holds": "ground",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "3.1–3.9",
+      "t": "3.4–3.9",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
       "holds": "the photo",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "3.9–4.8",
+      "t": "3.9–5.1",
       "beat": "→ cielo",
       "kind": "move",
-      "moves": "camera walks the line",
+      "moves": "camera follows the stream",
       "holds": "ground",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "4.8–5.5",
+      "t": "5.1–5.5",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
       "holds": "the photo",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "5.5–6.5",
+      "t": "5.5–6.7",
       "beat": "→ interior",
       "kind": "move",
-      "moves": "camera walks the line",
+      "moves": "camera follows the stream",
       "holds": "ground",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "6.5–7.2",
+      "t": "6.7–7.2",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
       "holds": "the photo",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "7.2–8.1",
+      "t": "7.2–8.4",
       "beat": "→ amanecer",
       "kind": "move",
-      "moves": "camera walks the line",
+      "moves": "camera follows the stream",
       "holds": "ground",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "8.1–8.9",
+      "t": "8.4–8.9",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
       "holds": "the photo",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "8.9–9.8",
+      "t": "8.9–10.1",
       "beat": "→ atardecer",
       "kind": "move",
-      "moves": "camera walks the line",
+      "moves": "camera follows the stream",
       "holds": "ground",
-      "carries": "the line"
+      "carries": "the stream"
     },
     {
-      "t": "9.8–12.0",
+      "t": "10.1–12.0",
       "beat": "logo hold",
       "kind": "hold",
       "moves": "closing card",
@@ -156,7 +156,8 @@
     "Family: trail (PathCamera and PathTrail); the user asked for plans A, B and C and no window family.",
     "Photos with a @termasconcordia watermark were cropped at the bottom.",
     "Reel A (light_clock) was discarded by the client: its sun disc did not read as a real sun. Families with a sun or moon disc stay out of this client's work.",
-    "Palette: measured from the Bungalows Concordia logo (moss #3F4A38, dusty rose #8F6B6B / #C9A3A3, cream #F6F0E8); the Instagram profile could not be fetched from this session."
+    "Palette: measured from the Bungalows Concordia logo (moss #3F4A38, dusty rose #8F6B6B / #C9A3A3, cream #F6F0E8); the Instagram profile could not be fetched from this session.",
+    "Reel B redone after the client's review: the stream was cut flat and started from nothing; it now flows through the whole shot, in and out of frame, with no tip and no moving clip edge."
   ],
   "notes": ""
 }

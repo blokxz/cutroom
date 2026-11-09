@@ -165,7 +165,7 @@
     }
   ],
   "composition": "TermasCinta",
-  "status": "brief",
+  "status": "delivered",
   "decisions": [
     "No contact on screen: none was given. The closing card shows the logo, the tagline and 'Reservá tu visita'. Add a number when the client sends it.",
     "Logo: the Termas Concordia logo file was not supplied as a file, so the closing card falls back to the name in type until clients/termas-concordia/assets/logo.png exists.",

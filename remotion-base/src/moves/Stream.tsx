@@ -119,6 +119,10 @@ export const StreamRibbon: React.FC<{
   seed?: string;
   /** what drives the glints' drift (px); default: the frame. Drive it with the camera so the water is still when the shot rests */
   flow?: number;
+  /** draw only the part of the course between these two heights (plus a margin): the cut is off-screen, the work stays small */
+  window?: [number, number];
+  /** taper the tip of a stream that is still being revealed (default: only when `s` is shorter than the course) */
+  taper?: boolean;
 }> = ({
   path,
   s,
@@ -133,17 +137,32 @@ export const StreamRibbon: React.FC<{
   },
   seed = "stream",
   flow,
+  window,
+  taper,
 }) => {
   const frame = useCurrentFrame();
   const drift = flow ?? frame * 6;
-  const { pts, cum } = upTo(path, s);
+  const full = upTo(path, s);
+  let lo = 0;
+  let hi = full.pts.length;
+  if (window) {
+    const inside = full.pts
+      .map((p, i) => (p.y >= window[0] && p.y <= window[1] ? i : -1))
+      .filter((i) => i >= 0);
+    if (inside.length < 2) return null;
+    lo = Math.max(0, inside[0] - 1);
+    hi = Math.min(full.pts.length, inside[inside.length - 1] + 2);
+  }
+  const pts = full.pts.slice(lo, hi);
+  const cum = full.cum.slice(lo, hi);
   if (pts.length < 2) return null;
+  const tip = taper ?? s < path.length - 1;
   const head = cum[cum.length - 1];
   const idx = new Map(pts.map((p, i) => [p, i]));
   const w = (k: number) => (p: XY) =>
     streamWidthAt(p.y, width) *
     k *
-    (0.04 + 0.96 * headTaper(head - cum[idx.get(p) ?? 0]));
+    (tip ? 0.04 + 0.96 * headTaper(head - cum[idx.get(p) ?? 0]) : 1);
   const ribbon = (k: number) => {
     const { left, right } = ribbonSides(pts, w(k));
     return poly([...left, ...right.reverse()]);

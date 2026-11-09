@@ -1,6 +1,7 @@
 /**
- * Reel B — "El arroyo" (reel 9:16, 12 s). Family: trail. A line of water is drawn through the grounds and
- * the camera follows it, photo to photo (the stream of the logo made into a walk). The line is what carries.
+ * Reel B — "El arroyo" (reel 9:16, 12 s). Family: trail. A stream runs through the grounds, already flowing
+ * before the first frame and out of the last, and the camera follows it photo to photo (the stream of the logo made
+ * into a walk). The stream is what carries.
  *
  * | t (s)     | beat        | moves                               | holds still | carries into next |
  * |-----------|-------------|-------------------------------------|-------------|-------------------|
@@ -81,15 +82,15 @@ const STOPS = [
   },
 ].map((p, i) => ({ ...p, y: STOP_Y[i], x: streamCenter(STOP_Y[i], BEND) }));
 // the stream wanders: its centre line is sampled every 40 px and the camera walks it
-const D = `M ${streamPoints(-900, 7900, 40, BEND)
+const D = `M ${streamPoints(-2600, 9600, 40, BEND)
   .map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
   .join(" L ")}`;
 const TRAIL = buildPath(D);
 const AT = STOPS.map((p) => nearestLength(TRAIL, p));
 
 // frames: open, rest, then (leg, rest) x 4 and a last leg
-const LEG = 28;
-const REST = 22;
+const LEG = 36;
+const REST = 14;
 const LEGS: number[] = [66];
 for (let i = 1; i < 5; i++) LEGS.push(LEGS[i - 1] + LEG + REST);
 const HOLD = LEGS[4] + LEG;
@@ -115,7 +116,7 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
   const copy = useCopy();
   const frame = useCurrentFrame();
   // each leg has its own curve so the walk does not feel mechanical
-  const LEG_EASE = [EASE.glide, EASE.whip, EASE.glide, EASE.snap, EASE.whip];
+  const LEG_EASE = [EASE.glide, EASE.snap, EASE.glide, EASE.snap, EASE.glide];
   const leg = LEGS.findIndex((f) => frame >= f && frame < f + LEG);
   const done = LEGS.filter((f) => frame >= f + LEG).length;
   const s =
@@ -127,7 +128,7 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
           LEG_EASE[leg],
         )
       : AT[done];
-  const drawn = Math.max(s, tween(frame, [0, 30], [0, AT[0]], EASE.out));
+  const camY = TRAIL.at(s).y;
   const end = tween(frame, [HOLD, HOLD + 16], [0, 1], EASE.snap);
   return (
     <TrackRoot>
@@ -142,7 +143,13 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
               color={T.colors.ink}
               opacity={0.06}
             />
-            <StreamRibbon path={TRAIL} s={drawn} width={230} flow={s} />
+            <StreamRibbon
+              path={TRAIL}
+              s={TRAIL.length}
+              width={230}
+              flow={s}
+              window={[camY - 1500, camY + 1500]}
+            />
             {STOPS.map((p, i) => {
               const landed =
                 i === 0 ? tween(frame, [8, 30], [0, 1], EASE.out) : 1;
