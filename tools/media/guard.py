@@ -53,8 +53,8 @@ def _case_insensitive():
 
 
 def _norm(path):
-    p = os.path.normcase(os.path.realpath(os.path.expanduser(str(path).strip())))
-    return p.casefold() if _case_insensitive() else p
+    p = os.path.realpath(os.path.expanduser(str(path).strip()))
+    return os.path.normcase(p).casefold() if _case_insensitive() else p
 
 
 def _read_json(path):

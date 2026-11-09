@@ -193,7 +193,7 @@ def run_check(client_dir, b):
     p = client_dir / "briefs" / "b.json"
     p.write_text(json.dumps(b, ensure_ascii=False), encoding="utf-8")
     env = dict(os.environ, CUTROOM_CLIENTS=str(client_dir.parent))
-    r = subprocess.run([sys.executable, os.path.join(TOOLS, "brief.py"), "check", str(p)], capture_output=True, text=True, env=env)
+    r = subprocess.run([sys.executable, os.path.join(TOOLS, "brief.py"), "check", str(p)], capture_output=True, text=True, encoding="utf-8", env=env)
     return r.returncode, r.stdout + r.stderr
 
 

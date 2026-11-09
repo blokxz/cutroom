@@ -151,7 +151,11 @@ def test_caption_path_from_the_brief_is_copied_into_the_package(env):
     b = json.loads(env["brief"].read_text(encoding="utf-8"))
     custom = env["client"] / "caption-elsewhere.md"
     custom.write_text(CAPTION, encoding="utf-8")
-    b["delivery"] = {"caption": os.path.relpath(custom, ROOT), "cover_time": 0.5}
+    try:
+        caption = os.path.relpath(custom, ROOT)
+    except ValueError:  # Windows: the temp folder and the repo are on different drives
+        caption = str(custom)
+    b["delivery"] = {"caption": caption, "cover_time": 0.5}
     env["brief"].write_text(json.dumps(b, ensure_ascii=False), encoding="utf-8")
     code, out = run(env)
     assert code == 0, out

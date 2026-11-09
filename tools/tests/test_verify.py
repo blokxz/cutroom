@@ -557,7 +557,7 @@ def _(e):
     clients = _client(e)
     out = e.path("brand.ts")
     code, txt = e.brief("client", "ts", "acme", "--out", out, clients=clients)
-    ts = open(out).read() if os.path.exists(out) else ""
+    ts = open(out, encoding="utf-8").read() if os.path.exists(out) else ""
     return code == 0 and 'export const CLIENT = {"name": "Acme Co", "taglines": ["Fast · Fair"]} as const;' in ts, {txt.strip()}
 
 
