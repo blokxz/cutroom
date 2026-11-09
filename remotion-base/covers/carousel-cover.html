@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Carousel cover, 1080x1350 (4:5): brand logo, a photo in an arch window, a title and a progress bar.
+<!-- Carousel cover, 1080x1350 (4:5): brand logo, a full-width photo under a wavy edge, a title and a progress bar.
      Pure HTML + SVG. Parameters come from the query string:
        ?photo=carousel/4.jpg&logo=carousel/logo.png&title=...&subtitle=...&total=6&focus=50,50
      Paths are relative to remotion-base/public. Render with: node scripts/html-still.mjs covers/carousel-cover.html out.jpg -->
@@ -14,23 +14,26 @@
   html, body { margin: 0; width: 1080px; height: 1350px; background: var(--cream); overflow: hidden; }
   .cover { position: relative; width: 1080px; height: 1350px; }
   svg { position: absolute; inset: 0; }
-  .logo { position: absolute; top: 62px; left: 375px; width: 330px; }
-  .title { position: absolute; left: 0; right: 0; top: 1080px; text-align: center; color: var(--green);
-           font: 400 84px/1 "Display", serif; }
-  .title i { color: var(--wine); }
-  .sub { position: absolute; left: 0; right: 0; top: 1196px; text-align: center; color: var(--green); opacity: .8;
+  .logo { position: absolute; top: 40px; left: 375px; width: 330px; }
+  .title { position: absolute; left: 84px; right: 84px; top: 1030px; color: #fff; text-shadow: 0 3px 22px rgba(0,0,0,.4);
+           font: 400 84px/1 "Display", serif; white-space: nowrap; }
+  .title i { color: #F0D6DA; }
+  .sub { position: absolute; left: 84px; right: 84px; top: 1150px; color: #fff; opacity: .92;
          font: 500 27px "Text", sans-serif; letter-spacing: .32em; text-transform: uppercase; }
   .bar { position: absolute; left: 84px; right: 84px; top: 1286px; display: flex; gap: 10px; }
-  .bar b { flex: 1; height: 6px; border-radius: 3px; background: rgba(63,74,65,.25); }
-  .bar b:first-child { background: var(--green); }
+  .bar b { flex: 1; height: 6px; border-radius: 3px; background: rgba(255,255,255,.4); }
+  .bar b:first-child { background: #fff; }
 </style>
 </head>
 <body>
 <div class="cover" id="cover">
   <svg viewBox="0 0 1080 1350" width="1080" height="1350" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <!-- arch window: 580 wide, 650 tall, semicircular top -->
-      <clipPath id="arch"><path d="M250,1030 V670 A290,290 0 0 1 830,670 V1030 Z"/></clipPath>
+      <!-- the photo's top edge is a stream, like the one under the house in the logo -->
+      <clipPath id="wave"><path d="M0,430 C170,372 330,486 540,430 S900,372 1080,440 V1350 H0 Z"/></clipPath>
+      <linearGradient id="scrim" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#000" stop-opacity=".82"/><stop offset=".5" stop-color="#000" stop-opacity="0"/>
+      </linearGradient>
       <!-- a sprig like the one in the logo: a stem and five leaves -->
       <g id="sprig">
         <path d="M0,0 C20,-60 30,-120 60,-190" fill="none" stroke="#C9A3AA" stroke-width="3" stroke-linecap="round"/>
@@ -43,13 +46,11 @@
         </g>
       </g>
     </defs>
-    <!-- sprigs growing out beside the arch -->
-    <use href="#sprig" transform="translate(176 1010) rotate(-8)"/>
-    <use href="#sprig" transform="translate(904 1010) scale(-1 1) rotate(-8)"/>
-    <!-- double outline of the arch -->
-    <path d="M232,1048 V670 A308,308 0 0 1 848,670 V1048 Z" fill="none" stroke="#3F4A41" stroke-width="2.5"/>
-    <image id="photo" href="" x="250" y="380" width="580" height="650" preserveAspectRatio="xMidYMid slice" clip-path="url(#arch)"/>
-    <path d="M250,1030 V670 A290,290 0 0 1 830,670 V1030 Z" fill="none" stroke="#3F4A41" stroke-width="2"/>
+    <image id="photo" href="" x="0" y="340" width="1080" height="1010" preserveAspectRatio="xMidYMid slice" clip-path="url(#wave)"/>
+    <rect x="0" y="340" width="1080" height="1010" fill="url(#scrim)" clip-path="url(#wave)"/>
+    <!-- the stream's edge, and a sprig growing from it -->
+    <path d="M0,430 C170,372 330,486 540,430 S900,372 1080,440" fill="none" stroke="#fff" stroke-width="5" opacity=".9"/>
+    <use href="#sprig" transform="translate(900 470) rotate(8)"/>
   </svg>
   <img class="logo" id="logo" alt="">
   <div class="title" id="title"></div>

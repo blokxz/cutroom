@@ -34,7 +34,7 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - `CarouselSlide` composition (4:5 still, shared layout and a segmented progress bar) for photo carousels, rendered one still per slide and checked with `verify.py <folder>`.
 
-- `remotion-base/covers/carousel-cover.html`: a carousel cover in plain HTML and SVG (logo, photo in an arch window, title, progress bar; parameters in the query string) and `scripts/html-still.mjs`, which screenshots any HTML page with the same headless Chrome as `render.mjs`.
+- `remotion-base/covers/carousel-cover.html`: a carousel cover in plain HTML and SVG (logo, a full-width photo under a wavy edge, title, progress bar; parameters in the query string) and `scripts/html-still.mjs`, which screenshots any HTML page with the same headless Chrome as `render.mjs`.
 
 - `tools/move_sheet.py`: a speed graph (px/frame per tracked element, beats and the 80 px/frame blur limit marked) under a contact sheet; first sheets in `docs/moves/`.
 
