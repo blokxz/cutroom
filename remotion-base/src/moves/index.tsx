@@ -271,3 +271,5 @@ export * from "./FilmStrip";
 export * from "./Dominoes";
 export * from "./CauseEffect";
 export * from "./Depth";
+export * from "./Entrances";
+export * from "./Silk";

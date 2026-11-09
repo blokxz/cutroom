@@ -20,7 +20,7 @@ schemas/           client.json, brief.json, music LIBRARY.json
 clients/<slug>/    client.json, assets/ (logo, photos, fonts, music), briefs/, references/
 remotion-base/     Remotion project: src/{lib,moves,components,examples,clients}, scripts/{render,config,sync-clients}.mjs
 tools/             pipeline.py, brief.py, material.py (+ media/), verify.py (+ quality/ core, claims, platforms/), deliver.py,
-                   brand.py, sfx.py, master.py, models.py, setup.py, doctor.py, check_plugin.py, check_skill.py, variation.py, reel_summary.py, sound_events.py
+                   brand.py, sfx.py, master.py, models.py, setup.py, doctor.py, check_plugin.py, check_skill.py, variation.py, reel_summary.py, sound_events.py, move_sheet.py
 deliveries/<id>/   publish-ready packages built by tools/deliver.py (git-ignored)
 ```
 

@@ -544,6 +544,23 @@
     7
    ],
    "status": "ready"
+  },
+  {
+   "id": "gather",
+   "name": "Gather",
+   "kind": "photo",
+   "carry_kind": "object",
+   "boundary": "morph",
+   "carry": "the cast",
+   "moves": [
+    "Gather"
+   ],
+   "needs": [],
+   "beats": [
+    4,
+    7
+   ],
+   "status": "ready"
   }
  ]
 }

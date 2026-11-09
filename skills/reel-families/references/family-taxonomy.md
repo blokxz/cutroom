@@ -1,6 +1,6 @@
 # Family taxonomy [F-01 F-02 F-03 F-04 C-02]
 
-Data: `families.json` (30 families; this table mirrors it — the JSON wins). Creative description of each family: `skills/video-direction/references/concept-families.md`.
+Data: `families.json` (31 families; this table mirrors it — the JSON wins). Creative description of each family: `skills/video-direction/references/concept-families.md`.
 
 | Axis | Values |
 |---|---|
@@ -37,6 +37,7 @@ Pick by material: photos → `kind: photo`; no photos → `generic`; clips → a
 | chain_reaction | photo | object | contact | the cause, always visible | Dominoes | ready |
 | dive_through_scale | photo | camera | camera | anchor point | pushThrough | ready |
 | calendar | photo | surface | wipe | calendar block | Calendar | ready |
+| gather | photo | object | morph | the cast | Gather | ready |
 | letters_as_windows | photo | text | window | letterforms | pushThrough, MaskReveal | ready |
 | thread | photo | object | wipe | the thread | PathTrail | ready |
 | depth | photo | camera | camera | camera + nearest plane | DepthStage | ready |

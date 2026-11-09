@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   DAY_LIGHT,
+  silkPath,
+  silkY,
+  entrancePose,
+  gatherPose,
   approach,
   blurPx,
   cellRect,
@@ -671,5 +675,95 @@ describe("Depth", () => {
     expect(depthCameraAt(70, keys).x).toBe(200);
     expect(depthCameraAt(999, keys).focusZ).toBe(600);
     expect(() => depthCameraAt(0, [])).toThrow();
+  });
+});
+
+// ------------------------------------------------------------------ Entrances
+describe("Entrances", () => {
+  const kinds = ["rise", "drop", "slide", "pop", "swing"] as const;
+  it("are hidden before they start and exactly at rest once settled", () => {
+    for (const k of kinds) {
+      expect(entrancePose(5, FPS, 10, k).opacity).toBe(0);
+      const end = entrancePose(10 + 4 * FPS, FPS, 10, k);
+      expect(end.x).toBeCloseTo(0, 2);
+      expect(end.y).toBeCloseTo(0, 2);
+      expect(end.s).toBeCloseTo(1, 2);
+      expect(end.r).toBeCloseTo(0, 2);
+      expect(end.opacity).toBe(1);
+      expect(end.sx).toBeCloseTo(1, 2);
+    }
+  });
+  it("arrive from the side they name", () => {
+    expect(entrancePose(11, FPS, 10, "rise").y).toBeGreaterThan(0);
+    expect(entrancePose(11, FPS, 10, "drop").y).toBeLessThan(0);
+    expect(entrancePose(11, FPS, 10, "slide", { dir: -1 }).x).toBeLessThan(0);
+    expect(entrancePose(11, FPS, 10, "slide", { dir: 1 }).x).toBeGreaterThan(0);
+  });
+  it("a drop squashes where it lands and a pop starts from nothing", () => {
+    const sq = range(10, 70).map((f) => entrancePose(f, FPS, 10, "drop").sx);
+    expect(Math.max(...sq)).toBeGreaterThan(1.01);
+    expect(entrancePose(10, FPS, 10, "pop").s).toBeLessThan(0.1);
+  });
+});
+
+describe("gatherPose", () => {
+  const spec = {
+    origins: [{ x: 0, y: 0 }, { x: 1000, y: 0 }, { x: 500, y: 1000 }],
+    target: { x: 500, y: 500 },
+    start: 10,
+    stagger: 6,
+    tripS: 0.8,
+  };
+  it("starts on its origin, lands on the target, shrinking, one after another", () => {
+    for (let i = 0; i < 3; i++) {
+      const a = gatherPose(spec.start + i * spec.stagger, FPS, i, spec);
+      expect(a.x).toBeCloseTo(spec.origins[i].x, 6);
+      const z = gatherPose(999, FPS, i, spec);
+      expect(z.x).toBeCloseTo(500, 6);
+      expect(z.y).toBeCloseTo(500, 6);
+      expect(z.s).toBeCloseTo(0.2, 9);
+      expect(z.arrived).toBe(true);
+    }
+    expect(gatherPose(0, FPS, 0, spec).arrived).toBe(false);
+    const arr = [0, 1, 2].map((i) => gatherPose(0, FPS, i, spec).arrivalFrame);
+    expect(arr[1] - arr[0]).toBe(6);
+    expect(arr[2] - arr[1]).toBe(6);
+  });
+  it("only gets closer to the target while travelling", () => {
+    const d = range(10, 34).map((f) => Math.hypot(gatherPose(f, FPS, 0, spec).x - 500, gatherPose(f, FPS, 0, spec).y - 500));
+    expect(d.every((v, i) => i === 0 || v <= d[i - 1] + 1e-9)).toBe(true);
+  });
+});
+
+// ------------------------------------------------------------------ Silk
+describe("Silk", () => {
+  const opts = { loopFrames: 120 };
+  it("is a pure function of the frame and loops exactly", () => {
+    for (const x of [0, 0.25, 0.7, 1]) {
+      expect(silkY(x, 1, 3, 17, opts)).toBe(silkY(x, 1, 3, 17, opts));
+      expect(silkY(x, 1, 3, 17 + 120, opts)).toBeCloseTo(silkY(x, 1, 3, 17, opts), 9);
+    }
+  });
+  it("stays near its band and never jumps between neighbouring frames", () => {
+    for (let k = 0; k < 3; k++) {
+      let prev = silkY(0.4, k, 3, 0, opts);
+      for (let f = 1; f <= 120; f++) {
+        const y = silkY(0.4, k, 3, f, opts);
+        expect(Math.abs(y - (k + 1) / 4)).toBeLessThanOrEqual(0.0801);
+        expect(Math.abs(y - prev)).toBeLessThan(0.02);
+        prev = y;
+      }
+    }
+  });
+  it("keeps ribbons from crossing at the default amplitude", () => {
+    for (let f = 0; f < 240; f += 7) {
+      for (let k = 0; k < 2; k++) expect(silkY(0.3, k, 3, f)).toBeLessThan(silkY(0.3, k + 1, 3, f));
+    }
+  });
+  it("draws a closed path from corner to corner", () => {
+    const d = silkPath(1080, 1920, 0, 2, 5);
+    expect(d.startsWith("M0,1920 L")).toBe(true);
+    expect(d.endsWith("L1080,1920 Z")).toBe(true);
+    expect(d.split("L").length).toBe(1 + 49 + 1);
   });
 });

@@ -28,6 +28,8 @@
 | `FilmStrip` | `stripOffset cellRect` | a strip of frames rolls and stops on a cell; that frame grows to fill the screen |
 | `Dominoes` | `tipAngle chainStarts` | cards tip with gravity; card k+1 starts when card k reaches the contact angle |
 | `CauseEffect` | `approach impactPose effectProgress` | a cause accelerates into a target; squash, recoil and the effect start on the hit frame |
+| `Entrances` / `Gather` | `entrancePose gatherPose` | five entrances (rise, drop with squash, slide, pop, swing) that settle exactly at rest; a cast flying into one target, one after another, and absorbed there |
+| `Silk` | `silkY silkPath` | translucent ribbons for a living background; a pure function of the frame that loops exactly |
 | `DepthStage` | `layerScale layerOffset blurPx depthCameraAt` | one camera through supplied layers: parallax, dolly and a focus pull (blur by distance) |
 | `WrittenPostcard` | `Handwriting writeSchedule inkAt writingEnd Stamp Postcard flipAngle` | letter-by-letter ink (brand `script` font), photo stamp, card flip |
 

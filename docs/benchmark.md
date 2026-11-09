@@ -20,7 +20,7 @@ Legend: **ahead** · **even** · **behind** · *out of scope*
 | 3 | Client, brand and copy | Looks: 6 measured presets, look from screenshots, fonts subset and inlined | `client.json` + generated `brand.ts`, `brand.py` from logo/screenshots, voice and words to avoid, claims check | **ahead** for brands; **behind** without one (no presets) |
 | 4 | Material | Real pages recorded with Playwright, UI rebuilt from screenshots | Photo/video folder analysed read-only, numbered contact sheet, clip prep (HDR → SDR) | **ahead** for photo-led work; UI footage *out of scope* |
 | 5 | Reference analysis | Energy map, stillness, cuts, bursts, t80, smear, contact sheets | `verify.py --ref` / `--analyze`: stillness, cuts, beat length, t80, energy shape | **even** (no smear reading) |
-| 6 | Move library | 39 moves (entrances, carries, contact sims, camera, fluid set), gallery with a sheet + speed graph per move, library tests | 20 moves + motion and camera helpers, Studio demos, unit tests; contact moves (cause and effect, dominoes), film strip and depth added 2026-11-09; no sheets, no physics sim; fluid set only partly (light flood, belt) — updated 2026-11-09 | **behind** |
+| 6 | Move library | 39 moves (entrances, carries, contact sims, camera, fluid set), gallery with a sheet + speed graph per move, library tests | 25 moves + motion and camera helpers, Studio demos, unit tests; contact moves (cause and effect, dominoes), film strip, depth, entrances, gather and silk added 2026-11-09; speed-graph move sheets (`tools/move_sheet.py`, `docs/moves/`) for tracked moves only; no physics sim; fluid set partly (light flood, belt, silk) — updated 2026-11-09 | **behind** |
 | 7 | Camera | Keyed but operated: key ahead of the subject, whips to the landing, hand float off in holds, shake on landings, lattice for depth, screen boxes for framing | `Camera` with keys + drift that fades for holds, `PathCamera`, framing check from `track.json`; no chase helper, no shake, no depth | **behind** |
 | 8 | Voice, subtitles, languages | Local TTS (Kokoro), word times (faster-whisper), line plan, timed subtitle chunks, second language on the same comp with a time warp, pixel check of the source | Nothing | **behind** (largest gap) |
 | 9 | Sound | Synthetic palette in one room + scored mixes timed from the comp's events, ducking, −16 LUFS | `sfx.py` palette in one room, `Music` with ducking, `master.py` −16 LUFS; event-driven score wired into `SampleDates` (2026-11-09), AAC true-peak re-encode in `master.py`; music ducking from the cues is not built | **behind** (no ducking from cues) |
@@ -94,8 +94,8 @@ First direct reading of the published skill (SKILL.md, six references, `lib/moti
 
 | Thing | onetake | cutroom |
 |---|---|---|
-| Moves | 39 | 20 + motion and camera helpers |
-| Named concept types | ≈7 (element transforms, camera through scale, before/after split, chain reaction, physical metaphor, continuous surface, typographic system) | 30 families |
+| Moves | 39 | 25 + motion and camera helpers |
+| Named concept types | ≈7 (element transforms, camera through scale, before/after split, chain reaction, physical metaphor, continuous surface, typographic system) | 31 families |
 | Case films with write-ups | 10 | 2 samples, each with a write-up |
 | Look presets | 6, measured from accepted films | brand from logo/screens (`brand.py`) |
 | Sound materials | 6 synthesized, one room | 9 synthesized effects (`sfx.py`), one family per piece |

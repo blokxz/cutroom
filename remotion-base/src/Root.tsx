@@ -10,6 +10,8 @@ import {
   DepthDemo,
   DominoesDemo,
   FilmStripDemo,
+  GatherDemo,
+  SilkDemo,
   KeyDemo,
   LightArcDemo,
   LightFloodDemo,
@@ -148,6 +150,22 @@ export const RemotionRoot: React.FC = () => {
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
           durationInFrames={MOVES_DEMO_FRAMES.depth}
+        />
+        <Composition
+          id="MovesDemo-Gather"
+          component={GatherDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.gather}
+        />
+        <Composition
+          id="MovesDemo-Silk"
+          component={SilkDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.silk}
         />
       </Folder>
     </>

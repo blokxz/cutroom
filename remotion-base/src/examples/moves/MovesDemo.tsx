@@ -18,6 +18,8 @@
  *   MovesDemo-Dominoes      photo cards tip over one after another, each starting on contact
  *   MovesDemo-CauseEffect   a ball hits a card: it squashes on that frame and a ring spreads from it
  *   MovesDemo-Depth         one camera dollies through layers; parallax and a focus pull
+ *   MovesDemo-Silk          slow translucent ribbons as a living background that loops exactly
+ *   MovesDemo-Gather        five entrances (rise, drop, slide, pop, swing), then the cast gathers into a logo
  */
 import React from "react";
 import {
@@ -51,7 +53,10 @@ import {
   DepthStage,
   Dominoes,
   FilmStrip,
+  Gather,
   LightFlood,
+  Silk,
+  entrancePose,
   ObjectWipe,
   buildPath,
   nearestLength,
@@ -73,6 +78,8 @@ export const MOVES_DEMO_FRAMES = {
   dominoes: 150,
   cause: 120,
   depth: 150,
+  gather: 130,
+  silk: 240,
 };
 
 // ------------------------------------------------------------------ PostcardDrop
@@ -612,5 +619,47 @@ export const DepthDemo: React.FC = () => (
         { z: -500, x: 420, y: 380, id: "near-b", node: panel(B.colors.accent2, 220, 220, 110) },
       ]}
     />
+  </AbsoluteFill>
+);
+
+// ------------------------------------------------------------------ Entrances + Gather
+const chip = (bg: string, size = 150) => (
+  <div style={{ width: size, height: size, borderRadius: 28, background: bg, boxShadow: "0 18px 34px -14px rgba(0,0,0,.4)" }} />
+);
+
+export const GatherDemo: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const kinds = ["rise", "drop", "slide", "pop", "swing"] as const;
+  const colors = [B.colors.accent, B.colors.accent2, B.colors.ink, B.colors.soft, B.colors.accent];
+  const homes = kinds.map((_, i) => ({ x: 190 + i * 175, y: 900 }));
+  const target = { x: 540, y: 1300 };
+  return (
+    <AbsoluteFill>
+      <Paper color={B.colors.ground} />
+      <div style={{ position: "absolute", left: target.x - 90, top: target.y - 90, width: 180, height: 180, borderRadius: "50%", background: B.colors.paper, boxShadow: `0 0 0 6px ${B.colors.line}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Img src={asset("logo.png")} style={{ width: 120 }} />
+      </div>
+      <Gather
+        items={kinds.map((k, i) => {
+          const p = entrancePose(frame, fps, 6 + i * 8, k);
+          return (
+            <div key={k} style={{ transform: `translate(${p.x}px, ${p.y}px) rotate(${p.r}deg) scale(${p.s * 1}, ${p.s}) scale(${p.sx}, ${p.sy})`, opacity: p.opacity }}>
+              {chip(colors[i], 130)}
+            </div>
+          );
+        })}
+        spec={{ origins: homes, target, start: 70, stagger: 7, tripS: 0.7 }}
+      />
+    </AbsoluteFill>
+  );
+};
+
+// ------------------------------------------------------------------ Silk
+export const SilkDemo: React.FC = () => (
+  <AbsoluteFill>
+    <Paper color={B.colors.ground} />
+    <Silk colors={[B.colors.accent, B.colors.accent2, B.colors.soft, B.colors.ink]} opacity={0.3} />
+    <div style={{ position: "absolute", left: 140, top: 640, width: 800, height: 640, borderRadius: 30, overflow: "hidden" }}>{fullPhoto("photos/sample-2.jpg")}</div>
   </AbsoluteFill>
 );
