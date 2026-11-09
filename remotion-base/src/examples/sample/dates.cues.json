@@ -1,0 +1,42 @@
+[
+ {
+  "f": 3,
+  "effect": "tap",
+  "pan": -0.03,
+  "why": "'calendar' appears",
+  "t": 0.1,
+  "volume": 0.9
+ },
+ {
+  "f": 72,
+  "effect": "air-in",
+  "pan": 0.0,
+  "why": "beat 'tear March' (move)",
+  "t": 2.4,
+  "volume": 0.6
+ },
+ {
+  "f": 93,
+  "effect": "air-in",
+  "pan": 0.0,
+  "why": "beat 'tear April' (move)",
+  "t": 3.1,
+  "volume": 0.6
+ },
+ {
+  "f": 129,
+  "effect": "air-in",
+  "pan": 0.0,
+  "why": "beat 'tear May' (move)",
+  "t": 4.3,
+  "volume": 0.6
+ },
+ {
+  "f": 150,
+  "effect": "chime",
+  "pan": 0.0,
+  "why": "beat 'CTA hold' (hold)",
+  "t": 5.0,
+  "volume": 0.8
+ }
+]

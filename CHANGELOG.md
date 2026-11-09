@@ -32,9 +32,16 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - `docs/cases/`: a case template and the first case, `sample-post.md`, with real verifier numbers (what was rejected is marked "not recorded", never reconstructed).
 
+- Second example piece `SampleDates` (reel, family `calendar`): a desk calendar whose pages tear away and leave a place each. It runs the whole `/cutroom:reel` flow on the sample client (brief to delivered, 0 FAIL, 0 WARN) and uses `Camera` `holds` and `shakes`, `Lattice`, `Calendar` with `trackId`, travel-sized blur and cue-driven sound (`dates.cues.json`). Case: `docs/cases/sample-dates.md`.
+
 ### Removed
 
 - The worked-example client and its four pieces: every client asset, brief and example built for it. The kit now ships only a fictional `sample` client (generated photos and logo, SIL OFL fonts, generated music) and one example, `SamplePost`, used by the tests, CI and `doctor.py`. Real clients are created from scratch through `/cutroom:video`.
+
+### Fixed
+
+- Clips and the HLG test source keep their colour transfer on ffmpeg builds that no longer carry `-color_trc` into the stream (x264 now writes the VUI itself).
+- Windows: `material`, `variation`, `reel_summary`, `sound_events`, `check_skill` and `models` print UTF-8 on legacy code pages; the read-only guard no longer lowercases paths when its check is case-sensitive; tests tolerate a repo on another drive.
 
 ### Changed
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Composition, Folder } from "remotion";
 import { FORMATS } from "./lib/formats";
 import { SAMPLE_POST_FRAMES, SamplePost } from "./examples/sample/SamplePost";
+import { SAMPLE_DATES_FRAMES, SampleDates } from "./examples/sample/SampleDates";
 import {
   BeltDemo,
   CalendarDemo,
@@ -26,6 +27,15 @@ export const RemotionRoot: React.FC = () => {
           height={FORMATS.post.height}
           fps={FORMATS.post.fps}
           durationInFrames={SAMPLE_POST_FRAMES}
+          defaultProps={{ showSafeZones: false }}
+        />
+        <Composition
+          id="SampleDates"
+          component={SampleDates}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={SAMPLE_DATES_FRAMES}
           defaultProps={{ showSafeZones: false }}
         />
       </Folder>

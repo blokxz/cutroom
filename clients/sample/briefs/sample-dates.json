@@ -1,0 +1,122 @@
+{
+  "id": "sample-dates",
+  "client": "sample",
+  "platform": "instagram",
+  "format": "reel",
+  "duration_s": 8,
+  "goal": "Reel that opens the studio's booking season: a desk calendar tears away page by page until the free dates are left.",
+  "audience": "Clients planning their next project.",
+  "cta": {
+    "text": "Reservá tu fecha",
+    "contact": "+54 9 11 0000-0000"
+  },
+  "copy": {
+    "headline": "Tus fechas / libres",
+    "subtitle": "",
+    "lines": [
+      "Marzo",
+      "Abril",
+      "Mayo"
+    ],
+    "avoid": []
+  },
+  "assets": {
+    "photos": [
+      "assets/photos/sample-1.jpg",
+      "assets/photos/sample-2.jpg",
+      "assets/photos/sample-3.jpg"
+    ],
+    "videos": [],
+    "music": null
+  },
+  "reference": null,
+  "concepts": [
+    {
+      "name": "Calendario",
+      "idea": "Un calendario de escritorio arranca sus hojas una por una y cada hoja deja ver un trabajo del estudio; la última queda con las fechas libres.",
+      "carry": "el taco del calendario",
+      "rules_out": "no hay cortes: todo pasa sobre la misma pieza"
+    },
+    {
+      "name": "Cinta",
+      "idea": "Los tres trabajos viajan en una cinta que frena en el último.",
+      "carry": "la cinta",
+      "rules_out": "no hay hojas ni papel"
+    },
+    {
+      "name": "Barra",
+      "idea": "Una barra cruza la lente y descubre cada trabajo.",
+      "carry": "la barra",
+      "rules_out": "no hay objeto en cuadro hasta el cruce"
+    }
+  ],
+  "chosen_concept": 0,
+  "beats": [
+    {
+      "t": "0.0–1.4",
+      "beat": "calendar settles",
+      "kind": "move",
+      "moves": "calendar block rises into place",
+      "holds": "ground",
+      "carries": "calendar block"
+    },
+    {
+      "t": "1.4–2.4",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "calendar block",
+      "carries": "calendar block"
+    },
+    {
+      "t": "2.4–3.1",
+      "beat": "tear March",
+      "kind": "move",
+      "moves": "page torn, March under",
+      "holds": "ground",
+      "carries": "calendar block"
+    },
+    {
+      "t": "3.1–3.5",
+      "beat": "tear April",
+      "kind": "move",
+      "moves": "page torn, April under",
+      "holds": "ground",
+      "carries": "calendar block"
+    },
+    {
+      "t": "3.5–4.3",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "calendar block",
+      "carries": "calendar block"
+    },
+    {
+      "t": "4.3–5.0",
+      "beat": "tear May",
+      "kind": "move",
+      "moves": "page torn, free dates under",
+      "holds": "ground",
+      "carries": "calendar block"
+    },
+    {
+      "t": "5.0–8.0",
+      "beat": "CTA hold",
+      "kind": "hold",
+      "moves": "one pulse on the number",
+      "holds": "everything",
+      "carries": "—"
+    }
+  ],
+  "composition": "SampleDates",
+  "status": "delivered",
+  "decisions": [
+    "Family: calendar (surface carry, wipe boundary), seed beat sheet written by hand to the rhythm rules and checked with tools/variation.py check.",
+    "First draft FAILed [blur]: the place labels sat on pages that fall faster than 80 px/frame without being marked blurred; fixed by marking the labels as blurred (they are inside <MotionBlur>).",
+    "First draft WARNed [rhythm] and [reading]: the CTA held 1.37 s and the beat ratio was 2.4. Moved the last tear and the CTA hold one second earlier (hold from 5.0 s); ratio 11.6 and reading share 1.09.",
+    "Approved by the maintainer's instruction to run the whole pipeline on the sample client; no real client is involved.",
+    "Delivery caption WARN accepted: the alt text is 116 characters (limit 100) because it names the three months."
+  ],
+  "notes": ""
+}
