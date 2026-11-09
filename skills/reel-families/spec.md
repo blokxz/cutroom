@@ -47,7 +47,7 @@ Turn one request into a legal, original Reel in the fewest prompts: summarize th
 | Q-05 | Motion blur on fast travel, final ≥ 12 samples | verifier blur, `<MotionBlur>` | enforced |
 | Q-06 | One sound room; events placed from beats (no two within 40 ms), panned by screen x, music ducked, −16 LUFS, true peak safe after AAC | verifier audio | tool done (`sound_events.py`); wiring into the piece is manual; the −16 LUFS master stays in `master.py` |
 | Q-07 | Move variety: every family `ready` | `reel_summary.py` | gap (see summary) |
-| Q-08 | Proof: a case write-up per shipped piece (beat sheet, numbers, what was rejected and why) | `docs/cases/<piece>.md` | gap |
+| Q-08 | Proof: a case write-up per shipped piece (beat sheet, numbers, what was rejected and why) | `docs/cases/<piece>.md` (template: `docs/cases/TEMPLATE.md`) | sample done; one per new piece |
 
 Parity is never claimed; open gaps surface as actions in the summary (L-01).
 

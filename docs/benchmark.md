@@ -71,7 +71,7 @@ the verifier, a second language from the same composition. ≈ 2 days.
 ### Phase 4 — demos and cases · not started
 
 Module 14.
-- [ ] One case per example piece: `docs/cases/<piece>.md` with beat sheet, verifier numbers, what was rejected and why · 3 h
+- [x] One case per example piece: `docs/cases/<piece>.md` with beat sheet, verifier numbers, what was rejected and why — `docs/cases/sample-post.md` + `TEMPLATE.md` done 2026-11-09; every future piece adds its own · 3 h
 - [ ] A showcase reel of cutroom made with cutroom · 4 h
 - [ ] README with GIFs of the pieces and the move sheets · 1 h
 
