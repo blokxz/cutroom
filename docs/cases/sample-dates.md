@@ -1,6 +1,6 @@
 # sample-dates — a desk calendar: tearing pages leave the places
 
-Fictional `sample` client (generated assets) · instagram / reel 1080×1920 · 8.0 s · final render measured on 2026-11-09 (Linux, camera-engine blur). Built to run the whole `/cutroom:reel` flow end to end and to exercise the camera helpers (`holds`, `shakes`, `Lattice`), the `Calendar` move with `trackId`, travel-sized blur and event-driven sound in one real piece. A worked example, never to be refilled with a real client's material.
+Fictional `sample` client (generated assets) · instagram / reel 1080×1920 · 8.0 s · final render measured on 2026-11-09 (Linux, camera-engine blur). Built to take a brief through every `pipeline.py` stage to `delivered` (the beat sheet is hand-written and checked with `variation.py check`, not drawn from a seeded `variation.py sheet`; no summary step was run) and to exercise the camera helpers (`holds`, `shakes`, `Lattice`), the `Calendar` move with `trackId`, travel-sized blur and event-driven sound in one real piece. A worked example, never to be refilled with a real client's material.
 
 ## Brief
 

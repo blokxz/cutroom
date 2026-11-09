@@ -32,7 +32,7 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - `docs/cases/`: a case template and the first case, `sample-post.md`, with real verifier numbers (what was rejected is marked "not recorded", never reconstructed).
 
-- Second example piece `SampleDates` (reel, family `calendar`): a desk calendar whose pages tear away and leave a place each. It runs the whole `/cutroom:reel` flow on the sample client (brief to delivered, 0 FAIL, 0 WARN) and uses `Camera` `holds` and `shakes`, `Lattice`, `Calendar` with `trackId`, travel-sized blur and cue-driven sound (`dates.cues.json`). Case: `docs/cases/sample-dates.md`.
+- Second example piece `SampleDates` (reel, family `calendar`): a desk calendar whose pages tear away and leave a place each. It goes from brief to delivered through `pipeline.py` on the sample client (0 FAIL, 0 WARN; the beat sheet is hand-written and checked with `variation.py check`) and uses `Camera` `holds` and `shakes`, `Lattice`, `Calendar` with `trackId`, travel-sized blur and cue-driven sound (`dates.cues.json`). Case: `docs/cases/sample-dates.md`.
 
 ### Removed
 
