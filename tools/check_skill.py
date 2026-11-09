@@ -47,7 +47,10 @@ def body(text):
 
 def check(skill_dir, root=ROOT):
     errors = []
-    rel = os.path.relpath(skill_dir, root)
+    try:
+        rel = os.path.relpath(skill_dir, root)
+    except ValueError:  # Windows: the skill and the root are on different drives
+        rel = skill_dir
     spec_p, skill_p, guide_p = (os.path.join(skill_dir, n) for n in ("spec.md", "SKILL.md", "guidelines.md"))
     ref_dir = os.path.join(skill_dir, "references")
     for p in (spec_p, skill_p, guide_p, ref_dir):

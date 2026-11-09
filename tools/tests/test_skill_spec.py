@@ -41,6 +41,20 @@ def test_every_skill_with_spec_is_checked():
     assert SKILL in check_skill.skill_dirs()
 
 
+def test_check_survives_a_skill_on_another_drive(copy, monkeypatch):
+    """On Windows os.path.relpath raises ValueError across drives (CI: temp on C:, repo on D:)."""
+    root, d = copy
+    real = os.path.relpath
+
+    def relpath(path, start=os.curdir):
+        if os.path.abspath(path) == os.path.abspath(d):
+            raise ValueError("path is on mount 'C:', start on mount 'D:'")
+        return real(path, start)
+
+    monkeypatch.setattr(os.path, "relpath", relpath)
+    assert check_skill.check(d, root) == []
+
+
 def test_range_expansion():
     assert check_skill.expand("[R-03…R-05 G-01]") == {"R-03", "R-04", "R-05", "G-01"}
 
