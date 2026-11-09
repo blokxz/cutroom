@@ -10,6 +10,10 @@
  *                           the keyhole; the last place swings open like a door
  *   MovesDemo-WrittenPostcard  the back of a postcard is written, the stamp lands,
  *                           the card flips to show the place
+ *   MovesDemo-LightFlood    light floods the frame and drains in rings onto the next place
+ *   MovesDemo-Belt          four places on a belt that starts, cruises and brakes on the last
+ *   MovesDemo-ObjectWipe    a bar crosses the lens and uncovers the next place
+ *   MovesDemo-Calendar      pages tear off one by one; the last page stays for the dates
  */
 import React from "react";
 import {
@@ -37,6 +41,10 @@ import {
   PathCamera,
   PathTrail,
   PostcardDrop,
+  Belt,
+  Calendar,
+  LightFlood,
+  ObjectWipe,
   buildPath,
   nearestLength,
   progress,
@@ -49,6 +57,10 @@ export const MOVES_DEMO_FRAMES = {
   path: 210,
   key: 220,
   written: 300,
+  flood: 120,
+  belt: 130,
+  wipe: 100,
+  calendar: 210,
 };
 
 // ------------------------------------------------------------------ PostcardDrop
@@ -371,3 +383,131 @@ export const WrittenPostcardDemo: React.FC = () => {
     </AbsoluteFill>
   );
 };
+
+// ------------------------------------------------------------------ LightFlood
+const fullPhoto = (src: string) => (
+  <AbsoluteFill>
+    <Img
+      src={asset(src)}
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
+  </AbsoluteFill>
+);
+
+export const LightFloodDemo: React.FC = () => (
+  <AbsoluteFill>
+    <Paper color={B.colors.ground} />
+    {fullPhoto("photos/sample-1.jpg")}
+    <LightFlood
+      spec={{ at: 20, riseS: 0.4, holdS: 0.2, drainS: 1.1 }}
+      center={{ x: 540, y: 1500 }}
+      glow="#F2B160"
+      tint="#F7DFA4"
+    >
+      {fullPhoto("photos/sample-3.jpg")}
+    </LightFlood>
+  </AbsoluteFill>
+);
+
+// ------------------------------------------------------------------ Belt
+const BELT_PHOTOS = [
+  "photos/sample-1.jpg",
+  "photos/sample-2.jpg",
+  "photos/sample-3.jpg",
+  "photos/sample-4.jpg",
+];
+const BELT_SPACING = 820;
+
+export const BeltDemo: React.FC = () => (
+  <AbsoluteFill>
+    <Paper color={B.colors.ground} />
+    <Belt
+      spec={{
+        at: 10,
+        durS: 3.4,
+        distance: 3 * BELT_SPACING,
+        rampS: 0.6,
+        brakeS: 1.1,
+      }}
+      spacing={BELT_SPACING}
+      origin={{ x: 540, y: 960 }}
+      items={BELT_PHOTOS.map((src) => (
+        <div
+          key={src}
+          style={{
+            width: 720,
+            height: 960,
+            borderRadius: 28,
+            overflow: "hidden",
+            boxShadow: "0 24px 60px rgba(0,0,0,0.22)",
+          }}
+        >
+          {fullPhoto(src)}
+        </div>
+      ))}
+    />
+  </AbsoluteFill>
+);
+
+// ------------------------------------------------------------------ ObjectWipe
+export const ObjectWipeDemo: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { width, height } = useVideoConfig();
+  const p = progress(frame, 20, 70, EASE.glide);
+  return (
+    <AbsoluteFill>
+      <ObjectWipe
+        p={p}
+        dir="right"
+        size={{ w: width, h: height }}
+        thickness={440}
+        from={fullPhoto("photos/sample-2.jpg")}
+        to={fullPhoto("photos/sample-4.jpg")}
+        object={
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              background: `repeating-linear-gradient(90deg, ${B.colors.paper} 0 56px, ${B.colors.accent2} 56px 76px)`,
+              boxShadow: "inset 0 0 80px rgba(0,0,0,0.15)",
+            }}
+          />
+        }
+      />
+    </AbsoluteFill>
+  );
+};
+
+// ------------------------------------------------------------------ Calendar
+export const CalendarDemo: React.FC = () => (
+  <AbsoluteFill>
+    <Paper color={B.colors.ground} />
+    <Calendar
+      box={{ x: 140, y: 380, w: 800, h: 1100 }}
+      header={B.colors.accent}
+      paper={B.colors.paper}
+      pages={[
+        { tearAt: 30, content: fullPhoto("photos/sample-1.jpg") },
+        { tearAt: 80, content: fullPhoto("photos/sample-2.jpg") },
+        { tearAt: 130, content: fullPhoto("photos/sample-3.jpg") },
+        {
+          content: (
+            <div
+              style={{
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: B.fonts.display,
+                fontSize: 92,
+                color: B.colors.ink,
+              }}
+            >
+              your dates
+            </div>
+          ),
+        },
+      ]}
+    />
+  </AbsoluteFill>
+);

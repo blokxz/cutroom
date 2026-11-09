@@ -46,7 +46,7 @@ Left to close it:
 Modules 6, 7 and 9. onetake's move library is a source of *ideas* (what kinds of moves a piece needs);
 every move is designed and written from scratch for cutroom's families and photo-led material.
 - [x] Key and Written postcard (0.4)
-- [ ] Moves the families are missing, by kind: entrances that land (squash, settle), carries (a container
+- [~] Moves the families are missing (done 2026-11-09: `LightFlood`, `Belt`, `ObjectWipe`, `Calendar`; still missing: cause/effect, film strip, chain reaction, depth), by kind: entrances that land (squash, settle), carries (a container
       that becomes the next scene, a cast that gathers into the logo lockup), contact (a light shake on
       impact), each wired into at least one family · 1 day
 - [x] Logbook, Light clock, Before / after rest — covered by existing moves (`Handwriting` + `MaskReveal`, `LightArc`, `MaskReveal`), registered as `ready` families; a dedicated move is added only if a shipped piece shows the gap (decision 2026-11-09)
@@ -122,7 +122,7 @@ Families and move counts are not the same unit: a family is a creative idea buil
 | 7 | **Case write-ups** per piece: concept, beat sheet, measured numbers, what was rejected and why (with the client's own words) | their strongest teaching asset; we have none | phase 4; Q-08 |
 | 8 | **Meaning built into the picture**: a film that was "beautiful but says nothing" only worked once the idea was in the artwork; labels added to explain made it worse | new creative rule R-16 in `video-direction` | R-16 |
 | 9 | **Do not show whole pages as thumbnails**: show a component live, or full-frame with the cause visible | applies to our photo-led pieces as: full-frame photo or a detail, never a tiny postage stamp of a place | `video-direction` §4 |
-| 10 | **Fluid set**: a light field as the ground, rings that drain onto the next scene, a belt that slows with its own clock, domain-warped noise "silk" fills | each is a new family seed; only `light_flood` and `continuous_surface` registered so far | phase 2 moves |
+| 10 | **Fluid set**: a light field as the ground, rings that drain onto the next scene, a belt that slows with its own clock, domain-warped noise "silk" fills | done for light and belt (`LightFlood`, `Belt`, families `light_flood`, `continuous_surface`); silk fills still open | phase 2 moves |
 
 ### Not for cutroom (for now)
 

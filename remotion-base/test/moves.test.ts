@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   DAY_LIGHT,
+  barRect,
+  beltPose,
+  floodAt,
+  pageInPlace,
+  revealInset,
+  ringRadii,
+  tearPose,
+  wipeBar,
   anchorPoint,
   arcPoint,
   archShape,
@@ -411,5 +419,116 @@ describe("postcard flip", () => {
   it("starts on the back and lands on the front", () => {
     expect(flipAngle(0, FPS, 10)).toBe(0);
     expect(flipAngle(10 + 3 * FPS, FPS, 10)).toBeCloseTo(180, 0);
+  });
+});
+
+const nondec = (xs: number[]) => xs.every((x, i) => i === 0 || x >= xs[i - 1] - 1e-9);
+const frames = (a: number, b: number) =>
+  Array.from({ length: b - a + 1 }, (_, i) => a + i);
+
+describe("LightFlood", () => {
+  const spec = { at: 30, riseS: 0.4, holdS: 0.2, drainS: 1 };
+  it("is idle before the start and done after the drain", () => {
+    expect(floodAt(10, FPS, spec)).toEqual({ level: 0, drain: 0, phase: "idle" });
+    expect(floodAt(500, FPS, spec)).toEqual({ level: 1, drain: 1, phase: "done" });
+  });
+  it("rises to 1, holds, then drains 0 → 1, never going backwards", () => {
+    const s = frames(0, 90).map((f) => floodAt(f, FPS, spec));
+    expect(nondec(s.map((x) => x.level))).toBe(true);
+    expect(nondec(s.map((x) => x.drain))).toBe(true);
+    expect(s.some((x) => x.phase === "hold" && x.level === 1 && x.drain === 0)).toBe(true);
+    expect(s.every((x) => x.drain === 0 || x.level === 1)).toBe(true);
+  });
+  it("rings leave one point in order: ring 0 first and largest", () => {
+    expect(ringRadii(0, 3, 1000)).toEqual([0, 0, 0]);
+    for (const d of [0.2, 0.5, 0.8]) {
+      const r = ringRadii(d, 3, 1000);
+      expect(r[0]).toBeGreaterThanOrEqual(r[1]);
+      expect(r[1]).toBeGreaterThanOrEqual(r[2]);
+    }
+    expect(ringRadii(1, 3, 1000)).toEqual([1000, 1000, 1000]);
+    expect(nondec(frames(0, 20).map((i) => ringRadii(i / 20, 3, 1000)[2]))).toBe(true);
+  });
+});
+
+describe("Belt", () => {
+  const spec = { at: 10, durS: 4, distance: 1800, rampS: 0.6, brakeS: 0.9 };
+  const pose = (f: number) => beltPose(f, FPS, spec);
+  it("starts at rest and stops exactly on the distance", () => {
+    expect(pose(10)).toEqual({ x: 0, speed: 0, tau: 0 });
+    expect(pose(10 + 4 * FPS).x).toBeCloseTo(1800, 6);
+    expect(pose(10 + 4 * FPS).speed).toBeCloseTo(0, 6);
+    expect(pose(999).tau).toBeCloseTo(1, 9);
+  });
+  it("never goes backwards, cruises at constant speed and slows with its own clock", () => {
+    const xs = frames(0, 140).map((f) => pose(f).x);
+    expect(nondec(xs)).toBe(true);
+    const mid = [60, 61, 62].map((f) => pose(f).speed);
+    expect(mid[0]).toBeCloseTo(mid[1], 9);
+    expect(mid[1]).toBeCloseTo(mid[2], 9);
+    const peak = Math.max(...frames(0, 140).map((f) => pose(f).speed));
+    expect(peak).toBeCloseTo(mid[0], 9);
+    expect(pose(10 + 4 * FPS - 3).speed).toBeLessThan(peak / 2);
+  });
+  it("lands on item k when distance = k * spacing", () => {
+    const end = beltPose(999, FPS, { ...spec, distance: 3 * 600 });
+    expect(end.x).toBe(1800);
+  });
+  it("refuses a profile that cannot fit in the duration", () => {
+    expect(() => beltPose(0, FPS, { ...spec, durS: 1 })).toThrow();
+  });
+});
+
+describe("ObjectWipe", () => {
+  it("starts off-frame and ends off-frame with everything revealed", () => {
+    const a = wipeBar(0, 1080, 360);
+    expect(a.lead).toBe(0);
+    expect(a.revealed).toBe(0);
+    const z = wipeBar(1, 1080, 360);
+    expect(z.trail).toBeCloseTo(1080, 6);
+    expect(z.revealed).toBe(1080);
+  });
+  it("reveals only what the object has passed, monotonically", () => {
+    const r = frames(0, 50).map((i) => wipeBar(i / 50, 1080, 360).revealed);
+    expect(nondec(r)).toBe(true);
+    const mid = wipeBar(0.5, 1080, 360);
+    expect(mid.revealed).toBeLessThan(mid.lead);
+  });
+  it("places the bar and the clip for every direction", () => {
+    expect(barRect("right", 400, 360, 1080, 1920)).toEqual({
+      left: 40, top: 0, width: 360, height: 1920,
+    });
+    expect(barRect("left", 400, 360, 1080, 1920).left).toBe(680);
+    expect(barRect("down", 400, 360, 1080, 1920).top).toBe(40);
+    expect(barRect("up", 400, 360, 1080, 1920).top).toBe(1520);
+    expect(revealInset("right", 300, 1080, 1920)).toBe("inset(0px 780px 0px 0px)");
+    expect(revealInset("left", 300, 1080, 1920)).toBe("inset(0px 0px 0px 780px)");
+    expect(revealInset("down", 300, 1080, 1920)).toBe("inset(0px 0px 1620px 0px)");
+    expect(revealInset("up", 1920, 1080, 1920)).toBe("inset(0px 0px 0px 0px)");
+  });
+});
+
+describe("Calendar", () => {
+  it("keeps the page in place until it is torn", () => {
+    expect(tearPose(20, FPS, 30)).toEqual({ x: 0, y: 0, r: 0, opacity: 1, gone: false });
+  });
+  it("lifts on its hinge, then falls and fades out", () => {
+    const lift = tearPose(30 + 3, FPS, 30);
+    expect(lift.r).toBeLessThan(0);
+    expect(lift.opacity).toBe(1);
+    const poses = frames(36, 80).map((f) => tearPose(f, FPS, 30));
+    expect(nondec(poses.map((p) => p.y))).toBe(true); // falls
+    expect(nondec(poses.map((p) => -p.opacity))).toBe(true); // fades
+    expect(tearPose(30 + 3 * FPS, FPS, 30).gone).toBe(true);
+  });
+  it("tracks which page is in place", () => {
+    const pages = [
+      { tearAt: 30, content: null },
+      { tearAt: 90, content: null },
+      { content: null },
+    ];
+    expect(pageInPlace(0, FPS, pages)).toBe(0);
+    expect(pageInPlace(60, FPS, pages)).toBe(1); // page 0 has fallen, page 1 not torn yet
+    expect(pageInPlace(9999, FPS, pages)).toBe(2);
   });
 });

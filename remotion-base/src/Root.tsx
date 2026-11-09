@@ -3,9 +3,13 @@ import { Composition, Folder } from "remotion";
 import { FORMATS } from "./lib/formats";
 import { SAMPLE_POST_FRAMES, SamplePost } from "./examples/sample/SamplePost";
 import {
+  BeltDemo,
+  CalendarDemo,
   KeyDemo,
   LightArcDemo,
+  LightFloodDemo,
   MOVES_DEMO_FRAMES,
+  ObjectWipeDemo,
   PathCameraDemo,
   PostcardDropDemo,
   WrittenPostcardDemo,
@@ -66,6 +70,38 @@ export const RemotionRoot: React.FC = () => {
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
           durationInFrames={MOVES_DEMO_FRAMES.written}
+        />
+        <Composition
+          id="MovesDemo-LightFlood"
+          component={LightFloodDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.flood}
+        />
+        <Composition
+          id="MovesDemo-Belt"
+          component={BeltDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.belt}
+        />
+        <Composition
+          id="MovesDemo-ObjectWipe"
+          component={ObjectWipeDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.wipe}
+        />
+        <Composition
+          id="MovesDemo-Calendar"
+          component={CalendarDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.calendar}
         />
       </Folder>
     </>

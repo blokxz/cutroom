@@ -362,13 +362,15 @@
    "carry_kind": "object",
    "boundary": "wipe",
    "carry": "wiping object + direction",
-   "moves": [],
+   "moves": [
+    "ObjectWipe"
+   ],
    "needs": [],
    "beats": [
     4,
     7
    ],
-   "status": "needs-move"
+   "status": "ready"
   },
   {
    "id": "film_strip",
@@ -441,13 +443,15 @@
    "carry_kind": "surface",
    "boundary": "wipe",
    "carry": "calendar block",
-   "moves": [],
+   "moves": [
+    "Calendar"
+   ],
    "needs": [],
    "beats": [
     4,
     7
    ],
-   "status": "needs-move"
+   "status": "ready"
   },
   {
    "id": "letters_as_windows",
@@ -508,13 +512,15 @@
    "carry_kind": "light",
    "boundary": "iris",
    "carry": "the field of light",
-   "moves": [],
+   "moves": [
+    "LightFlood"
+   ],
    "needs": [],
    "beats": [
     4,
     7
    ],
-   "status": "needs-move"
+   "status": "ready"
   },
   {
    "id": "continuous_surface",
@@ -523,13 +529,15 @@
    "carry_kind": "surface",
    "boundary": "camera",
    "carry": "the belt",
-   "moves": [],
+   "moves": [
+    "Belt"
+   ],
    "needs": [],
    "beats": [
     4,
     7
    ],
-   "status": "needs-move"
+   "status": "ready"
   }
  ]
 }

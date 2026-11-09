@@ -21,6 +21,10 @@
 | `LightArc` | `arcPoint lightColor DAY_LIGHT`, prop `iris` | disc on a day arc; iris out of the disc |
 | `PathCamera` / `PathTrail` | `buildPath nearestLength pathFrame` | camera along SVG path (M L H V C Q Z), deterministic arc length |
 | `Key` | `KeySvg keyTurn keyTurns Keyhole KeyholeIris keyholeShape DoorSwing` | key turn with click overshoot; open from keyhole; door in perspective |
+| `LightFlood` | `floodAt ringRadii` | light floods the frame, drains in rings; next scene inside the last ring |
+| `Belt` | `beltPose` | places on a belt: ramp, cruise, exact brake on item k (`distance = k * spacing`); `tau` clock |
+| `ObjectWipe` | `wipeBar barRect revealInset` | an object crosses the lens and uncovers the next scene |
+| `Calendar` | `tearPose pageInPlace` | pages tear off on a hinge, fall and fade; last page stays |
 | `WrittenPostcard` | `Handwriting writeSchedule inkAt writingEnd Stamp Postcard flipAngle` | letter-by-letter ink (brand `script` font), photo stamp, card flip |
 
 ## Motion rules

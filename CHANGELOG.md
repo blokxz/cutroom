@@ -26,6 +26,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - Operated-camera helpers in `lib/motion.ts` (`leadKeys`, `whipKeys`, `shake`, `holdFactor`, `latticePoints`, `EASE.whip`); `<Camera>` gains optional `holds` and `shakes`, and `<Lattice>` draws a far grid. `<MotionBlur travel>` sizes the blur samples by the declared travel (`samplesFor`). All optional: existing pieces render unchanged.
 
+- Moves `LightFlood` (light floods the frame and drains in rings onto the next scene), `Belt` (ramp, cruise and an exact brake on an item), `ObjectWipe` (an object crosses the lens and uncovers the next place) and `Calendar` (pages tear off a hinge). Pure math exported and unit-tested, Studio demos `MovesDemo-LightFlood|Belt|ObjectWipe|Calendar`. Families `light_flood`, `continuous_surface`, `object_wipe` and `calendar` are now `ready` (26 of 30).
+
 ### Removed
 
 - The worked-example client and its four pieces: every client asset, brief and example built for it. The kit now ships only a fictional `sample` client (generated photos and logo, SIL OFL fonts, generated music) and one example, `SamplePost`, used by the tests, CI and `doctor.py`. Real clients are created from scratch through `/cutroom:video`.

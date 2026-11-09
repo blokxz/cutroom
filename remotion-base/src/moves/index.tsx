@@ -22,6 +22,13 @@
  *                 scene out of the keyhole; a door swings open at the end  (./Key)
  *   WrittenPostcard  handwriting fills the back of a postcard, a photo stamp lands,
  *                 the card flips to show the place                 (./WrittenPostcard)
+ *   LightFlood    a field of light floods the frame and drains in rings onto the
+ *                 next scene                                         (./LightFlood)
+ *   Belt          places on a belt that starts, cruises and brakes exactly on an item
+ *                                                                    (./Belt)
+ *   ObjectWipe    an object crosses the lens and uncovers the next place (./ObjectWipe)
+ *   Calendar      desk-calendar pages tear off and reveal the place under them
+ *                                                                    (./Calendar)
  */
 import React from "react";
 import {
@@ -252,3 +259,7 @@ export * from "./LightArc";
 export * from "./PathCamera";
 export * from "./Key";
 export * from "./WrittenPostcard";
+export * from "./LightFlood";
+export * from "./Belt";
+export * from "./ObjectWipe";
+export * from "./Calendar";

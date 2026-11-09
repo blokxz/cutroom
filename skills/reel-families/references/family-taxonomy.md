@@ -31,16 +31,16 @@ Pick by material: photos → `kind: photo`; no photos → `generic`; clips → a
 | light_clock | photo | light | none | the frame | LightArc | ready |
 | before_after_rest | photo | shape | mask | the seam | MaskReveal | ready |
 | match_cut | photo | shape | match | matched shape + position | Morph | ready |
-| object_wipe | photo | object | wipe | wiping object + direction | — | needs-move |
+| object_wipe | photo | object | wipe | wiping object + direction | ObjectWipe | ready |
 | film_strip | photo | surface | morph | the strip | — | needs-move |
 | scrapbook | photo | surface | fall | the page | PostcardDrop | ready |
 | chain_reaction | photo | object | contact | the cause, always visible | — | needs-move |
 | dive_through_scale | photo | camera | camera | anchor point | pushThrough | ready |
-| calendar | photo | surface | wipe | calendar block | — | needs-move |
+| calendar | photo | surface | wipe | calendar block | Calendar | ready |
 | letters_as_windows | photo | text | window | letterforms | pushThrough, MaskReveal | ready |
 | thread | photo | object | wipe | the thread | PathTrail | ready |
 | depth | photo | camera | camera | camera + nearest plane | — | needs-move |
-| light_flood | photo | light | iris | the field of light | — | needs-move |
-| continuous_surface | photo | surface | camera | the belt | — | needs-move |
+| light_flood | photo | light | iris | the field of light | LightFlood | ready |
+| continuous_surface | photo | surface | camera | the belt | Belt | ready |
 
 Set rule (F-04): 3 concepts ⇒ ≥ 2 distinct `carry_kind`, ≥ 2 distinct `boundary`, 3 distinct ids.
