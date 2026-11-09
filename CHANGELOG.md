@@ -34,7 +34,7 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - `docs/cases/`: a case template and the first case, `sample-post.md`, with real verifier numbers (what was rejected is marked "not recorded", never reconstructed).
 
-- Second example piece `SampleDates` (reel, family `calendar`): a desk calendar whose pages tear away and leave a place each. It goes from brief to delivered through `pipeline.py` on the sample client (0 FAIL, 0 WARN; the beat sheet is hand-written and checked with `variation.py check`) and uses `Camera` `holds` and `shakes`, `Lattice`, `Calendar` with `trackId`, travel-sized blur and cue-driven sound (`dates.cues.json`). Case: `docs/cases/sample-dates.md`.
+- Second example piece `SampleDates` (reel, family `calendar`): a desk calendar whose pages tear away and leave a place each. It goes from brief to delivered through `pipeline.py` on the sample client (0 FAIL, 0 WARN; the beat sheet is hand-written and checked with `variation.py check`) and uses `Camera` `holds` and `shakes`, `Lattice`, `Calendar` with `trackId`, travel-sized blur and a cue-driven stereo score (`clients/sample/assets/score/sample-dates.wav`). Case: `docs/cases/sample-dates.md`.
 
 ### Removed
 
@@ -42,6 +42,7 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 ### Fixed
 
+- `tools/master.py` measures the true peak of the encoded AAC file and encodes again with a lower ceiling when AAC overshoots (the first-pass measurement could not see that).
 - Clips and the HLG test source keep their colour transfer on ffmpeg builds that no longer carry `-color_trc` into the stream (x264 now writes the VUI itself).
 - Windows: `material`, `variation`, `reel_summary`, `sound_events`, `check_skill` and `models` print UTF-8 on legacy code pages; the read-only guard no longer lowercases paths when its check is case-sensitive; tests tolerate a repo on another drive.
 

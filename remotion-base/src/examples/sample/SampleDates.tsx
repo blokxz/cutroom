@@ -14,10 +14,11 @@
  * | 4.3–5.0   | tear May       | last tear; the free-dates page shows  | ground         | calendar block    |
  * | 5.0–8.0   | CTA hold       | one pulse on the number               | everything     | —                 |
  *
- * Sound: the cue list in dates.cues.json comes from tools/sound_events.py run on the draft render.
+ * Sound: one stereo score (cues panned by screen position) mixed by tools/sound_events.py from the draft's track.json:
+ *   python3 tools/sound_events.py remotion-base/out/sample-dates/SampleDates-draft.track.json --out clients/sample/assets/score/sample-dates.wav
  */
 import React from "react";
-import { AbsoluteFill, Img, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, useCurrentFrame, useVideoConfig } from "remotion";
 import { Audio } from "@remotion/media";
 import { Accent } from "../../components/Accent";
 import { Camera, Lattice } from "../../components/Camera";
@@ -30,7 +31,6 @@ import { EASE, land, tween } from "../../lib/motion";
 import { Calendar } from "../../moves";
 import { SAMPLE as B, CONTACT, asset } from "./brand";
 import { Brief, Copy, CopyProvider, contactFrom, useCopy } from "../../lib/brief";
-import cues from "./dates.cues.json";
 
 export const SAMPLE_DATES_FRAMES = 240;
 
@@ -172,11 +172,7 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
           </MotionBlur>
         </Camera>
 
-        {(cues as { f: number; effect: string; volume: number }[]).map((c) => (
-          <Sequence key={`${c.f}-${c.effect}`} from={c.f} layout="none">
-            <Audio src={staticFile(`sfx/${c.effect}.wav`)} volume={c.volume} />
-          </Sequence>
-        ))}
+        <Audio src={asset("score/sample-dates.wav")} />
 
         {showSafeZones && <SafeZones format={FORMATS.reel} />}
       </AbsoluteFill>

@@ -411,6 +411,7 @@ export const LightFloodDemo: React.FC = () => (
     <Paper color={B.colors.ground} />
     {fullPhoto("photos/sample-1.jpg")}
     <LightFlood
+      trackId="flood"
       spec={{ at: 20, riseS: 0.4, holdS: 0.2, drainS: 1.1 }}
       center={{ x: 540, y: 1500 }}
       glow="#F2B160"
@@ -434,6 +435,7 @@ export const BeltDemo: React.FC = () => (
   <AbsoluteFill>
     <Paper color={B.colors.ground} />
     <Belt
+      trackId="belt"
       spec={{
         at: 10,
         durS: 3.4,

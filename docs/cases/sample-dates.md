@@ -36,7 +36,7 @@ Goal: a reel that opens the studio's booking season. Copy: headline "Tus fechas 
 | carried boundaries | 3 / 3, none replaced | every move boundary has a survivor |
 | t80 median / IQR | 0.64 / 0.15 | no curve warning |
 | max speed | 442 px/frame, 61 fast frames | all inside `<MotionBlur>` |
-| loudness / true peak | −16.2 LUFS / −1.9 dBFS | mastered by `tools/master.py` |
+| loudness / true peak | −16.0 LUFS / −1.5 dBFS | mastered by `tools/master.py`, which now measures the encoded file |
 | final hold / end still fraction | 1.67 s / 1.0 | no end-hold warning |
 | result | 0 FAIL, 0 WARN, 2 INFO (loop seam, faces skipped) | |
 
@@ -48,7 +48,7 @@ Goal: a reel that opens the studio's booking season. Copy: headline "Tus fechas 
 
 ## Sound
 
-`python3 tools/sound_events.py remotion-base/out/sample-dates/SampleDates-draft.track.json --json remotion-base/src/examples/sample/dates.cues.json` derived 5 cues for 7 beats: a `tap` when the calendar appears, an `air-in` on each of the three tears, a `chime` at the CTA hold. The composition places one `<Audio>` per cue from that file. Limit found: the cue pan is not applied (a per-cue `<Audio>` is mono); a single `score.wav` from `--out` keeps the pan.
+`python3 tools/sound_events.py remotion-base/out/sample-dates/SampleDates-draft.track.json --out clients/sample/assets/score/sample-dates.wav` derived 5 cues for 7 beats (a `tap` when the calendar appears, an `air-in` on each of the three tears, a `chime` at the CTA hold) and mixed them into one stereo score; the composition plays it as a single `<Audio>`, so the pan from screen position is kept. Final render: −16.0 LUFS, −1.5 dBFS true peak, no audio finding. The first version placed one mono `<Audio>` per cue and lost the pan, which is why it was replaced.
 
 ## Rejected and why
 

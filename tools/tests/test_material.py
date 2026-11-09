@@ -169,7 +169,8 @@ def test_guard_is_case_insensitive_on_macos_and_windows(env, monkeypatch):
     monkeypatch.setattr(guard, "_case_insensitive", lambda: True)
     assert guard.is_protected(upper)
     monkeypatch.setattr(guard, "_case_insensitive", lambda: False)
-    assert not guard.is_protected(upper)
+    if not upper.parent.exists():  # on a case-insensitive disk realpath restores the real case, so the path is protected anyway
+        assert not guard.is_protected(upper)
     monkeypatch.undo()
     for platform, expected in (("darwin", True), ("win32", True), ("linux", guard.os.name == "nt")):
         monkeypatch.setattr(guard.sys, "platform", platform)
@@ -393,12 +394,13 @@ def test_clip_hdr_is_tone_mapped(env):
     assert meta["hdr"] and meta["hdr_format"] == "HLG"
     out = env["tmp"] / "out" / "hlg-sdr.mp4"
     res = clips.prepare(v, str(out), start=0, dur=0.5, preset="ultrafast")
-    check_clip(str(out), frames=15)
     assert res["hdr"]
     if clips.can_tonemap():
+        check_clip(str(out), frames=15)
         assert res["tonemapped"] and res["warnings"] == []
-    else:
+    else:  # without a tone mapper the clip keeps the source's transfer and the user is warned
         assert not res["tonemapped"] and res["warnings"]
+        assert int(stream_info(str(out))["streams"][0]["nb_frames"]) == 15
 
 
 def test_clip_rotation_metadata(env):
