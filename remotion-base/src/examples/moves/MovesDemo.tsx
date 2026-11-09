@@ -14,6 +14,10 @@
  *   MovesDemo-Belt          four places on a belt that starts, cruises and brakes on the last
  *   MovesDemo-ObjectWipe    a bar crosses the lens and uncovers the next place
  *   MovesDemo-Calendar      pages tear off one by one; the last page stays for the dates
+ *   MovesDemo-FilmStrip     a film strip rolls through the lens, then one frame grows to fill the screen
+ *   MovesDemo-Dominoes      photo cards tip over one after another, each starting on contact
+ *   MovesDemo-CauseEffect   a ball hits a card: it squashes on that frame and a ring spreads from it
+ *   MovesDemo-Depth         one camera dollies through layers; parallax and a focus pull
  */
 import React from "react";
 import {
@@ -43,6 +47,10 @@ import {
   PostcardDrop,
   Belt,
   Calendar,
+  CauseEffect,
+  DepthStage,
+  Dominoes,
+  FilmStrip,
   LightFlood,
   ObjectWipe,
   buildPath,
@@ -61,6 +69,10 @@ export const MOVES_DEMO_FRAMES = {
   belt: 130,
   wipe: 100,
   calendar: 210,
+  strip: 190,
+  dominoes: 150,
+  cause: 120,
+  depth: 150,
 };
 
 // ------------------------------------------------------------------ PostcardDrop
@@ -507,6 +519,95 @@ export const CalendarDemo: React.FC = () => (
             </div>
           ),
         },
+      ]}
+    />
+  </AbsoluteFill>
+);
+
+// ------------------------------------------------------------------ FilmStrip
+export const FilmStripDemo: React.FC = () => (
+  <AbsoluteFill>
+    <Paper color={B.colors.ground} />
+    <FilmStrip
+      frames={["photos/sample-1.jpg", "photos/sample-2.jpg", "photos/sample-3.jpg", "photos/sample-4.jpg"].map(fullPhoto)}
+      cell={{ w: 560, h: 760 }}
+      y={960}
+      x0={540}
+      stops={[
+        { at: 20, index: 1 },
+        { at: 62, index: 2 },
+        { at: 104, index: 3 },
+      ]}
+      grow={{ index: 3, at: 146, growS: 1, fill: { x: 0, y: 0, w: 1080, h: 1920 } }}
+    />
+  </AbsoluteFill>
+);
+
+// ------------------------------------------------------------------ Dominoes
+export const DominoesDemo: React.FC = () => (
+  <AbsoluteFill>
+    <Paper color={B.colors.ground} />
+    <AbsoluteFill style={{ top: 0 }}>{fullPhoto("photos/sample-6.jpg")}</AbsoluteFill>
+    <Dominoes
+      cards={["photos/sample-1.jpg", "photos/sample-2.jpg", "photos/sample-3.jpg", "photos/sample-4.jpg", "photos/sample-5.jpg"].map(fullPhoto)}
+      card={{ w: 190, h: 720 }}
+      x0={130}
+      floorY={1500}
+      spacing={200}
+      first={18}
+      opts={{ fallS: 0.8, contactDeg: 20 }}
+    />
+  </AbsoluteFill>
+);
+
+// ------------------------------------------------------------------ CauseEffect
+export const CauseEffectDemo: React.FC = () => (
+  <AbsoluteFill>
+    <Paper color={B.colors.ground} />
+    <CauseEffect
+      spec={{ from: { x: 110, y: 760 }, to: { x: 262, y: 960 }, start: 10, hitAt: 44, rebound: 50 }}
+      targetAt={{ x: 540, y: 960 }}
+      cause={<div style={{ width: 110, height: 110, borderRadius: "50%", background: B.colors.accent }} />}
+      target={<div style={{ width: 420, height: 560, borderRadius: 26, overflow: "hidden", position: "relative" }}>{fullPhoto("photos/sample-2.jpg")}</div>}
+      effectFrames={30}
+      effect={(p) => (
+        <div
+          style={{
+            position: "absolute",
+            left: -(150 + p * 520),
+            top: -(150 + p * 520),
+            width: 300 + p * 1040,
+            height: 300 + p * 1040,
+            borderRadius: "50%",
+            border: `${Math.max(2, 22 * (1 - p))}px solid ${B.colors.accent}`,
+            opacity: 1 - p,
+          }}
+        />
+      )}
+    />
+  </AbsoluteFill>
+);
+
+// ------------------------------------------------------------------ Depth
+const panel = (bg: string, w: number, h: number, round = 24) => (
+  <div style={{ width: w, height: h, borderRadius: round, background: bg, boxShadow: "0 30px 60px -20px rgba(0,0,0,.4)" }} />
+);
+
+export const DepthDemo: React.FC = () => (
+  <AbsoluteFill>
+    <Paper color={B.colors.ground} />
+    <DepthStage
+      keys={[
+        { f: 0, x: 0, y: 0, z: -300, focusZ: -400 },
+        { f: 70, x: 60, y: 0, z: 100, focusZ: 300 },
+        { f: 150, x: 140, y: -40, z: 700, focusZ: 1000 },
+      ]}
+      layers={[
+        { z: 1800, x: 0, y: 0, id: "far", node: <div style={{ width: 4400, height: 6200, position: "relative", overflow: "hidden" }}>{fullPhoto("photos/sample-6.jpg")}</div> },
+        { z: 1000, x: 90, y: -120, id: "mid-photo", node: <div style={{ width: 520, height: 700, borderRadius: 24, overflow: "hidden", position: "relative" }}>{fullPhoto("photos/sample-3.jpg")}</div> },
+        { z: 300, x: -200, y: 160, id: "card", node: <div style={{ width: 460, height: 620, borderRadius: 24, overflow: "hidden", position: "relative" }}>{fullPhoto("photos/sample-2.jpg")}</div> },
+        { z: -400, x: -380, y: -330, id: "near-a", node: panel(B.colors.accent, 260, 260, 130) },
+        { z: -500, x: 420, y: 380, id: "near-b", node: panel(B.colors.accent2, 220, 220, 110) },
       ]}
     />
   </AbsoluteFill>

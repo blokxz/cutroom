@@ -6,6 +6,10 @@ import { SAMPLE_DATES_FRAMES, SampleDates } from "./examples/sample/SampleDates"
 import {
   BeltDemo,
   CalendarDemo,
+  CauseEffectDemo,
+  DepthDemo,
+  DominoesDemo,
+  FilmStripDemo,
   KeyDemo,
   LightArcDemo,
   LightFloodDemo,
@@ -112,6 +116,38 @@ export const RemotionRoot: React.FC = () => {
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
           durationInFrames={MOVES_DEMO_FRAMES.calendar}
+        />
+        <Composition
+          id="MovesDemo-FilmStrip"
+          component={FilmStripDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.strip}
+        />
+        <Composition
+          id="MovesDemo-Dominoes"
+          component={DominoesDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.dominoes}
+        />
+        <Composition
+          id="MovesDemo-CauseEffect"
+          component={CauseEffectDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.cause}
+        />
+        <Composition
+          id="MovesDemo-Depth"
+          component={DepthDemo}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={MOVES_DEMO_FRAMES.depth}
         />
       </Folder>
     </>

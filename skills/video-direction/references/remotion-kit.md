@@ -25,6 +25,10 @@
 | `Belt` | `beltPose` | places on a belt: ramp, cruise, exact brake on item k (`distance = k * spacing`); `tau` clock |
 | `ObjectWipe` | `wipeBar barRect revealInset` | an object crosses the lens and uncovers the next scene |
 | `Calendar` | `tearPose pageInPlace` | pages tear off on a hinge, fall and fade; last page stays |
+| `FilmStrip` | `stripOffset cellRect` | a strip of frames rolls and stops on a cell; that frame grows to fill the screen |
+| `Dominoes` | `tipAngle chainStarts` | cards tip with gravity; card k+1 starts when card k reaches the contact angle |
+| `CauseEffect` | `approach impactPose effectProgress` | a cause accelerates into a target; squash, recoil and the effect start on the hit frame |
+| `DepthStage` | `layerScale layerOffset blurPx depthCameraAt` | one camera through supplied layers: parallax, dolly and a focus pull (blur by distance) |
 | `WrittenPostcard` | `Handwriting writeSchedule inkAt writingEnd Stamp Postcard flipAngle` | letter-by-letter ink (brand `script` font), photo stamp, card flip |
 
 ## Motion rules

@@ -1,6 +1,17 @@
 import { describe, expect, it } from "vitest";
 import {
   DAY_LIGHT,
+  approach,
+  blurPx,
+  cellRect,
+  chainStarts,
+  depthCameraAt,
+  effectProgress,
+  impactPose,
+  layerOffset,
+  layerScale,
+  stripOffset,
+  tipAngle,
   barRect,
   beltPose,
   floodAt,
@@ -530,5 +541,135 @@ describe("Calendar", () => {
     expect(pageInPlace(0, FPS, pages)).toBe(0);
     expect(pageInPlace(60, FPS, pages)).toBe(1); // page 0 has fallen, page 1 not torn yet
     expect(pageInPlace(9999, FPS, pages)).toBe(2);
+  });
+});
+
+// ------------------------------------------------------------------ FilmStrip
+describe("FilmStrip", () => {
+  const stops = [
+    { at: 20, index: 2 },
+    { at: 90, index: 3 },
+  ];
+  const off = (f: number) => stripOffset(f, FPS, stops, 500, 0.9);
+  it("rests before the first roll and lands exactly on each cell", () => {
+    expect(off(0)).toBe(0);
+    expect(off(20)).toBe(0);
+    expect(off(20 + 27)).toBeCloseTo(1000, 6);
+    expect(off(89)).toBeCloseTo(1000, 6);
+    expect(off(90 + 27)).toBeCloseTo(1500, 6);
+  });
+  it("never goes backwards on a forward roll and eases (slow ends, fast middle)", () => {
+    expect(nondec(range(0, 130).map(off))).toBe(true);
+    const v = (f: number) => off(f + 1) - off(f);
+    expect(v(20)).toBeLessThan(v(33));
+    expect(v(45)).toBeLessThan(v(33));
+  });
+  it("blends the growing frame between two rectangles", () => {
+    const a = { x: 100, y: 200, w: 300, h: 400 };
+    const b = { x: 0, y: 0, w: 1080, h: 1920 };
+    expect(cellRect(0, a, b)).toEqual(a);
+    expect(cellRect(1, a, b)).toEqual(b);
+    expect(cellRect(2, a, b)).toEqual(b);
+    expect(cellRect(0.5, a, b).w).toBeCloseTo(690, 9);
+  });
+});
+
+// ------------------------------------------------------------------ Dominoes
+describe("Dominoes", () => {
+  it("stands upright, then falls flat with gravity", () => {
+    expect(tipAngle(5, FPS, 10)).toBe(0);
+    expect(tipAngle(10, FPS, 10)).toBe(0);
+    expect(tipAngle(10 + 21, FPS, 10, { fallS: 0.7 })).toBeCloseTo(90, 9);
+    expect(tipAngle(999, FPS, 10)).toBe(90);
+    const mid = tipAngle(10 + 10.5, FPS, 10, { fallS: 0.7 });
+    expect(mid).toBeCloseTo(22.5, 6); // half the time is a quarter of the angle
+  });
+  it("starts each card when the one before reaches the contact angle", () => {
+    const s = chainStarts(5, 20, FPS, { fallS: 0.7, contactDeg: 22.5 });
+    expect(s[0]).toBe(20);
+    for (let k = 1; k < s.length; k++) {
+      const a = tipAngle(s[k], FPS, s[k - 1], { fallS: 0.7 });
+      expect(Math.abs(a - 22.5)).toBeLessThan(5); // within a frame of the contact
+    }
+    expect(nondec(s)).toBe(true);
+    expect(new Set(s).size).toBe(5);
+  });
+  it("a harder contact angle waits longer", () => {
+    const soft = chainStarts(3, 0, FPS, { contactDeg: 10 });
+    const hard = chainStarts(3, 0, FPS, { contactDeg: 40 });
+    expect(hard[1]).toBeGreaterThan(soft[1]);
+  });
+});
+
+// ------------------------------------------------------------------ CauseEffect
+describe("CauseEffect", () => {
+  const spec = { from: { x: 0, y: 0 }, to: { x: 400, y: 200 }, start: 10, hitAt: 40, rebound: 40 };
+  it("waits, accelerates into the contact and lands exactly on it", () => {
+    expect(approach(0, spec)).toEqual(spec.from);
+    expect(approach(40, spec)).toEqual(spec.to);
+    const xs = range(10, 40).map((f) => approach(f, spec).x);
+    expect(nondec(xs)).toBe(true);
+    const d = (f: number) => approach(f + 1, spec).x - approach(f, spec).x;
+    expect(d(35)).toBeGreaterThan(d(12)); // faster near the hit
+  });
+  it("rebounds a little after the contact and settles back on it", () => {
+    const after = range(41, 70).map((f) => approach(f, spec).x);
+    expect(Math.min(...after)).toBeLessThan(400);
+    expect(Math.min(...after)).toBeGreaterThan(400 - 40);
+    expect(approach(200, spec).x).toBeCloseTo(400, 6);
+  });
+  it("refuses a cause that hits before it starts", () => {
+    expect(() => approach(0, { ...spec, hitAt: 5 })).toThrow();
+  });
+  it("squashes the target on the hit frame and settles", () => {
+    expect(impactPose(39, FPS, 40)).toEqual({ sx: 1, sy: 1, recoil: 0 });
+    const hit = impactPose(40, FPS, 40);
+    expect(hit.sx).toBeGreaterThan(1);
+    expect(hit.sy).toBeLessThan(1);
+    expect(hit.sx * hit.sy).toBeLessThan(1.001); // volume roughly preserved
+    const late = impactPose(40 + 3 * FPS, FPS, 40);
+    expect(Math.abs(late.sx - 1)).toBeLessThan(0.002);
+  });
+  it("starts the effect on the hit frame", () => {
+    expect(effectProgress(39, 40, 20)).toBe(0);
+    expect(effectProgress(40, 40, 20)).toBe(0);
+    expect(effectProgress(50, 40, 20)).toBeCloseTo(0.5, 9);
+    expect(effectProgress(100, 40, 20)).toBe(1);
+  });
+});
+
+// ------------------------------------------------------------------ Depth
+describe("Depth", () => {
+  it("is 1 at the focal distance, grows when nearer and shrinks when far", () => {
+    expect(layerScale(0, 0)).toBe(1);
+    expect(layerScale(-500, 0)).toBeCloseTo(2, 9);
+    expect(layerScale(1000, 0)).toBeCloseTo(0.5, 9);
+  });
+  it("does not draw a layer at or behind the lens", () => {
+    expect(layerScale(-900, 0)).toBe(0);
+    expect(layerScale(-5000, 0)).toBe(0);
+  });
+  it("gives near layers more parallax than far ones for the same pan", () => {
+    const near = Math.abs(layerOffset(0, 100, layerScale(-500, 0)));
+    const far = Math.abs(layerOffset(0, 100, layerScale(1000, 0)));
+    expect(near).toBeGreaterThan(far * 3.9);
+  });
+  it("blurs nothing at the focus and more the farther from it, up to a cap", () => {
+    expect(blurPx(200, 0, 200)).toBe(0);
+    expect(blurPx(600, 0, 200)).toBeGreaterThan(blurPx(400, 0, 200));
+    expect(blurPx(9000, 0, 0, { max: 12 })).toBeLessThanOrEqual(12);
+    expect(blurPx(-950, 0, 0)).toBe(0);
+  });
+  it("moves the camera between keys, eased, and holds the ends", () => {
+    const keys = [
+      { f: 10, x: 0, y: 0, z: 0, focusZ: 0 },
+      { f: 70, x: 200, y: 0, z: 600, focusZ: 600 },
+    ];
+    expect(depthCameraAt(0, keys).z).toBe(0);
+    expect(depthCameraAt(10, keys).z).toBe(0);
+    expect(depthCameraAt(40, keys).z).toBeCloseTo(300, 6);
+    expect(depthCameraAt(70, keys).x).toBe(200);
+    expect(depthCameraAt(999, keys).focusZ).toBe(600);
+    expect(() => depthCameraAt(0, [])).toThrow();
   });
 });

@@ -63,13 +63,15 @@
    "carry_kind": "object",
    "boundary": "contact",
    "carry": "the cause",
-   "moves": [],
+   "moves": [
+    "CauseEffect"
+   ],
    "needs": [],
    "beats": [
     4,
     6
    ],
-   "status": "needs-move"
+   "status": "ready"
   },
   {
    "id": "physical_metaphor",
@@ -379,13 +381,15 @@
    "carry_kind": "surface",
    "boundary": "morph",
    "carry": "the strip",
-   "moves": [],
+   "moves": [
+    "FilmStrip"
+   ],
    "needs": [],
    "beats": [
     4,
     7
    ],
-   "status": "needs-move"
+   "status": "ready"
   },
   {
    "id": "scrapbook",
@@ -411,13 +415,15 @@
    "carry_kind": "object",
    "boundary": "contact",
    "carry": "the cause, always visible",
-   "moves": [],
+   "moves": [
+    "Dominoes"
+   ],
    "needs": [],
    "beats": [
     4,
     7
    ],
-   "status": "needs-move"
+   "status": "ready"
   },
   {
    "id": "dive_through_scale",
@@ -495,15 +501,15 @@
    "carry_kind": "camera",
    "boundary": "camera",
    "carry": "camera + nearest plane",
-   "moves": [],
-   "needs": [
-    "layer masks"
+   "moves": [
+    "DepthStage"
    ],
+   "needs": [],
    "beats": [
     4,
     7
    ],
-   "status": "needs-move"
+   "status": "ready"
   },
   {
    "id": "light_flood",

@@ -29,6 +29,10 @@
  *   ObjectWipe    an object crosses the lens and uncovers the next place (./ObjectWipe)
  *   Calendar      desk-calendar pages tear off and reveal the place under them
  *                                                                    (./Calendar)
+ *   FilmStrip     a film strip rolls, then one frame grows to fill the screen (./FilmStrip)
+ *   Dominoes      cards tip over one after another, each starting on contact (./Dominoes)
+ *   CauseEffect   a cause touches a target; squash and effect start on the hit (./CauseEffect)
+ *   DepthStage    one camera through layers: parallax and a focus pull (./Depth)
  */
 import React from "react";
 import {
@@ -263,3 +267,7 @@ export * from "./LightFlood";
 export * from "./Belt";
 export * from "./ObjectWipe";
 export * from "./Calendar";
+export * from "./FilmStrip";
+export * from "./Dominoes";
+export * from "./CauseEffect";
+export * from "./Depth";

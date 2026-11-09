@@ -14,7 +14,7 @@ Pick by material: photos → `kind: photo`; no photos → `generic`; clips → a
 |---|---|---|---|---|---|---|
 | transforming_object | generic | object | morph | the object | Morph | ready |
 | scale_camera | generic | camera | camera | the camera | pushThrough | ready |
-| cause_effect | generic | object | contact | the cause | — | needs-move |
+| cause_effect | generic | object | contact | the cause | CauseEffect | ready |
 | physical_metaphor | generic | object | morph | the prop | Morph | ready |
 | typographic_system | generic | text | mask | the words | SplitText, Typewriter, MaskReveal | ready |
 | window | photo | shape | window | window outline + opening point | ArchWindow | ready |
@@ -32,14 +32,14 @@ Pick by material: photos → `kind: photo`; no photos → `generic`; clips → a
 | before_after_rest | photo | shape | mask | the seam | MaskReveal | ready |
 | match_cut | photo | shape | match | matched shape + position | Morph | ready |
 | object_wipe | photo | object | wipe | wiping object + direction | ObjectWipe | ready |
-| film_strip | photo | surface | morph | the strip | — | needs-move |
+| film_strip | photo | surface | morph | the strip | FilmStrip | ready |
 | scrapbook | photo | surface | fall | the page | PostcardDrop | ready |
-| chain_reaction | photo | object | contact | the cause, always visible | — | needs-move |
+| chain_reaction | photo | object | contact | the cause, always visible | Dominoes | ready |
 | dive_through_scale | photo | camera | camera | anchor point | pushThrough | ready |
 | calendar | photo | surface | wipe | calendar block | Calendar | ready |
 | letters_as_windows | photo | text | window | letterforms | pushThrough, MaskReveal | ready |
 | thread | photo | object | wipe | the thread | PathTrail | ready |
-| depth | photo | camera | camera | camera + nearest plane | — | needs-move |
+| depth | photo | camera | camera | camera + nearest plane | DepthStage | ready |
 | light_flood | photo | light | iris | the field of light | LightFlood | ready |
 | continuous_surface | photo | surface | camera | the belt | Belt | ready |
 
