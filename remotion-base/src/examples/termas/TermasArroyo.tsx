@@ -27,70 +27,63 @@ import { Beat, Beats, Track, TrackRoot } from "../../components/Track";
 import { FORMATS } from "../../lib/formats";
 import { EASE, tween } from "../../lib/motion";
 import { Brief, CopyProvider, useCopy } from "../../lib/brief";
-import { PathCamera, PathTrail, buildPath, nearestLength } from "../../moves";
+import { MotionBlur } from "../../components/MotionBlur";
+import {
+  PathCamera,
+  StreamRibbon,
+  buildPath,
+  nearestLength,
+  streamCenter,
+  streamPoints,
+} from "../../moves";
 import { Cover, EndCard, PHOTOS, T, TERMAS_COPY, asset } from "./common";
 
 export const TERMAS_ARROYO_FRAMES = 360;
 
+const STOP_Y = [0, 1500, 3000, 4500, 6000, 7500];
+const BEND = { cx: 540, amp: 300, wavelength: 1150 };
 const STOPS = [
   {
     src: PHOTOS.stream,
-    x: 540,
-    y: 0,
     r: -2,
     name: "el arroyo",
     focus: [50, 50] as [number, number],
   },
   {
     src: PHOTOS.aerial,
-    x: 300,
-    y: 1500,
     r: 2,
     name: "vista aérea",
     focus: [50, 55] as [number, number],
   },
   {
     src: PHOTOS.sky,
-    x: 780,
-    y: 3000,
     r: -2,
     name: "cielo",
     focus: [50, 55] as [number, number],
   },
   {
     src: PHOTOS.indoor,
-    x: 300,
-    y: 4500,
     r: 2,
     name: "interior",
     focus: [50, 60] as [number, number],
   },
   {
     src: PHOTOS.sunrise,
-    x: 780,
-    y: 6000,
     r: -2,
     name: "amanecer",
     focus: [60, 50] as [number, number],
   },
   {
     src: PHOTOS.sunset,
-    x: 540,
-    y: 7500,
     r: 1,
     name: "atardecer",
     focus: [45, 55] as [number, number],
   },
-];
-// the line starts above the first photo and flows through every stop on S-curves
-const D = [
-  `M 540 -700 C 540 -350 ${STOPS[0].x} -350 ${STOPS[0].x} ${STOPS[0].y}`,
-  ...STOPS.slice(1).map((p, i) => {
-    const a = STOPS[i];
-    const my = (a.y + p.y) / 2;
-    return `C ${a.x} ${my} ${p.x} ${my} ${p.x} ${p.y}`;
-  }),
-].join(" ");
+].map((p, i) => ({ ...p, y: STOP_Y[i], x: streamCenter(STOP_Y[i], BEND) }));
+// the stream wanders: its centre line is sampled every 40 px and the camera walks it
+const D = `M ${streamPoints(-900, 7900, 40, BEND)
+  .map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
+  .join(" L ")}`;
 const TRAIL = buildPath(D);
 const AT = STOPS.map((p) => nearestLength(TRAIL, p));
 
@@ -141,52 +134,49 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
       <AbsoluteFill>
         <Beats beats={BEATS} />
         <Paper color={T.colors.ground} />
-        <PathCamera path={TRAIL} s={s} zoom={1} screen={{ x: 540, y: 960 }}>
-          <Lattice
-            bounds={{ x0: -600, y0: -1200, x1: 1700, y1: 8700 }}
-            spacing={170}
-            color={T.colors.ink}
-            opacity={0.1}
-          />
-          <PathTrail
-            path={TRAIL}
-            s={drawn}
-            color={T.colors.accent}
-            width={16}
-          />
-          {STOPS.map((p, i) => {
-            const landed =
-              i === 0 ? tween(frame, [8, 30], [0, 1], EASE.out) : 1;
-            return (
-              <Track key={p.src} id={`card-${i}`} kind="image" blurred>
-                <div
-                  style={{
-                    position: "absolute",
-                    left: p.x - 400,
-                    top: p.y - 520,
-                    width: 800,
-                    height: 1040,
-                    background: T.colors.paper,
-                    boxShadow: "0 30px 60px -24px rgba(18,50,74,.5)",
-                    rotate: `${p.r}deg`,
-                    opacity: landed,
-                    scale: String(0.94 + 0.06 * landed),
-                  }}
-                >
+        <MotionBlur shutterAngle={180} samples={5} travel={70}>
+          <PathCamera path={TRAIL} s={s} zoom={1} screen={{ x: 540, y: 960 }}>
+            <Lattice
+              bounds={{ x0: -600, y0: -1200, x1: 1700, y1: 8700 }}
+              spacing={170}
+              color={T.colors.ink}
+              opacity={0.06}
+            />
+            <StreamRibbon path={TRAIL} s={drawn} width={230} flow={s} />
+            {STOPS.map((p, i) => {
+              const landed =
+                i === 0 ? tween(frame, [8, 30], [0, 1], EASE.out) : 1;
+              return (
+                <Track key={p.src} id={`card-${i}`} kind="image" blurred>
                   <div
                     style={{
                       position: "absolute",
-                      inset: 24,
-                      overflow: "hidden",
+                      left: p.x - 370,
+                      top: p.y - 480,
+                      width: 740,
+                      height: 960,
+                      background: T.colors.paper,
+                      boxShadow: "0 30px 60px -24px rgba(18,50,74,.5)",
+                      rotate: `${p.r}deg`,
+                      opacity: landed,
+                      scale: String(0.94 + 0.06 * landed),
                     }}
                   >
-                    <Cover src={p.src} focus={p.focus} />
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 24,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Cover src={p.src} focus={p.focus} />
+                    </div>
                   </div>
-                </div>
-              </Track>
-            );
-          })}
-        </PathCamera>
+                </Track>
+              );
+            })}
+          </PathCamera>
+        </MotionBlur>
         <EndCard p={end} copy={copy} />
         <Sequence layout="none">
           <Audio src={asset("score/termas-arroyo.wav")} />

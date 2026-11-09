@@ -5,13 +5,13 @@
   "contact": {},
   "brand": {
     "colors": {
-      "ground": "#F6F1E7",
+      "ground": "#F6F0E8",
       "paper": "#FFFFFF",
-      "ink": "#12324A",
-      "soft": "#5A7184",
-      "accent": "#1F7FB8",
-      "accent2": "#E8894A",
-      "line": "#D5DDE0"
+      "ink": "#3F4A38",
+      "soft": "#7A7A6E",
+      "accent": "#8F6B6B",
+      "accent2": "#C9A3A3",
+      "line": "#D9D2C8"
     },
     "fonts": {
       "display": "DM Serif Display",
@@ -51,7 +51,7 @@
     ]
   },
   "voice": "Calm and warm; voseo rioplatense; short sentences; show the place, never press.",
-  "notes": "Photos supplied by the client; kept out of git. The logo file assets/logo.png is not in the repo.",
+  "notes": "Palette measured from the Bungalows Concordia logo (moss green, dusty rose, stone grey); the Instagram profile could not be read from the session. Photos supplied by the client; kept out of git. assets/logo.png is not in the repo.",
   "voice_guide": {
     "tone": "Cercano y simple, frases cortas; se muestra el trabajo más que los adjetivos. Nunca presión ni urgencia falsa.",
     "person": "voseo rioplatense, segunda persona singular",

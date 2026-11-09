@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   DAY_LIGHT,
+  headTaper,
+  ribbonSides,
+  streamCenter,
+  streamPoints,
+  streamWidthAt,
   silkPath,
   silkY,
   entrancePose,
@@ -437,21 +442,32 @@ describe("postcard flip", () => {
   });
 });
 
-const nondec = (xs: number[]) => xs.every((x, i) => i === 0 || x >= xs[i - 1] - 1e-9);
+const nondec = (xs: number[]) =>
+  xs.every((x, i) => i === 0 || x >= xs[i - 1] - 1e-9);
 const frames = (a: number, b: number) =>
   Array.from({ length: b - a + 1 }, (_, i) => a + i);
 
 describe("LightFlood", () => {
   const spec = { at: 30, riseS: 0.4, holdS: 0.2, drainS: 1 };
   it("is idle before the start and done after the drain", () => {
-    expect(floodAt(10, FPS, spec)).toEqual({ level: 0, drain: 0, phase: "idle" });
-    expect(floodAt(500, FPS, spec)).toEqual({ level: 1, drain: 1, phase: "done" });
+    expect(floodAt(10, FPS, spec)).toEqual({
+      level: 0,
+      drain: 0,
+      phase: "idle",
+    });
+    expect(floodAt(500, FPS, spec)).toEqual({
+      level: 1,
+      drain: 1,
+      phase: "done",
+    });
   });
   it("rises to 1, holds, then drains 0 → 1, never going backwards", () => {
     const s = frames(0, 90).map((f) => floodAt(f, FPS, spec));
     expect(nondec(s.map((x) => x.level))).toBe(true);
     expect(nondec(s.map((x) => x.drain))).toBe(true);
-    expect(s.some((x) => x.phase === "hold" && x.level === 1 && x.drain === 0)).toBe(true);
+    expect(
+      s.some((x) => x.phase === "hold" && x.level === 1 && x.drain === 0),
+    ).toBe(true);
     expect(s.every((x) => x.drain === 0 || x.level === 1)).toBe(true);
   });
   it("rings leave one point in order: ring 0 first and largest", () => {
@@ -462,7 +478,9 @@ describe("LightFlood", () => {
       expect(r[1]).toBeGreaterThanOrEqual(r[2]);
     }
     expect(ringRadii(1, 3, 1000)).toEqual([1000, 1000, 1000]);
-    expect(nondec(frames(0, 20).map((i) => ringRadii(i / 20, 3, 1000)[2]))).toBe(true);
+    expect(
+      nondec(frames(0, 20).map((i) => ringRadii(i / 20, 3, 1000)[2])),
+    ).toBe(true);
   });
 });
 
@@ -511,21 +529,36 @@ describe("ObjectWipe", () => {
   });
   it("places the bar and the clip for every direction", () => {
     expect(barRect("right", 400, 360, 1080, 1920)).toEqual({
-      left: 40, top: 0, width: 360, height: 1920,
+      left: 40,
+      top: 0,
+      width: 360,
+      height: 1920,
     });
     expect(barRect("left", 400, 360, 1080, 1920).left).toBe(680);
     expect(barRect("down", 400, 360, 1080, 1920).top).toBe(40);
     expect(barRect("up", 400, 360, 1080, 1920).top).toBe(1520);
-    expect(revealInset("right", 300, 1080, 1920)).toBe("inset(0px 780px 0px 0px)");
-    expect(revealInset("left", 300, 1080, 1920)).toBe("inset(0px 0px 0px 780px)");
-    expect(revealInset("down", 300, 1080, 1920)).toBe("inset(0px 0px 1620px 0px)");
+    expect(revealInset("right", 300, 1080, 1920)).toBe(
+      "inset(0px 780px 0px 0px)",
+    );
+    expect(revealInset("left", 300, 1080, 1920)).toBe(
+      "inset(0px 0px 0px 780px)",
+    );
+    expect(revealInset("down", 300, 1080, 1920)).toBe(
+      "inset(0px 0px 1620px 0px)",
+    );
     expect(revealInset("up", 1920, 1080, 1920)).toBe("inset(0px 0px 0px 0px)");
   });
 });
 
 describe("Calendar", () => {
   it("keeps the page in place until it is torn", () => {
-    expect(tearPose(20, FPS, 30)).toEqual({ x: 0, y: 0, r: 0, opacity: 1, gone: false });
+    expect(tearPose(20, FPS, 30)).toEqual({
+      x: 0,
+      y: 0,
+      r: 0,
+      opacity: 1,
+      gone: false,
+    });
   });
   it("lifts on its hinge, then falls and fades out", () => {
     const lift = tearPose(30 + 3, FPS, 30);
@@ -607,7 +640,13 @@ describe("Dominoes", () => {
 
 // ------------------------------------------------------------------ CauseEffect
 describe("CauseEffect", () => {
-  const spec = { from: { x: 0, y: 0 }, to: { x: 400, y: 200 }, start: 10, hitAt: 40, rebound: 40 };
+  const spec = {
+    from: { x: 0, y: 0 },
+    to: { x: 400, y: 200 },
+    start: 10,
+    hitAt: 40,
+    rebound: 40,
+  };
   it("waits, accelerates into the contact and lands exactly on it", () => {
     expect(approach(0, spec)).toEqual(spec.from);
     expect(approach(40, spec)).toEqual(spec.to);
@@ -708,7 +747,11 @@ describe("Entrances", () => {
 
 describe("gatherPose", () => {
   const spec = {
-    origins: [{ x: 0, y: 0 }, { x: 1000, y: 0 }, { x: 500, y: 1000 }],
+    origins: [
+      { x: 0, y: 0 },
+      { x: 1000, y: 0 },
+      { x: 500, y: 1000 },
+    ],
     target: { x: 500, y: 500 },
     start: 10,
     stagger: 6,
@@ -730,7 +773,12 @@ describe("gatherPose", () => {
     expect(arr[2] - arr[1]).toBe(6);
   });
   it("only gets closer to the target while travelling", () => {
-    const d = range(10, 34).map((f) => Math.hypot(gatherPose(f, FPS, 0, spec).x - 500, gatherPose(f, FPS, 0, spec).y - 500));
+    const d = range(10, 34).map((f) =>
+      Math.hypot(
+        gatherPose(f, FPS, 0, spec).x - 500,
+        gatherPose(f, FPS, 0, spec).y - 500,
+      ),
+    );
     expect(d.every((v, i) => i === 0 || v <= d[i - 1] + 1e-9)).toBe(true);
   });
 });
@@ -741,7 +789,10 @@ describe("Silk", () => {
   it("is a pure function of the frame and loops exactly", () => {
     for (const x of [0, 0.25, 0.7, 1]) {
       expect(silkY(x, 1, 3, 17, opts)).toBe(silkY(x, 1, 3, 17, opts));
-      expect(silkY(x, 1, 3, 17 + 120, opts)).toBeCloseTo(silkY(x, 1, 3, 17, opts), 9);
+      expect(silkY(x, 1, 3, 17 + 120, opts)).toBeCloseTo(
+        silkY(x, 1, 3, 17, opts),
+        9,
+      );
     }
   });
   it("stays near its band and never jumps between neighbouring frames", () => {
@@ -757,7 +808,8 @@ describe("Silk", () => {
   });
   it("keeps ribbons from crossing at the default amplitude", () => {
     for (let f = 0; f < 240; f += 7) {
-      for (let k = 0; k < 2; k++) expect(silkY(0.3, k, 3, f)).toBeLessThan(silkY(0.3, k + 1, 3, f));
+      for (let k = 0; k < 2; k++)
+        expect(silkY(0.3, k, 3, f)).toBeLessThan(silkY(0.3, k + 1, 3, f));
     }
   });
   it("draws a closed path from corner to corner", () => {
@@ -765,5 +817,60 @@ describe("Silk", () => {
     expect(d.startsWith("M0,1920 L")).toBe(true);
     expect(d.endsWith("L1080,1920 Z")).toBe(true);
     expect(d.split("L").length).toBe(1 + 49 + 1);
+  });
+});
+
+// ------------------------------------------------------------------ Stream
+describe("Stream", () => {
+  it("wanders: the centre line is deterministic, bounded and continuous", () => {
+    const o = { cx: 540, amp: 300, wavelength: 1150 };
+    for (let y = -500; y < 8000; y += 37) {
+      expect(streamCenter(y, o)).toBe(streamCenter(y, o));
+      expect(Math.abs(streamCenter(y, o) - 540)).toBeLessThanOrEqual(300.0001);
+      expect(
+        Math.abs(streamCenter(y + 1, o) - streamCenter(y, o)),
+      ).toBeLessThan(2.5);
+    }
+  });
+  it("really meanders: it crosses its own axis several times over a long course", () => {
+    const pts = streamPoints(0, 6000, 40);
+    let crossings = 0;
+    for (let i = 1; i < pts.length; i++)
+      if ((pts[i].x - 540) * (pts[i - 1].x - 540) < 0) crossings++;
+    expect(crossings).toBeGreaterThanOrEqual(8);
+  });
+  it("samples from y0 to y1 inclusive, in order", () => {
+    const pts = streamPoints(-100, 900, 40);
+    expect(pts[0].y).toBe(-100);
+    expect(pts[pts.length - 1].y).toBe(900);
+    expect(pts.every((p, i) => i === 0 || p.y > pts[i - 1].y)).toBe(true);
+  });
+  it("varies in width between pools and riffles but never closes", () => {
+    const ws = Array.from({ length: 400 }, (_, i) =>
+      streamWidthAt(i * 20, 200),
+    );
+    expect(Math.max(...ws) / Math.min(...ws)).toBeGreaterThan(1.4);
+    expect(Math.min(...ws)).toBeGreaterThan(80);
+  });
+  it("builds a ribbon whose edges stay half a width from the centre line", () => {
+    const pts = [
+      { x: 0, y: 0 },
+      { x: 0, y: 100 },
+      { x: 0, y: 200 },
+    ];
+    const { left, right } = ribbonSides(pts, () => 60);
+    left.forEach((l, i) =>
+      expect(Math.hypot(l.x - pts[i].x, l.y - pts[i].y)).toBeCloseTo(30, 9),
+    );
+    right.forEach((r, i) =>
+      expect(Math.hypot(r.x - pts[i].x, r.y - pts[i].y)).toBeCloseTo(30, 9),
+    );
+    expect(left[1].x * right[1].x).toBeLessThan(0); // opposite sides
+  });
+  it("tapers the head to a point and is full width behind it", () => {
+    expect(headTaper(0)).toBe(0);
+    expect(headTaper(260)).toBe(1);
+    expect(headTaper(5000)).toBe(1);
+    expect(headTaper(130)).toBeCloseTo(0.5, 9);
   });
 });

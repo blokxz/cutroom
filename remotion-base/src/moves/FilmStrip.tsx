@@ -85,7 +85,11 @@ export const FilmStrip: React.FC<{
   const { fps } = useVideoConfig();
   const spacing = cell.w + gap;
   const rolled = stripOffset(f, fps, stops, spacing, moveS);
-  const pad = 44;
+  // the edge bands carry big rounded sprocket holes so the strip reads as film at a glance
+  const pad = 100;
+  const holeW = 46;
+  const holeH = 62;
+  const holeGap = spacing / 6;
   const strip = (
     <>
       <div
@@ -98,18 +102,21 @@ export const FilmStrip: React.FC<{
           background: stripColor,
         }}
       >
-        {Array.from({ length: (frames.length + 4) * 4 }, (_, i) => (
+        {Array.from({ length: (frames.length + 4) * 6 }, (_, i) => (
           <React.Fragment key={i}>
-            {[8, cell.h + pad * 2 - 24].map((top) => (
+            {[
+              (pad - holeH) / 2,
+              cell.h + pad * 2 - (pad - holeH) / 2 - holeH,
+            ].map((top) => (
               <div
                 key={top}
                 style={{
                   position: "absolute",
-                  left: 12 + i * (spacing / 4),
+                  left: holeGap / 2 - holeW / 2 + i * holeGap,
                   top,
-                  width: 22,
-                  height: 16,
-                  borderRadius: 4,
+                  width: holeW,
+                  height: holeH,
+                  borderRadius: 11,
                   background: "#F2EFE8",
                 }}
               />

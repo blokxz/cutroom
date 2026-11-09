@@ -101,7 +101,7 @@ export const EndCard: React.FC<{ p: number; copy: Copy }> = ({ p, copy }) => (
   <AbsoluteFill style={{ opacity: p }}>
     <AbsoluteFill
       style={{
-        background: "linear-gradient(rgba(8,30,48,.38), rgba(8,30,48,.62))",
+        background: "linear-gradient(rgba(36,44,30,.40), rgba(36,44,30,.66))",
       }}
     />
     <Track id="logo" kind="logo">
@@ -145,7 +145,7 @@ export const EndCard: React.FC<{ p: number; copy: Copy }> = ({ p, copy }) => (
           right: 0,
           top: 1110,
           textAlign: "center",
-          color: "#FFD9B8",
+          color: "#F3DEDE",
           fontFamily: T.fonts.display,
           fontStyle: "italic",
           fontSize: 64,

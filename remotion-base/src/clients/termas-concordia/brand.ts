@@ -5,13 +5,13 @@ import { staticFile } from "remotion";
 export const TERMAS_CONCORDIA: Brand = {
   name: "Termas Concordia",
   colors: {
-    ground: "#F6F1E7",
+    ground: "#F6F0E8",
     paper: "#FFFFFF",
-    ink: "#12324A",
-    soft: "#5A7184",
-    accent: "#1F7FB8",
-    accent2: "#E8894A",
-    line: "#D5DDE0",
+    ink: "#3F4A38",
+    soft: "#7A7A6E",
+    accent: "#8F6B6B",
+    accent2: "#C9A3A3",
+    line: "#D9D2C8",
   },
   fonts: { display: "DM Serif Display", text: "Inter", script: "Caveat" },
 };

@@ -15,7 +15,8 @@
     "subtitle": "",
     "lines": [],
     "avoid": [
-      "window openings, irises and keyholes"
+      "window openings, irises and keyholes",
+      "sun and moon discs (light_clock, day_arc, coffee_to_evening)"
     ]
   },
   "assets": {
@@ -169,7 +170,9 @@
     "No contact on screen: none was given. The closing card shows the logo, the tagline and 'Reservá tu visita'. Add a number when the client sends it.",
     "Logo: the Termas Concordia logo file was not supplied as a file, so the closing card falls back to the name in type until clients/termas-concordia/assets/logo.png exists.",
     "Family: film_strip (FilmStrip); the user asked for plans A, B and C and no window family. Film sprocket holes could read as frames; flagged to the user.",
-    "Photos with a @termasconcordia watermark were cropped at the bottom."
+    "Photos with a @termasconcordia watermark were cropped at the bottom.",
+    "Reel A (light_clock) was discarded by the client: its sun disc did not read as a real sun. Families with a sun or moon disc stay out of this client's work.",
+    "Palette: measured from the Bungalows Concordia logo (moss #3F4A38, dusty rose #8F6B6B / #C9A3A3, cream #F6F0E8); the Instagram profile could not be fetched from this session."
   ],
   "notes": ""
 }
