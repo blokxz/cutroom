@@ -59,3 +59,53 @@ export const CarouselSlide: React.FC<CarouselSlideProps> = ({ photo, label, inde
     </AbsoluteFill>
   );
 };
+
+export type CarouselCoverProps = {
+  photo: string;
+  title: string;
+  subtitle: string;
+  total: number;
+  focus?: [number, number];
+};
+
+export const COVER_DEFAULTS: CarouselCoverProps = {
+  photo: "carousel/4.jpg",
+  title: "Recorrido",
+  subtitle: "5 ambientes · deslizá",
+  total: 6,
+};
+
+/** The first slide: same photo treatment and progress bar, with a title in place of a room name. */
+export const CarouselCover: React.FC<CarouselCoverProps> = ({ photo, title, subtitle, total, focus = [50, 50] }) => {
+  const m = FORMATS.post.safe;
+  return (
+    <AbsoluteFill style={{ background: "#111" }}>
+      <Img
+        src={staticFile(photo)}
+        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${focus[0]}% ${focus[1]}%` }}
+      />
+      <AbsoluteFill style={{ background: "linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.2) 55%, rgba(0,0,0,.15) 100%)" }} />
+      <div style={{ position: "absolute", left: m.left + 20, right: m.right + 20, bottom: m.bottom + 80, color: "#fff" }}>
+        <div style={{ fontFamily: B.fonts.display, fontSize: 190, lineHeight: 0.95 }}>{title}</div>
+        <div
+          style={{
+            fontFamily: B.fonts.text,
+            fontWeight: 500,
+            fontSize: 30,
+            letterSpacing: "0.32em",
+            textTransform: "uppercase",
+            marginTop: 26,
+            opacity: 0.9,
+          }}
+        >
+          {subtitle} →
+        </div>
+      </div>
+      <div style={{ position: "absolute", left: m.left + 20, right: m.right + 20, bottom: m.bottom + 20, display: "flex", gap: 10 }}>
+        {Array.from({ length: total }, (_, i) => (
+          <div key={i} style={{ flex: 1, height: 6, borderRadius: 3, background: i === 0 ? "#fff" : "rgba(255,255,255,.35)" }} />
+        ))}
+      </div>
+    </AbsoluteFill>
+  );
+};

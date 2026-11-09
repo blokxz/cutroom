@@ -2,7 +2,7 @@ import React from "react";
 import { Composition, Folder } from "remotion";
 import { FORMATS } from "./lib/formats";
 import { SAMPLE_POST_FRAMES, SamplePost } from "./examples/sample/SamplePost";
-import { CAROUSEL_DEFAULTS, CarouselSlide } from "./examples/sample/CarouselSlide";
+import { CAROUSEL_DEFAULTS, COVER_DEFAULTS, CarouselCover, CarouselSlide } from "./examples/sample/CarouselSlide";
 import { SAMPLE_DATES_FRAMES, SampleDates } from "./examples/sample/SampleDates";
 import {
   BeltDemo,
@@ -44,6 +44,15 @@ export const RemotionRoot: React.FC = () => {
           fps={FORMATS.post.fps}
           durationInFrames={1}
           defaultProps={CAROUSEL_DEFAULTS}
+        />
+        <Composition
+          id="CarouselCover"
+          component={CarouselCover}
+          width={FORMATS.post.width}
+          height={FORMATS.post.height}
+          fps={FORMATS.post.fps}
+          durationInFrames={1}
+          defaultProps={COVER_DEFAULTS}
         />
         <Composition
           id="SampleDates"
