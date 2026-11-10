@@ -36,7 +36,7 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - `remotion-base/covers/carousel-cover.html`: a carousel cover in plain HTML and SVG (logo, a full-width photo under a wavy edge, title, progress bar; parameters in the query string) and `scripts/html-still.mjs`, which screenshots any HTML page with the same headless Chrome as `render.mjs`.
 
-- Two reels for the Termas Concordia client (`clients/termas-concordia`, 12 s each, photos and logo kept out of git, palette measured from the logo): `TermasArroyo` (trail) and `TermasCinta` (film_strip), each from brief to a mastered render with 0 FAIL. A third, built on a sun disc (light_clock), was discarded by the client.
+- Two reels for the Bungalows Concordia client (`clients/bungalows-concordia`, 12 s each, photos and logo kept out of git, palette measured from the logo): `TermasArroyo` (trail) and `TermasCinta` (film_strip), each from brief to a mastered render with 0 FAIL. A third, built on a sun disc (light_clock), was discarded by the client.
 
 - Move `Stream` (`StreamRibbon`): a meandering stream seen from above with pools and riffles, grass and wet-stone banks, a deep channel, irregular flow glints and pebbles, drawn as one continuous course, windowed around the camera so its cut edges stay off-screen (a stream that is still being revealed gets a tapered tip); pure math (`streamCenter`, `streamWidthAt`, `ribbonSides`, `headTaper`) unit-tested. The closing card falls back to the name in type while `assets/logo.png` is missing. `FilmStrip` gains `blurred` and `growEase`, and its sprocket holes are now large enough to read as film.
 

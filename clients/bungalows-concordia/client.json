@@ -1,8 +1,10 @@
 {
-  "slug": "termas-concordia",
-  "name": "Termas Concordia",
+  "slug": "bungalows-concordia",
+  "name": "Bungalows Concordia",
   "language": "es-AR",
-  "contact": {},
+  "contact": {
+    "instagram": "@bungalows_concordia"
+  },
   "brand": {
     "colors": {
       "ground": "#F6F0E8",
@@ -51,7 +53,7 @@
     ]
   },
   "voice": "Calm and warm; voseo rioplatense; short sentences; show the place, never press.",
-  "notes": "Palette measured from the Bungalows Concordia logo (moss green, dusty rose, stone grey); the Instagram profile could not be read from the session. Photos supplied by the client; kept out of git. assets/logo.png is not in the repo.",
+  "notes": "Palette measured from the logo (moss green, dusty rose, stone grey); the Instagram profile could not be read from the session. Photos supplied by the client; kept out of git. The logo (assets/logo.png) is dark green on transparent and is not in the repo.",
   "voice_guide": {
     "tone": "Cercano y simple, frases cortas; se muestra el trabajo más que los adjetivos. Nunca presión ni urgencia falsa.",
     "person": "voseo rioplatense, segunda persona singular",
@@ -68,7 +70,7 @@
     ],
     "emojis": "1 por caption: ♨️ 🌿",
     "hashtags": [
-      "#TermasConcordia"
+      "#BungalowsConcordia"
     ],
     "cta": "💬 Escribinos por WhatsApp · link en bio"
   }

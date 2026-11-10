@@ -49,8 +49,8 @@ const FRAMES = [
 ];
 const ROLL_S = 0.7;
 const LEG = Math.round(ROLL_S * 30);
-const REST = 22;
-const ROLLS: number[] = [66];
+const REST = 20;
+const ROLLS: number[] = [60];
 for (let i = 1; i < 5; i++) ROLLS.push(ROLLS[i - 1] + LEG + REST);
 const GROW = ROLLS[4] + LEG + 14;
 const GROW_LEN = 24;
@@ -78,7 +78,8 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
   const copy = useCopy();
   const frame = useCurrentFrame();
   const slide = tween(frame, [0, 30], [1, 0], EASE.out); // the strip arrives from below
-  const end = tween(frame, [HOLD, HOLD + 16], [0, 1], EASE.snap);
+  // the cream card comes in over the growing photo, slowly enough not to read as a cut
+  const end = tween(frame, [GROW + 8, GROW + 40], [0, 1], EASE.glide);
   return (
     <TrackRoot>
       <AbsoluteFill>

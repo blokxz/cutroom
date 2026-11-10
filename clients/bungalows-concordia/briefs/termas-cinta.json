@@ -1,6 +1,6 @@
 {
-  "id": "termas-arroyo",
-  "client": "termas-concordia",
+  "id": "termas-cinta",
+  "client": "bungalows-concordia",
   "platform": "instagram",
   "format": "reel",
   "duration_s": 12,
@@ -8,7 +8,7 @@
   "audience": "Families looking for a weekend at the baths.",
   "cta": {
     "text": "Reservá tu visita",
-    "contact": ""
+    "contact": "@bungalows_concordia"
   },
   "copy": {
     "headline": "Termas • Bosque • Familia",
@@ -21,11 +21,11 @@
   },
   "assets": {
     "photos": [
-      "assets/photos/stream.jpg",
-      "assets/photos/aerial.jpg",
+      "assets/photos/sunrise.jpg",
+      "assets/photos/steam.jpg",
       "assets/photos/sky.jpg",
       "assets/photos/indoor.jpg",
-      "assets/photos/sunrise.jpg",
+      "assets/photos/aerial.jpg",
       "assets/photos/sunset.jpg"
     ],
     "videos": [],
@@ -49,115 +49,129 @@
       "carry": "la tira"
     }
   ],
-  "chosen_concept": 1,
+  "chosen_concept": 2,
   "beats": [
     {
       "t": "0.0–1.0",
-      "beat": "el arroyo",
+      "beat": "la cinta",
       "kind": "move",
-      "moves": "first photo lands on the flowing stream",
+      "moves": "strip slides in",
       "holds": "ground",
-      "carries": "the stream"
+      "carries": "the strip"
     },
     {
-      "t": "1.0–2.2",
+      "t": "1.0–2.0",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
-      "holds": "the photo",
-      "carries": "the stream"
+      "holds": "the strip",
+      "carries": "the strip"
     },
     {
-      "t": "2.2–3.4",
-      "beat": "→ aérea",
+      "t": "2.0–2.7",
+      "beat": "roll → vapor",
       "kind": "move",
-      "moves": "camera follows the stream",
+      "moves": "strip rolls",
       "holds": "ground",
-      "carries": "the stream"
+      "carries": "the strip"
     },
     {
-      "t": "3.4–3.9",
+      "t": "2.7–3.4",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
-      "holds": "the photo",
-      "carries": "the stream"
+      "holds": "the strip",
+      "carries": "the strip"
     },
     {
-      "t": "3.9–5.1",
-      "beat": "→ cielo",
+      "t": "3.4–4.1",
+      "beat": "roll → cielo",
       "kind": "move",
-      "moves": "camera follows the stream",
+      "moves": "strip rolls",
       "holds": "ground",
-      "carries": "the stream"
+      "carries": "the strip"
     },
     {
-      "t": "5.1–5.5",
+      "t": "4.1–4.7",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
-      "holds": "the photo",
-      "carries": "the stream"
+      "holds": "the strip",
+      "carries": "the strip"
     },
     {
-      "t": "5.5–6.7",
-      "beat": "→ interior",
+      "t": "4.7–5.4",
+      "beat": "roll → interior",
       "kind": "move",
-      "moves": "camera follows the stream",
+      "moves": "strip rolls",
       "holds": "ground",
-      "carries": "the stream"
+      "carries": "the strip"
     },
     {
-      "t": "6.7–7.2",
+      "t": "5.4–6.1",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
-      "holds": "the photo",
-      "carries": "the stream"
+      "holds": "the strip",
+      "carries": "the strip"
     },
     {
-      "t": "7.2–8.4",
-      "beat": "→ amanecer",
+      "t": "6.1–6.8",
+      "beat": "roll → vista aérea",
       "kind": "move",
-      "moves": "camera follows the stream",
+      "moves": "strip rolls",
       "holds": "ground",
-      "carries": "the stream"
+      "carries": "the strip"
     },
     {
-      "t": "8.4–8.9",
+      "t": "6.8–7.5",
       "beat": "rest",
       "kind": "rest",
       "moves": "drift",
-      "holds": "the photo",
-      "carries": "the stream"
+      "holds": "the strip",
+      "carries": "the strip"
     },
     {
-      "t": "8.9–10.1",
-      "beat": "→ atardecer",
+      "t": "7.5–8.2",
+      "beat": "roll → atardecer",
       "kind": "move",
-      "moves": "camera follows the stream",
+      "moves": "strip rolls",
       "holds": "ground",
-      "carries": "the stream"
+      "carries": "the strip"
     },
     {
-      "t": "10.1–12.0",
+      "t": "8.2–8.6",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "drift",
+      "holds": "the strip",
+      "carries": "the strip"
+    },
+    {
+      "t": "8.6–9.4",
+      "beat": "grow",
+      "kind": "move",
+      "moves": "last photo grows to full frame",
+      "holds": "ground",
+      "carries": "the photo"
+    },
+    {
+      "t": "9.4–12.0",
       "beat": "logo hold",
       "kind": "hold",
-      "moves": "closing card",
+      "moves": "cream closing card with the logo",
       "holds": "everything",
       "carries": "—"
     }
   ],
-  "composition": "TermasArroyo",
-  "status": "brief",
+  "composition": "TermasCinta",
+  "status": "delivered",
   "decisions": [
-    "No contact on screen: none was given. The closing card shows the logo, the tagline and 'Reservá tu visita'. Add a number when the client sends it.",
-    "Logo: the Termas Concordia logo file was not supplied as a file, so the closing card falls back to the name in type until clients/termas-concordia/assets/logo.png exists.",
-    "Family: trail (PathCamera and PathTrail); the user asked for plans A, B and C and no window family.",
+    "Family: film_strip (FilmStrip); the user asked for plans A, B and C and no window family. Film sprocket holes could read as frames; flagged to the user.",
     "Photos with a @termasconcordia watermark were cropped at the bottom.",
     "Reel A (light_clock) was discarded by the client: its sun disc did not read as a real sun. Families with a sun or moon disc stay out of this client's work.",
     "Palette: measured from the Bungalows Concordia logo (moss #3F4A38, dusty rose #8F6B6B / #C9A3A3, cream #F6F0E8); the Instagram profile could not be fetched from this session.",
-    "Reel B redone after the client's review: the stream was cut flat and started from nothing; it now flows through the whole shot, in and out of frame, with no tip and no moving clip edge."
+    "Client corrected: the brand is Bungalows Concordia (not Termas Concordia). The supplied logo is used as is; the Instagram handle @bungalows_concordia is the on-screen contact."
   ],
   "notes": ""
 }

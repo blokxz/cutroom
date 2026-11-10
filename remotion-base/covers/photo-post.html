@@ -1,8 +1,8 @@
 <!doctype html>
-<!-- Static feed post, 1080x1350 (4:5): one full-bleed photo, a soft scrim, the brand mark and a tagline.
+<!-- Static feed post, 1080x1350 (4:5): one full-bleed photo, a stream-like edge, and the brand mark on cream below.
      Pure HTML. Parameters come from the query string:
-       ?photo=clients/termas-concordia/photos/hero.jpg&logo=clients/termas-concordia/logo.png
-        &name=Termas%20Concordia&tagline=Termas%20•%20Bosque%20•%20Familia&focus=50,50
+       ?photo=clients/bungalows-concordia/photos/hero.jpg&logo=clients/bungalows-concordia/logo.png
+        &name=Bungalows%20Concordia&tagline=Termas%20•%20Bosque%20•%20Familia&focus=50,50
      Paths are relative to remotion-base/public. While the logo file is missing the name is set in type.
      Render with: node scripts/html-still.mjs covers/photo-post.html out.jpg -->
 <html lang="es">
@@ -12,56 +12,47 @@
   @font-face { font-family: "Display"; src: url("../../clients/sample/assets/fonts/DMSerifDisplay-400.woff2"); }
   @font-face { font-family: "Display"; font-style: italic; src: url("../../clients/sample/assets/fonts/DMSerifDisplay-400i.woff2"); }
   @font-face { font-family: "Text"; font-weight: 500; src: url("../../clients/sample/assets/fonts/Inter-600.woff2"); }
-  html, body { margin: 0; width: 1080px; height: 1350px; background: #3F4A38; overflow: hidden; }
+  html, body { margin: 0; width: 1080px; height: 1350px; background: #F6F0E8; overflow: hidden; }
   .post { position: relative; width: 1080px; height: 1350px; }
-  .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(36,44,30,.78) 0%, rgba(36,44,30,.35) 22%, rgba(36,44,30,0) 46%); }
-  .block { position: absolute; left: 84px; right: 84px; bottom: 96px; color: #fff; }
-  .rule { width: 84px; height: 4px; border-radius: 2px; background: #C9A3A3; margin-bottom: 30px; }
-  .name { font: 400 108px/1 "Display", serif; text-shadow: 0 4px 28px rgba(0,0,0,.35); }
-  .name i { color: #F3DEDE; }
-  .logo { display: none; width: 520px; }
-  .tag { margin-top: 26px; font: 500 28px "Text", sans-serif; letter-spacing: .34em; text-transform: uppercase; opacity: .92; }
+  svg { position: absolute; inset: 0; }
+  .logo { position: absolute; left: 370px; top: 975px; width: 340px; display: none; }
+  .name { position: absolute; left: 0; right: 0; top: 1130px; text-align: center; color: #3F4A38; font: 400 84px/1 "Display", serif; display: none; }
+  .name i { color: #8F6B6B; }
 </style>
 </head>
 <body>
 <div class="post">
-  <img class="photo" id="photo" alt="">
-  <div class="scrim"></div>
-  <div class="block">
-    <div class="rule"></div>
-    <img class="logo" id="logo" alt="">
-    <div class="name" id="name"></div>
-    <div class="tag" id="tag"></div>
-  </div>
+  <svg viewBox="0 0 1080 1350" width="1080" height="1350" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- the photo ends in a stream-like edge, like the one under the house in the logo -->
+      <clipPath id="wave"><path d="M0,0 H1080 V930 C900,978 760,892 540,936 S190,980 0,924 Z"/></clipPath>
+    </defs>
+    <image id="photo" href="" x="0" y="0" width="1080" height="1100" preserveAspectRatio="xMidYMid slice" clip-path="url(#wave)"/>
+    <path d="M1080,930 C900,978 760,892 540,936 S190,980 0,924" fill="none" stroke="#C9A3A3" stroke-width="5"/>
+  </svg>
+  <img class="logo" id="logo" alt="">
+  <div class="name" id="name"></div>
 </div>
 <script>
   const q = new URLSearchParams(location.search);
   const pub = "../public/";
   const photo = document.getElementById("photo");
-  photo.src = pub + (q.get("photo") || "clients/termas-concordia/photos/hero.jpg");
-  const [fx, fy] = (q.get("focus") || "50,50").split(",");
-  photo.style.objectPosition = `${fx}% ${fy}%`;
-  const name = (q.get("name") || "Termas Concordia").split(" ");
+  photo.setAttribute("href", pub + (q.get("photo") || "clients/bungalows-concordia/photos/hero.jpg"));
+  const [fx, fy] = (q.get("focus") || "50,50").split(",").map(Number);
+  photo.setAttribute("preserveAspectRatio", "xMidYMid slice");
+  const name = (q.get("name") || "Bungalows Concordia").split(" ");
   const last = name.pop();
-  document.getElementById("name").innerHTML = `${name.join(" ")} <i>${last}</i>`;
-  document.getElementById("tag").textContent = q.get("tagline") || "Termas • Bosque • Familia";
+  const nameEl = document.getElementById("name");
+  nameEl.innerHTML = `${name.join(" ")} <i>${last}</i>`;
+  const logoUrl = pub + (q.get("logo") || "clients/bungalows-concordia/logo.png");
   const logo = document.getElementById("logo");
-  const ready = [document.fonts.ready, photo.decode()];
-  // use the logo when the file exists; otherwise the name stays in type
-  ready.push(
-    fetch(pub + (q.get("logo") || "clients/termas-concordia/logo.png"), { method: "HEAD" })
-      .then((r) => {
-        if (!r.ok || !(r.headers.get("content-type") || "").startsWith("image")) return;
-        logo.src = pub + (q.get("logo") || "clients/termas-concordia/logo.png");
-        return logo.decode().then(() => {
-          logo.style.display = "block";
-          document.getElementById("name").style.display = "none";
-        });
-      })
-      .catch(() => {}),
-  );
+  // the logo when its file loads; otherwise the name in type
+  const logoLoaded = new Promise((resolve) => {
+    logo.onload = () => { logo.style.display = "block"; resolve(); };
+    logo.onerror = () => { nameEl.style.display = "block"; resolve(); };
+    logo.src = logoUrl;
+  });
+  const ready = [document.fonts.ready, logoLoaded];
   Promise.all(ready.map((p) => Promise.resolve(p).catch(() => {}))).then(() => { document.body.dataset.ready = "1"; });
 </script>
-</body>
 </html>

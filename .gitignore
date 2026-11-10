@@ -1,5 +1,6 @@
 # Renders and synced assets are local work: never in the repo.
 remotion-base/out/
+remotion-base/out-*/
 remotion-base/public/clients/
 remotion-base/.cache/
 clients/*/briefs/*.gate.json
