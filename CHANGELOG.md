@@ -44,6 +44,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - Reel `Escapada` for Bungalows Concordia (15 s), after the client's own reference reel: two-line captions that come in out of a blur with a moss box on one word, a slow camera per photo, and scene changes through rising steam (new move `Steam`: seeded puffs, a veil that swells around each change, a tracked lead puff). Checked against the reference with `verify.py --ref`.
 
+- `tools/compare.py`: compares two renders of the same piece — a labelled side-by-side video, a sheet of the same instants with a 2x crop of the caption band, and numbers per video (detail, flat and blown areas, banding, sharpness, compression blocks, SSIM fidelity to the client's photos, rhythm against a reference), the winner of each, and an optional seeded blind A/B pair. Tests make renders worse on purpose and check that each number moves the right way.
+
 - `tools/move_sheet.py`: a speed graph (px/frame per tracked element, beats and the 80 px/frame blur limit marked) under a contact sheet; first sheets in `docs/moves/`.
 
 - `tools/sound_events.py`: sound cues placed from a render's `.track.json` (at most one per beat, 0.04 s apart, text never sounds, pan from screen x) with an optional stereo `score.wav` mixed from the `sfx.py` palette. Contract C-07 in the `reel-families` spec.
