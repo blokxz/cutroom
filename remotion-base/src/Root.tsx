@@ -4,6 +4,7 @@ import { FORMATS } from "./lib/formats";
 import { SAMPLE_POST_FRAMES, SamplePost } from "./examples/sample/SamplePost";
 import { TERMAS_ARROYO_FRAMES, TermasArroyo } from "./examples/termas/TermasArroyo";
 import { TERMAS_CINTA_FRAMES, TermasCinta } from "./examples/termas/TermasCinta";
+import { ESCAPADA_FRAMES, Escapada } from "./examples/termas/Escapada";
 import { CAROUSEL_DEFAULTS, COVER_DEFAULTS, CarouselCover, CarouselSlide } from "./examples/sample/CarouselSlide";
 import { SAMPLE_DATES_FRAMES, SampleDates } from "./examples/sample/SampleDates";
 import {
@@ -72,6 +73,15 @@ export const RemotionRoot: React.FC = () => {
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
           durationInFrames={TERMAS_CINTA_FRAMES}
+          defaultProps={{ showSafeZones: false }}
+        />
+        <Composition
+          id="Escapada"
+          component={Escapada}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={ESCAPADA_FRAMES}
           defaultProps={{ showSafeZones: false }}
         />
         <Composition

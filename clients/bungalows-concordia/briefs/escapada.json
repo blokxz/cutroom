@@ -1,0 +1,181 @@
+{
+  "client": "bungalows-concordia",
+  "platform": "instagram",
+  "format": "reel",
+  "audience": "Families looking for a weekend at the baths.",
+  "reference": null,
+  "id": "escapada",
+  "duration_s": 15,
+  "goal": "Reel in the style of the client's own reference reel: photos with a slow camera, a two-line caption per scene, through the steam of the hot springs, closing on the logo.",
+  "cta": {
+    "text": "Reservá tu escapada",
+    "contact": "@bungalows_concordia"
+  },
+  "copy": {
+    "headline": "",
+    "subtitle": "",
+    "lines": [
+      "Imaginate despertar|entre {vapor}",
+      "Rodeado de|{verde}",
+      "Tu lugar|para frenar",
+      "Cortá con|la {rutina}"
+    ],
+    "avoid": [
+      "window openings, irises and keyholes",
+      "sun and moon discs (light_clock, day_arc, coffee_to_evening)"
+    ]
+  },
+  "assets": {
+    "photos": [
+      "assets/photos/hero.jpg",
+      "assets/photos/sunrise.jpg",
+      "assets/photos/aerial.jpg",
+      "assets/photos/living.jpg",
+      "assets/photos/kitchen.jpg",
+      "assets/photos/sunset.jpg"
+    ],
+    "videos": [],
+    "music": null
+  },
+  "concepts": [
+    {
+      "name": "A través del vapor",
+      "idea": "Cada escena aparece cuando el vapor de las termas sube, cubre el cuadro y se disipa sobre la foto siguiente.",
+      "carry": "el vapor y el lugar del texto"
+    },
+    {
+      "name": "Fiel a la referencia",
+      "idea": "Fundidos simples entre fotos con el mismo sistema de texto de la referencia.",
+      "carry": "el lugar del texto"
+    },
+    {
+      "name": "Pausa",
+      "idea": "Cuatro fotos largas con palabras que aparecen de a una.",
+      "carry": "el texto"
+    }
+  ],
+  "chosen_concept": 0,
+  "composition": "Escapada",
+  "status": "review",
+  "decisions": [
+    "Reference: the client's reel 'Hace cuánto no cortás con la rutina de verdad' (15 s, two-line captions with a blur-in, a moss box on one word, dissolves, cream card with the logo). verify.py --analyze on it: still 0.25, longest rest 2.7 s, 1 hard cut.",
+    "Liberty taken (the user asked for it): scene changes happen through rising steam instead of plain dissolves; captions are new lines written in the same voice; photos mix the hot springs and the bungalow interior.",
+    "No music was supplied: the sound is the cutroom effects palette placed from the render's events.",
+    "First draft: captions were legible for 0.8 s (verifier FAIL); now five scenes of 2.3 s and the captions enter sooner. The sunrise photo was dropped to make room.",
+    "Rhythm: equal scenes read as a metronome (verifier FAIL). Two short breaths without a caption (sunrise steam, kitchen) now sit between the long captioned scenes, and each push has its own curve."
+  ],
+  "beats": [
+    {
+      "t": "0.0–0.8",
+      "beat": "vapor",
+      "kind": "move",
+      "moves": "through the steam onto the photo, caption in",
+      "holds": "ground",
+      "carries": "the steam"
+    },
+    {
+      "t": "0.8–2.7",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "slow drift",
+      "holds": "the photo",
+      "carries": "the steam"
+    },
+    {
+      "t": "2.7–3.5",
+      "beat": "respiro",
+      "kind": "move",
+      "moves": "through the steam onto the photo",
+      "holds": "ground",
+      "carries": "the steam"
+    },
+    {
+      "t": "3.5–3.9",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "slow drift",
+      "holds": "the photo",
+      "carries": "the steam"
+    },
+    {
+      "t": "3.9–4.7",
+      "beat": "rodeado de verde",
+      "kind": "move",
+      "moves": "through the steam onto the photo, caption in",
+      "holds": "ground",
+      "carries": "the steam"
+    },
+    {
+      "t": "4.7–6.2",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "slow drift",
+      "holds": "the photo",
+      "carries": "the steam"
+    },
+    {
+      "t": "6.2–7.0",
+      "beat": "tu lugar",
+      "kind": "move",
+      "moves": "through the steam onto the photo, caption in",
+      "holds": "ground",
+      "carries": "the steam"
+    },
+    {
+      "t": "7.0–8.5",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "slow drift",
+      "holds": "the photo",
+      "carries": "the steam"
+    },
+    {
+      "t": "8.5–9.3",
+      "beat": "todo listo",
+      "kind": "move",
+      "moves": "through the steam onto the photo",
+      "holds": "ground",
+      "carries": "the steam"
+    },
+    {
+      "t": "9.3–9.7",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "slow drift",
+      "holds": "the photo",
+      "carries": "the steam"
+    },
+    {
+      "t": "9.7–10.5",
+      "beat": "la rutina",
+      "kind": "move",
+      "moves": "through the steam onto the photo, caption in",
+      "holds": "ground",
+      "carries": "the steam"
+    },
+    {
+      "t": "10.5–12.3",
+      "beat": "rest",
+      "kind": "rest",
+      "moves": "slow drift",
+      "holds": "the photo",
+      "carries": "the steam"
+    },
+    {
+      "t": "12.4–13.1",
+      "beat": "cierre",
+      "kind": "move",
+      "moves": "cream card through the steam",
+      "holds": "ground",
+      "carries": "the steam"
+    },
+    {
+      "t": "13.1–15.0",
+      "beat": "logo hold",
+      "kind": "hold",
+      "moves": "logo, call to action, handle",
+      "holds": "everything",
+      "carries": "—"
+    }
+  ]
+}

@@ -42,6 +42,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - `remotion-base/covers/photo-post.html`: a static 4:5 feed post in plain HTML (full-bleed photo, scrim, brand mark or name in type, tagline), parameters in the query string; checked with `verify.py --format feed_image`.
 
+- Reel `Escapada` for Bungalows Concordia (15 s), after the client's own reference reel: two-line captions that come in out of a blur with a moss box on one word, a slow camera per photo, and scene changes through rising steam (new move `Steam`: seeded puffs, a veil that swells around each change, a tracked lead puff). Checked against the reference with `verify.py --ref`.
+
 - `tools/move_sheet.py`: a speed graph (px/frame per tracked element, beats and the 80 px/frame blur limit marked) under a contact sheet; first sheets in `docs/moves/`.
 
 - `tools/sound_events.py`: sound cues placed from a render's `.track.json` (at most one per beat, 0.04 s apart, text never sounds, pan from screen x) with an optional stereo `score.wav` mixed from the `sfx.py` palette. Contract C-07 in the `reel-families` spec.
@@ -56,6 +58,7 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 ### Fixed
 
+- The blur check no longer measures a jump from a frame whose box had no size yet (the first frame can be logged before layout).
 - `tools/master.py` cuts the audio at the picture's length, so a score with a tail no longer makes the file longer than the render.
 - `tools/master.py` measures the true peak of the encoded AAC file and encodes again with a lower ceiling when AAC overshoots (the first-pass measurement could not see that).
 - Clips and the HLG test source keep their colour transfer on ffmpeg builds that no longer carry `-color_trc` into the stream (x264 now writes the VUI itself).

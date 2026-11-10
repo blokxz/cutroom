@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
   DAY_LIGHT,
+  puffAt,
+  steamPuffs,
+  veilDensity,
   headTaper,
   ribbonSides,
   streamCenter,
@@ -872,5 +875,39 @@ describe("Stream", () => {
     expect(headTaper(260)).toBe(1);
     expect(headTaper(5000)).toBe(1);
     expect(headTaper(130)).toBeCloseTo(0.5, 9);
+  });
+});
+
+// ------------------------------------------------------------------ Steam
+describe("Steam", () => {
+  const area = { w: 1080, h: 1920 };
+  it("makes the same puffs from the same seed", () => {
+    expect(steamPuffs(8, "a", area)).toEqual(steamPuffs(8, "a", area));
+    expect(steamPuffs(8, "a", area)).not.toEqual(steamPuffs(8, "b", area));
+  });
+  it("puffs rise, and wrap back below the frame instead of disappearing", () => {
+    const [p] = steamPuffs(1, "rise", area);
+    const a = puffAt(p, 0, 30, area);
+    const b = puffAt(p, 3, 30, area);
+    expect(b.y).toBeLessThan(a.y);
+    for (let f = 0; f < 3000; f += 17) {
+      const q = puffAt(p, f, 30, area);
+      expect(q.y).toBeGreaterThanOrEqual(-p.r - 1e-6);
+      expect(q.y).toBeLessThanOrEqual(area.h + p.r + 1e-6);
+    }
+  });
+  it("the veil sits at its base and swells to its peak exactly on a change", () => {
+    expect(veilDensity(0, [100])).toBeCloseTo(0.12, 9);
+    expect(veilDensity(100, [100])).toBeCloseTo(0.92, 9);
+    expect(veilDensity(95, [100])).toBeGreaterThan(veilDensity(90, [100]));
+    expect(veilDensity(110, [100])).toBeGreaterThan(veilDensity(118, [100]));
+    expect(veilDensity(130, [100])).toBeCloseTo(0.12, 9);
+  });
+  it("stays between base and peak with several changes", () => {
+    for (let f = 0; f < 400; f++) {
+      const d = veilDensity(f, [60, 120, 180], { base: 0.1, peak: 0.9 });
+      expect(d).toBeGreaterThanOrEqual(0.1 - 1e-9);
+      expect(d).toBeLessThanOrEqual(0.9 + 1e-9);
+    }
   });
 });

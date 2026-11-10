@@ -126,7 +126,8 @@ def element_checks(j, by_id, report, text_safe, min_text_h=0, blocked=None, caut
             if not visible(r, W, H, 0.5):
                 continue
             prev = fr.get(f - 1)
-            sp = edge_speed(prev, r) if prev else 0
+            # a box with no size yet (the first frame can be measured before layout) is not a position to move from
+            sp = edge_speed(prev, r) if prev and prev["w"] > 2 and prev["h"] > 2 else 0
             if r.get("inFrame") and (r["x"] < -4 or r["y"] < -4 or r["x"] + r["w"] > W + 4 or r["y"] + r["h"] > H + 4):
                 out_of_frame.append(f)
             if r["k"] == "text" and r["o"] > 0.6 and sp < 3:
