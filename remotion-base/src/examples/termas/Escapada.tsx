@@ -143,12 +143,21 @@ export const Escapada: React.FC<Props> = ({ brief, ...rest }) => (
 const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
   const copy = useCopy();
   const frame = useCurrentFrame();
-  const density = veilDensity(frame, [...AT.slice(1), END + 6], {
-    base: 0.05,
-    peak: 0.82,
-    before: 7,
-    after: 26,
-  });
+  // alternate two shapes of steam so the changes do not all move on one curve: a fast rise that clears slowly,
+  // and an even swell
+  const changes = [...AT.slice(1), END + 6];
+  const density = Math.max(
+    veilDensity(
+      frame,
+      changes.filter((_, i) => i % 2 === 0),
+      { base: 0.05, peak: 0.82, before: 7, after: 26 },
+    ),
+    veilDensity(
+      frame,
+      changes.filter((_, i) => i % 2 === 1),
+      { base: 0.05, peak: 0.82, before: 14, after: 14 },
+    ),
+  );
   const opening = tween(frame, [0, 22], [1, 0], EASE.out); // the reel opens out of the steam
   const end = tween(frame, [END - 6, END + 18], [0, 1], EASE.glide);
   const cta = blurIn(frame, HOLD - 6, 9999, 16);
