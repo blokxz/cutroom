@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- Carousel closing slide, 1080x1350 (4:5): a light ground, the brand logo large in the middle, the stream line and
+     sprig of the cover, one closing line and the handle. Pure HTML + SVG, made to sit after carousel-cover.html.
+     Parameters come from the query string:
+       ?logo=carousel/logo.png&line=Te esperamos&action=Reservá tu escapada&handle=@bungalows_concordia
+     Paths are relative to remotion-base/public. Render with:
+       node scripts/html-still.mjs covers/carousel-end.html out.jpg --query "handle=@name" -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Display"; src: url("../../clients/sample/assets/fonts/DMSerifDisplay-400.woff2"); }
+  @font-face { font-family: "Display"; font-style: italic; src: url("../../clients/sample/assets/fonts/DMSerifDisplay-400i.woff2"); }
+  @font-face { font-family: "Text"; font-weight: 500; src: url("../../clients/sample/assets/fonts/Inter-600.woff2"); }
+  :root { --cream: #F7F2EA; --paper: #FFFDF9; --green: #3F4A41; --rose: #C9A3AA; --wine: #8B4752; --soft: #7A7A6E; }
+  html, body { margin: 0; width: 1080px; height: 1350px; background: var(--cream); overflow: hidden; }
+  .end { position: relative; width: 1080px; height: 1350px; }
+  svg { position: absolute; inset: 0; }
+  .logo { position: absolute; left: 50%; top: 200px; width: 620px; transform: translateX(-50%); }
+  .line { position: absolute; left: 0; right: 0; top: 880px; text-align: center; color: var(--green);
+          font: italic 400 76px/1 "Display", serif; }
+  .action { position: absolute; left: 0; right: 0; top: 1068px; text-align: center; color: var(--green);
+            font: 500 26px "Text", sans-serif; letter-spacing: .3em; text-transform: uppercase; }
+  .handle { position: absolute; left: 50%; top: 1128px; transform: translateX(-50%); padding: 16px 34px;
+            border: 2px solid var(--rose); border-radius: 999px; color: var(--wine); white-space: nowrap;
+            font: 500 30px "Text", sans-serif; letter-spacing: .04em; }
+</style>
+</head>
+<body>
+<div class="end">
+  <svg viewBox="0 0 1080 1350" width="1080" height="1350" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- the cover's sprig: a stem and five leaves -->
+      <g id="sprig">
+        <path d="M0,0 C20,-60 30,-120 60,-190" fill="none" stroke="#C9A3AA" stroke-width="3" stroke-linecap="round"/>
+        <g fill="#E6CFD3" stroke="#C9A3AA" stroke-width="2.5">
+          <ellipse cx="14" cy="-48" rx="13" ry="34" transform="rotate(-48 14 -48)"/>
+          <ellipse cx="44" cy="-70" rx="13" ry="34" transform="rotate(42 44 -70)"/>
+          <ellipse cx="22" cy="-112" rx="13" ry="34" transform="rotate(-42 22 -112)"/>
+          <ellipse cx="56" cy="-134" rx="13" ry="34" transform="rotate(36 56 -134)"/>
+          <ellipse cx="62" cy="-176" rx="12" ry="32" transform="rotate(8 62 -176)"/>
+        </g>
+      </g>
+    </defs>
+    <!-- the cover's stream line, now calm, between the logo and the closing line -->
+    <path d="M300,820 C380,796 450,844 540,820 S700,796 780,824" fill="none" stroke="#C9A3AA" stroke-width="3" stroke-linecap="round"/>
+    <use href="#sprig" transform="translate(880 1290) rotate(12) scale(.8)"/>
+  </svg>
+  <img class="logo" id="logo" alt="">
+  <div class="line" id="line"></div>
+  <div class="action" id="action"></div>
+  <div class="handle" id="handle"></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const pub = "../public/";
+  document.getElementById("logo").src = pub + (q.get("logo") || "carousel/logo.png");
+  document.getElementById("line").textContent = q.get("line") || "Te esperamos";
+  document.getElementById("action").textContent = q.get("action") || "Reservá tu escapada";
+  document.getElementById("handle").textContent = q.get("handle") || "@bungalows_concordia";
+  Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))])
+    .then(() => { document.body.dataset.ready = "1"; });
+</script>
+</body>
+</html>
