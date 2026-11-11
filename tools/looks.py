@@ -82,8 +82,11 @@ def fetch(family, weights=(400,), italic=False):
     dest = os.path.join(cache_dir(), slug(family))
     if not os.path.isdir(os.path.join(dest, "package")):
         os.makedirs(dest, exist_ok=True)
+        npm = shutil.which("npm")  # npm.cmd on Windows
+        if not npm:
+            raise RuntimeError("npm not found: install Node.js (it ships npm) to fetch fonts from @fontsource")
         with tempfile.TemporaryDirectory() as tmp:
-            r = subprocess.run(["npm", "pack", pkg, "--silent"], cwd=tmp, capture_output=True, text=True)
+            r = subprocess.run([npm, "pack", pkg, "--silent"], cwd=tmp, capture_output=True, text=True)
             tgz = glob.glob(os.path.join(tmp, "*.tgz"))
             if r.returncode != 0 or not tgz:
                 raise RuntimeError(f"npm pack {pkg} failed: {r.stderr.strip() or r.stdout.strip()}")

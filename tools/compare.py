@@ -228,12 +228,15 @@ def blind(a, b, folder, seed):
     return key
 
 
-def winners(nums):
-    """{metric: 0|1|None} — which video wins each number (None: a tie or missing)."""
+TIE = 0.05  # a relative difference under 5 % is a tie: renders of the same piece vary that much from noise alone
+
+
+def winners(nums, tie=TIE):
+    """{metric: 0|1|None} — which video wins each number (None: a tie within `tie`, relative, or a missing value)."""
     w = {}
     for k, hi in HIGHER.items():
         a, b = nums[0].get(k), nums[1].get(k)
-        if a is None or b is None or abs(a - b) <= 1e-9 * max(1.0, abs(a), abs(b)):
+        if a is None or b is None or abs(a - b) <= tie * max(abs(a), abs(b), 1e-12):
             w[k] = None
         else:
             w[k] = 0 if (a > b) == hi else 1
@@ -308,7 +311,10 @@ def main(argv=None):
             vals = [result["rhythm"][lab]["this"].get(k) for lab in a.labels]
             print(f"  {k:20}{str(vals[0]):>10}{str(vals[1]):>10}{str(ref[k]):>11}")
     wins = [sum(1 for v in win.values() if v == i) for i in (0, 1)]
-    print(f"\nwins: {a.labels[0]} {wins[0]} · {a.labels[1]} {wins[1]} — wrote {a.out}/")
+    ties = sum(1 for k, v in win.items() if v is None and nums[0].get(k) is not None and nums[1].get(k) is not None)
+    if "fidelity" in nums[0]:
+        print(f"(fidelity from {nums[0].get('fidelity_frames')} / {nums[1].get('fidelity_frames')} frames that clearly show a photo)")
+    print(f"\nwins: {a.labels[0]} {wins[0]} · {a.labels[1]} {wins[1]} · ties {ties} (under {TIE:.0%}) — wrote {a.out}/")
     return 0
 
 

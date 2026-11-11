@@ -114,3 +114,8 @@ def test_different_aspect_ratios_are_refused(media, tmp_path):
     wide = still_video(os.path.join(media["photos"], "p.png"), tmp_path / "wide.mp4", size="640x360")
     with pytest.raises(SystemExit):
         compare.main([media["sharp"], wide, "--out", str(tmp_path / "o"), "--no-video"])
+
+
+def test_a_difference_under_five_percent_is_a_tie():
+    w = compare.winners([{"detail": 1.00, "blown": 0.10}, {"detail": 1.03, "blown": 0.20}])
+    assert w["detail"] is None and w["blown"] == 0

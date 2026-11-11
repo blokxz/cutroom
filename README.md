@@ -34,6 +34,15 @@ The project's `.claude/settings.json` already lists the marketplace and enables 
 
 ## How a video is made
 
+`/cutroom:film "<what>" --ref <reference.mp4>` runs the whole protocol in one command: read the reference, three concepts, a beat sheet, a look and captions, build, a draft checked in numbers, sound, the final at full quality and delivery.
+
+Picture quality and comparison:
+
+- Finals render from PNG frames with a whole-frame shutter (the moving stretches are rendered again at fractions of a frame and averaged in linear light); `render.mjs --final --fps60` also writes a 60 fps copy.
+- `python3 tools/looks.py list | apply <look> <client> [--keep-colors]` — named looks: a palette and two OFL faces chosen together.
+- `python3 tools/compare.py a.mp4 b.mp4 --ref ref.mp4 --photos <dir> --blind` — two renders side by side and in numbers, with a blind A/B pair.
+- `python3 tools/verify.py ref.mp4 --analyze --frames sheet.png` — a reference read as a score: energy map, cuts, bursts and a frame sheet.
+
 `/cutroom:reel` (skill `reel-families`: template families, seeded variations, invented concepts, summary-first, ≤ 3 user turns; diagram in [`docs/reel-families-architecture.svg`](docs/reel-families-architecture.svg)) hands its choice to the same pipeline. `/cutroom:video` loads the `video-direction` skill (spec-driven: `spec.md` → `SKILL.md` router, `guidelines.md`, `references/`; diagram in [`docs/skill-architecture.svg`](docs/skill-architecture.svg)) and walks one brief through seven stages with `tools/pipeline.py`. A stage can't be skipped: `advance` refuses until its gate passes.
 
 | stage | what happens | gate to leave it |

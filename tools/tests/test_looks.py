@@ -15,9 +15,9 @@ ROOT = looks.ROOT
 def fake_family(cache, family, files, license_="OFL-1.1"):
     d = os.path.join(cache, looks.slug(family), "package")
     os.makedirs(os.path.join(d, "files"), exist_ok=True)
-    with open(os.path.join(d, "package.json"), "w") as f:
+    with open(os.path.join(d, "package.json"), "w", encoding="utf-8") as f:
         json.dump({"name": f"@fontsource/{looks.slug(family)}", "license": license_}, f)
-    with open(os.path.join(d, "LICENSE"), "w") as f:
+    with open(os.path.join(d, "LICENSE"), "w", encoding="utf-8") as f:
         f.write("SIL Open Font License 1.1")
     for name in files:
         with open(os.path.join(d, "files", name), "wb") as f:
@@ -70,6 +70,13 @@ def test_install_writes_fonts_and_client_json(tmp_path, monkeypatch):
     assert c["brand"]["colors"]["ink"] == "#111111" and c["brand"]["look"] == "t"
     assert (client / "assets" / "fonts" / "test-sans-latin-600-normal.woff2").exists()
     assert (client / "assets" / "fonts" / "test-serif.LICENSE.txt").exists()
-    kept = json.loads((client / "client.json").read_text())["brand"]["colors"]["ink"]
+    kept = json.loads((client / "client.json").read_text(encoding="utf-8"))["brand"]["colors"]["ink"]
     c2 = looks.install_look(dict(look, colors={**look["colors"], "ink": "#000000"}), str(client), keep_colors=True)
     assert c2["brand"]["colors"]["ink"] == kept  # --keep-colors leaves the client's palette alone
+
+
+def test_fetch_says_clearly_when_npm_is_missing(tmp_path, monkeypatch):
+    monkeypatch.setenv("CUTROOM_FONT_CACHE", str(tmp_path))
+    monkeypatch.setattr(looks.shutil, "which", lambda name: None)
+    with pytest.raises(RuntimeError, match="npm not found"):
+        looks.fetch("Never Cached Serif")

@@ -62,7 +62,11 @@
     "Liberty taken (the user asked for it): scene changes happen through rising steam instead of plain dissolves; captions are new lines written in the same voice; photos mix the hot springs and the bungalow interior.",
     "No music was supplied: the sound is the cutroom effects palette placed from the render's events.",
     "First draft: captions were legible for 0.8 s (verifier FAIL); now five scenes of 2.3 s and the captions enter sooner. The sunrise photo was dropped to make room.",
-    "Rhythm: equal scenes read as a metronome (verifier FAIL). Two short breaths without a caption (sunrise steam, kitchen) now sit between the long captioned scenes, and each push has its own curve."
+    "Rhythm: equal scenes read as a metronome (verifier FAIL). Two short breaths without a caption (sunrise steam, kitchen) now sit between the long captioned scenes, and each push has its own curve.",
+    "Second version after the quality comparison with onetake (2026-11-11): type set in Instrument Serif + Inter (look 'linen' faces, client colours kept); captions through <Caption>, gone 18 frames before each change; steam cooler and thinner with no flat white wash (verifier burnt_frames 10 -> 0); two alternating steam shapes; finals from PNG frames with the whole-frame shutter. This is a new draft for review, not the one shown before.",
+    "WARN [curves] accepted: the pushes already use four different curves and the steam alternates two shapes; the measured moves are dominated by the steam swell.",
+    "WARN [rhythm] (longest beat 2.9x the shortest) accepted: within 0.1 of the target, the two breaths without captions already break the cadence.",
+    "Still share 44 % against the reference's 19-25 %: calmer than the client's reference reel; offered to tighten the rests."
   ],
   "beats": [
     {

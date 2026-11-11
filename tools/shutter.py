@@ -5,7 +5,7 @@ render.mjs renders a piece once at offset 0 (the full piece, with audio) and aga
 (input prop `timeOffset`). This tool plans which frames need the extra passes and blends them:
 
   shutter.py offsets --mult 1 --samples 4 --angle 180    the (sub-frame, sample, offset) list, as JSON
-  shutter.py plan <pass0.mp4> [--threshold 1.0] [--pad 2] frame ranges that move, as JSON [[a, b], ...]
+  shutter.py plan <pass0.mp4> [--threshold 8] [--pad 2]   frame ranges faster than 8 px/frame, as JSON [[a, b], ...]
   shutter.py blend --frames N --fps 30 --mult 1 --out out.mp4 --audio pass0.mp4 [--crf 14]
                    --pass m:j:start:end:path ...
 
@@ -76,23 +76,24 @@ class Reader:
         self.p.wait()
 
 
-def plan(path, threshold=1.0, pad=2, small=(135, 240)):
-    """Inclusive frame ranges where consecutive frames differ by more than `threshold` (mean abs, 8-bit grey)."""
-    w, h = small
-    p = subprocess.Popen([ffmpeg(), "-v", "error", "-i", path, "-vf", f"scale={w}:{h}:flags=area,format=gray",
-                          "-f", "rawvideo", "-pix_fmt", "gray", "-"], stdout=subprocess.PIPE)
-    frames = []
-    while True:
-        buf = p.stdout.read(w * h)
-        if len(buf) < w * h:
-            break
-        frames.append(np.frombuffer(buf, np.uint8).astype(np.int16))
-    p.wait()
-    n = len(frames)
+def plan(path, threshold=8.0, pad=2):
+    """Inclusive frame ranges where the picture travels faster than `threshold` px/frame (optical flow at the
+    video's full width, as the verifier measures it). Below ~8 px/frame a 180° shutter smear is invisible, so slow
+    pushes and drifting steam are not rendered again."""
+    import cv2
+
+    from quality import motion
+
+    cap = cv2.VideoCapture(path)
+    w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    n = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30
+    cap.release()
+    speed = np.asarray(motion.analyze(path, fps, w, n / fps)["speed"], float)
+    n = len(speed)
     moving = np.zeros(n, bool)
-    for i in range(1, n):
-        if np.abs(frames[i] - frames[i - 1]).mean() > threshold:
-            moving[i - 1] = moving[i] = True
+    for i in np.flatnonzero(speed > threshold):
+        moving[max(0, i - 1): i + 1] = True  # speed[i] is the travel from frame i-1 to i
     ranges = []
     for i in np.flatnonzero(moving):
         a, b = max(0, i - pad), min(n - 1, i + pad)
@@ -157,7 +158,7 @@ def main(argv=None):
     o.add_argument("--angle", type=float, default=180.0)
     p = sub.add_parser("plan")
     p.add_argument("video")
-    p.add_argument("--threshold", type=float, default=1.0)
+    p.add_argument("--threshold", type=float, default=8.0, help="px/frame of optical flow")
     p.add_argument("--pad", type=int, default=2)
     b = sub.add_parser("blend")
     b.add_argument("--frames", type=int, required=True)

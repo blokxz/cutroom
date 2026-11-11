@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import shutter  # noqa: E402
-from quality.bins import ffmpeg  # noqa: E402
+from quality.bins import ffmpeg, ffprobe  # noqa: E402
 
 
 def solid_video(path, colors, size="64x48", fps=30):
@@ -48,12 +48,25 @@ def test_offsets_spread_inside_the_shutter_and_split_sub_frames():
     assert [(m, off) for m, _, off in o2] == [(0, 0.0), (0, 0.125), (1, 0.5), (1, 0.625)]
 
 
-def test_plan_finds_the_moving_stretch_with_padding(tmp_path):
-    cols = [(10, 10, 10)] * 10 + [(10 + 20 * i, 10, 10) for i in range(1, 6)] + [(110, 10, 10)] * 10
-    v = solid_video(tmp_path / "m.mp4", cols)
-    ranges, n = shutter.plan(v, threshold=1.0, pad=2, small=(32, 24))
-    assert n == 25
-    assert ranges == [[7, 16]]
+def test_plan_resamples_only_fast_travel(tmp_path):
+    h, w = 120, 240
+    xs, x = [], 20.0
+    for k in range(45):  # 0–14 still · 15–24 drift 1 px/frame · 25–34 fast 14 px/frame · 35–44 still
+        x += 1 if 15 <= k < 25 else 14 if 25 <= k < 35 else 0
+        xs.append(int(x))
+    frames = []
+    for x in xs:
+        f = np.full((h, w, 3), 210, np.uint8)
+        f[45:75, x % (w - 20): x % (w - 20) + 20] = 25
+        frames.append(f)
+    path = str(tmp_path / "p.mp4")
+    subprocess.run([ffmpeg(), "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{w}x{h}", "-r", "30", "-i", "-",
+                    "-c:v", "libx264", "-qp", "0", "-pix_fmt", "yuv444p", path], input=b"".join(f.tobytes() for f in frames), check=True)
+    ranges, n = shutter.plan(path, threshold=6.0, pad=1)
+    assert n == 45
+    moving = {f for a, b in ranges for f in range(a, b + 1)}
+    assert moving, ranges
+    assert min(moving) >= 22 and max(moving) <= 37, ranges  # the fast stretch (with padding), never the slow drift
 
 
 def test_blend_averages_in_linear_light_only_where_a_ranged_pass_covers(tmp_path):
@@ -79,7 +92,7 @@ def test_blend_interleaves_two_sub_frames_into_double_rate(tmp_path):
     assert len(fs) == 8
     lum = [int(f[..., 1].mean()) for f in fs]
     assert all(x < 70 for x in lum[0::2]) and all(x > 170 for x in lum[1::2])
-    rate = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate",
+    rate = subprocess.run([ffprobe(), "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate",
                            "-of", "csv=p=0", out], capture_output=True, text=True).stdout.strip()
     assert rate == "60/1"
 
