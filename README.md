@@ -127,10 +127,10 @@ node scripts/render.mjs --brief ../clients/sample/briefs/sample-post.json --fina
 | path | what |
 |---|---|
 | `lib/formats.ts` | story / reel / post sizes and UI margins |
-| `lib/motion.ts` | `EASE` (snap, glide, out, in), `tween`, `land`, `settle`, `drift`, camera keys |
+| `lib/motion.ts` | `EASE` (snap, glide, out, in), `tween`, `land`, `settle`, `drift`, camera keys, squash and stretch (`stretchFromVelocity`, `contactSquash`) |
 | `lib/brief.ts` | `Brief` type, `useCopy`, `CopyProvider`, `copyFrom`, `contactFrom`, `splitAccent` |
 | `lib/brand.ts` | brand token shape + `loadFonts` (fonts from the client folder) |
-| `moves/` | `Morph`, `IrisOpen`, `MaskReveal`, `SplitText`, `Typewriter`, `pushThrough`, `progress` |
+| `moves/` | 27 moves, each with a Studio demo (`MovesDemo-*`) and a sheet; the library index is [`docs/moves/README.md`](docs/moves/README.md) |
 | `components/Camera.tsx` | keyed, operated camera with drift that goes still for the CTA |
 | `components/Track.tsx` | `TrackRoot`, `Track`, `Beats` (each beat has `kind`: move, rest, hold, cut) |
 | `components/Music.tsx` | background music that ducks under the effects |

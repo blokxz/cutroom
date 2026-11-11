@@ -7,31 +7,61 @@
  *
  * Entrances: `rise` (from below, settles), `drop` (from above, lands with a squash), `slide` (from the side,
  * decelerating), `pop` (scale spring, small overshoot), `swing` (rotates in and settles). All are 0 before `start`
- * and exactly the resting pose (0 offset, scale 1) after they settle.
+ * and exactly the resting pose (0 offset, scale 1) after they settle. Moving entrances (rise, drop, slide) stretch
+ * along their travel while they are fast (`stretch` is the gain, 0 turns it off); a drop also squashes where it lands.
  */
 import React from "react";
 import { spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { EASE } from "../lib/motion";
+import {
+  EASE,
+  stretchAxes,
+  stretchFromVelocity,
+  velocityOf,
+} from "../lib/motion";
 import { squash } from "./PostcardDrop";
 import { Track } from "../components/Track";
 
 export type EntranceKind = "rise" | "drop" | "slide" | "pop" | "swing";
-export type EntrancePose = { x: number; y: number; s: number; r: number; opacity: number; sx: number; sy: number };
+export type EntrancePose = {
+  x: number;
+  y: number;
+  s: number;
+  r: number;
+  opacity: number;
+  sx: number;
+  sy: number;
+};
 
-const spr = (frame: number, fps: number, start: number, damping: number, stiffness = 120) =>
-  spring({ frame: frame - start, fps, config: { damping, stiffness, mass: 0.9 } });
+const spr = (
+  frame: number,
+  fps: number,
+  start: number,
+  damping: number,
+  stiffness = 120,
+) =>
+  spring({
+    frame: frame - start,
+    fps,
+    config: { damping, stiffness, mass: 0.9 },
+  });
 
-export const entrancePose = (
+const basePose = (
   frame: number,
   fps: number,
   start: number,
   kind: EntranceKind,
-  opts: { distance?: number; dir?: 1 | -1 } = {},
+  d: number,
+  dir: 1 | -1,
 ): EntrancePose => {
-  const rest: EntrancePose = { x: 0, y: 0, s: 1, r: 0, opacity: 1, sx: 1, sy: 1 };
-  if (frame < start) return { ...rest, opacity: 0, s: kind === "pop" ? 0 : 1 };
-  const d = opts.distance ?? 240;
-  const dir = opts.dir ?? 1;
+  const rest: EntrancePose = {
+    x: 0,
+    y: 0,
+    s: 1,
+    r: 0,
+    opacity: 1,
+    sx: 1,
+    sy: 1,
+  };
   const o = Math.min(1, (frame - start) / (0.18 * fps)); // fades in over the first 0.18 s
   switch (kind) {
     case "rise":
@@ -42,12 +72,54 @@ export const entrancePose = (
       return { ...rest, y: -d * (1 - p), opacity: o, sx: sq.sx, sy: sq.sy };
     }
     case "slide":
-      return { ...rest, x: dir * d * (1 - EASE.snap(Math.min(1, (frame - start) / (0.7 * fps)))), opacity: o };
+      return {
+        ...rest,
+        x:
+          dir * d * (1 - EASE.snap(Math.min(1, (frame - start) / (0.7 * fps)))),
+        opacity: o,
+      };
     case "pop":
       return { ...rest, s: spr(frame, fps, start, 10, 160), opacity: o };
     case "swing":
-      return { ...rest, r: dir * 14 * (1 - spr(frame, fps, start, 8, 90)), opacity: o };
+      return {
+        ...rest,
+        r: dir * 14 * (1 - spr(frame, fps, start, 8, 90)),
+        opacity: o,
+      };
   }
+};
+
+export const entrancePose = (
+  frame: number,
+  fps: number,
+  start: number,
+  kind: EntranceKind,
+  opts: { distance?: number; dir?: 1 | -1; stretch?: number } = {},
+): EntrancePose => {
+  if (frame < start)
+    return {
+      x: 0,
+      y: 0,
+      s: kind === "pop" ? 0 : 1,
+      r: 0,
+      opacity: 0,
+      sx: 1,
+      sy: 1,
+    };
+  const d = opts.distance ?? 240;
+  const dir = opts.dir ?? 1;
+  const pose = basePose(frame, fps, start, kind, d, dir);
+  const gain = opts.stretch ?? 0.005;
+  if (gain <= 0 || (kind !== "rise" && kind !== "drop" && kind !== "slide"))
+    return pose;
+  const v = velocityOf(
+    (f) => basePose(f, fps, start, kind, d, dir),
+    frame,
+    0.5,
+    start,
+  );
+  const st = stretchAxes(stretchFromVelocity(v.vx, v.vy, { gain, max: 0.3 }));
+  return { ...pose, sx: pose.sx * st.sx, sy: pose.sy * st.sy };
 };
 
 export type GatherSpec = {
@@ -61,7 +133,13 @@ export type GatherSpec = {
 };
 
 /** Element i: eased flight to the target, shrinking to `endScale`; `arrived` is true from its landing frame. */
-export const gatherPose = (frame: number, fps: number, i: number, spec: GatherSpec, endScale = 0.2) => {
+export const gatherPose = (
+  frame: number,
+  fps: number,
+  i: number,
+  spec: GatherSpec,
+  endScale = 0.2,
+) => {
   const from = spec.origins[i];
   const t0 = spec.start + i * spec.stagger;
   const u = Math.min(1, Math.max(0, (frame - t0) / (spec.tripS * fps)));
@@ -91,7 +169,12 @@ export const Gather: React.FC<{
         return (
           <div
             key={i}
-            style={{ position: "absolute", left: p.x, top: p.y, transform: `translate(-50%, -50%) scale(${p.s})` }}
+            style={{
+              position: "absolute",
+              left: p.x,
+              top: p.y,
+              transform: `translate(-50%, -50%) scale(${p.s})`,
+            }}
           >
             {node}
           </div>

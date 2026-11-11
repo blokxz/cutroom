@@ -178,3 +178,82 @@ export const latticePoints = (
     for (let x = first(b.x0); x <= b.x1; x += s) pts.push({ x, y });
   return pts;
 };
+
+// ---- Squash and stretch ------------------------------------------------------
+// Things that move fast stretch along their travel and get thinner across it; things that hit
+// something get flatter along the contact and wider across it. Both keep the area (along · across = 1),
+// so the eye reads a deformation, not a change of size. Angles are in degrees, screen axes (y down).
+
+export type Stretch = { along: number; across: number; angle: number };
+export const NO_STRETCH: Stretch = { along: 1, across: 1, angle: 0 };
+
+/** Stretch from a velocity in px/frame. Zero speed gives no stretch; the amount grows with `gain` and
+ *  approaches `max` softly (tanh), so a whip never turns a circle into a needle. */
+export const stretchFromVelocity = (
+  vx: number,
+  vy: number,
+  opts: { gain?: number; max?: number } = {},
+): Stretch => {
+  const v = Math.hypot(vx, vy);
+  const max = Math.max(0, opts.max ?? 0.4);
+  if (v < 1e-6 || max === 0) return NO_STRETCH;
+  const along = 1 + max * Math.tanh(((opts.gain ?? 0.006) * v) / max);
+  return {
+    along,
+    across: 1 / along,
+    angle: (Math.atan2(vy, vx) * 180) / Math.PI,
+  };
+};
+
+/** Velocity (px/frame) of a position function at `frame`, by a central difference over ±h frames.
+ *  `from` is the first frame the function is defined on: the difference never reads before it. */
+export const velocityOf = (
+  pos: (f: number) => { x: number; y: number },
+  frame: number,
+  h = 0.5,
+  from = -Infinity,
+) => {
+  const f0 = Math.max(from, frame - h);
+  const f1 = Math.max(f0 + 1e-3, frame + h);
+  const a = pos(f0);
+  const b = pos(f1);
+  return { vx: (b.x - a.x) / (f1 - f0), vy: (b.y - a.y) / (f1 - f0) };
+};
+
+/** Squash after a contact at frame `at`: flatter along the contact normal (`angle`, default 90 = a floor),
+ *  wider across it, wobbling back to rest with a decay of `decayS` seconds. */
+export const contactSquash = (
+  frame: number,
+  fps: number,
+  at: number,
+  opts: {
+    amount?: number;
+    decayS?: number;
+    freq?: number;
+    angle?: number;
+  } = {},
+): Stretch => {
+  if (frame < at) return NO_STRETCH;
+  const t = (frame - at) / fps;
+  const k =
+    (opts.amount ?? 0.22) *
+    Math.exp(-t / (opts.decayS ?? 0.12)) *
+    Math.cos(2 * Math.PI * (opts.freq ?? 3.5) * t);
+  const along = Math.max(0.2, 1 - k);
+  return { along, across: 1 / along, angle: opts.angle ?? 90 };
+};
+
+/** The CSS transform for a stretch: scale along its own direction, not the screen axes. Put it last in a
+ *  transform list so it deforms the element around its centre (transform-origin: center). */
+export const stretchTransform = (s: Stretch) =>
+  Math.abs(s.along - 1) < 1e-4
+    ? ""
+    : `rotate(${s.angle.toFixed(3)}deg) scale(${s.along.toFixed(4)}, ${s.across.toFixed(4)}) rotate(${(-s.angle).toFixed(3)}deg)`;
+
+/** A stretch expressed on the screen axes (sx, sy), for moves whose travel is horizontal or vertical. */
+export const stretchAxes = (s: Stretch) => {
+  const c = Math.abs(Math.cos((s.angle * Math.PI) / 180));
+  return c >= Math.SQRT1_2
+    ? { sx: s.along, sy: s.across }
+    : { sx: s.across, sy: s.along };
+};

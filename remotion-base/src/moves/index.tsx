@@ -33,6 +33,11 @@
  *   Dominoes      cards tip over one after another, each starting on contact (./Dominoes)
  *   CauseEffect   a cause touches a target; squash and effect start on the hit (./CauseEffect)
  *   DepthStage    one camera through layers: parallax and a focus pull (./Depth)
+ *   Bouncer       a body dropped onto a floor: stretch in flight, squash on each contact,
+ *                 lower every bounce, rolls to rest                  (./Bounce)
+ *
+ * Squash and stretch for any move: stretchFromVelocity / velocityOf / contactSquash /
+ * stretchTransform in ../lib/motion (entrancePose already uses them).
  */
 import React from "react";
 import {
@@ -275,3 +280,4 @@ export * from "./Entrances";
 export * from "./Silk";
 export * from "./Stream";
 export * from "./Steam";
+export * from "./Bounce";

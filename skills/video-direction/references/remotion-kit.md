@@ -8,7 +8,7 @@
 | `moves/` | carry moves (below); pure math exported + unit-tested |
 | `components/` | `Camera`, `MotionBlur`, `Track`/`Beats`/`TrackRoot`, `SafeZones`, `Music`, `Accent`, `Paper` |
 | `clients/<slug>/` | generated `brand.ts` (`CLIENT`, `CONTACT`, `asset()`) + compositions |
-| `examples/` | `sample/SamplePost.tsx` (tests/CI only, G-09), `moves/MovesDemo.tsx` (Studio demos `MovesDemo-*`) |
+| `examples/` | `sample/SamplePost.tsx` (tests/CI only, G-09), `moves/MovesDemo.tsx` + `moves/LibraryDemos.tsx` (Studio demos `MovesDemo-*`, one per move; sheets and the index in `docs/moves/`) |
 | `Root.tsx` | composition registry |
 
 ## Moves (take a progress value; you choose the curve)
@@ -28,7 +28,8 @@
 | `FilmStrip` | `stripOffset cellRect` | a strip of frames rolls and stops on a cell; that frame grows to fill the screen |
 | `Dominoes` | `tipAngle chainStarts` | cards tip with gravity; card k+1 starts when card k reaches the contact angle |
 | `CauseEffect` | `approach impactPose effectProgress` | a cause accelerates into a target; squash, recoil and the effect start on the hit frame |
-| `Entrances` / `Gather` | `entrancePose gatherPose` | five entrances (rise, drop with squash, slide, pop, swing) that settle exactly at rest; a cast flying into one target, one after another, and absorbed there |
+| `Entrances` / `Gather` | `entrancePose gatherPose` | five entrances (rise, drop with squash, slide, pop, swing; the moving ones stretch along their travel) that settle exactly at rest; a cast flying into one target, one after another, and absorbed there |
+| `Bounce` / squash and stretch | `bounceAt bounceContacts bounceShape` · `stretchFromVelocity velocityOf contactSquash stretchTransform stretchAxes` (lib/motion) | a body dropped on a floor: stretch in flight, squash on each contact, lower each bounce, rolls to rest; the helpers give any move a stretch along its velocity and a squash on contact, area kept |
 | `Silk` | `silkY silkPath` | translucent ribbons for a living background; a pure function of the frame that loops exactly |
 | `Caption` (component) | `splitCaption blurIn` | two-line caption: small sans, serif italic out of a blur, one boxed word; leaves before the next change [R-18] |
 | `Steam` | `steamPuffs puffAt veilDensity` | rising vapour puffs; a veil that swells around each scene change so the change happens through the steam; tracked lead puff |

@@ -911,3 +911,74 @@ describe("Steam", () => {
     }
   });
 });
+
+// ------------------------------------------------------------------ Bounce
+import { bounceAt, bounceContacts, bounceShape } from "../src/moves";
+
+describe("Bounce", () => {
+  const spec = { start: 10, x0: 100, y0: 200, floor: 1100, vx: 600 };
+  it("falls from rest, touches the floor at each contact and never goes through it", () => {
+    expect(bounceAt(10, FPS, spec).y).toBeCloseTo(200, 6);
+    const contacts = bounceContacts(FPS, spec);
+    expect(contacts.length).toBeGreaterThan(2);
+    for (const c of contacts)
+      expect(bounceAt(c, FPS, spec).y).toBeCloseTo(1100, 3);
+    for (let f = 10; f < 200; f += 0.25)
+      expect(bounceAt(f, FPS, spec).y).toBeLessThanOrEqual(1100 + 1e-9);
+  });
+  it("loses height with every bounce and comes to rest", () => {
+    const c = bounceContacts(FPS, spec);
+    const apex = (a: number, b: number) =>
+      Math.min(
+        ...range(Math.ceil(a), Math.floor(b)).map(
+          (f) => bounceAt(f, FPS, spec).y,
+        ),
+      );
+    const h1 = 1100 - apex(c[0], c[1]);
+    const h2 = 1100 - apex(c[1], c[2]);
+    expect(h1).toBeGreaterThan(h2);
+    expect(bounceAt(c[c.length - 1] + 3 * FPS, FPS, spec).y).toBeCloseTo(
+      1100,
+      6,
+    );
+  });
+  it("rolls forward and slows down", () => {
+    const xs = range(10, 200).map((f) => bounceAt(f, FPS, spec).x);
+    expect(xs.every((x, i) => i === 0 || x >= xs[i - 1])).toBe(true);
+    expect(bounceAt(200, FPS, spec).vx).toBeLessThan(
+      bounceAt(20, FPS, spec).vx,
+    );
+  });
+  it("stretches while falling fast and squashes on contact, keeping its area", () => {
+    const c = bounceContacts(FPS, spec)[0];
+    const fall = bounceShape(c - 1, FPS, spec);
+    expect(fall.stretch.along).toBeGreaterThan(1.1);
+    expect(fall.stretch.angle).toBeGreaterThan(45); // mostly downward
+    const hit = bounceShape(c + 0.5, FPS, spec);
+    expect(hit.squash.along).toBeLessThan(0.85);
+    expect(hit.squash.along * hit.squash.across).toBeCloseTo(1, 9);
+    const rest = bounceShape(400, FPS, spec);
+    expect(Math.abs(rest.squash.along - 1)).toBeLessThan(1e-3);
+  });
+});
+
+describe("Entrances stretch", () => {
+  it("a moving entrance stretches along its travel and is round again at rest", () => {
+    const fast = range(10, 40).map((f) =>
+      entrancePose(f, FPS, 10, "slide", { dir: 1 }),
+    );
+    expect(Math.max(...fast.map((p) => p.sx))).toBeGreaterThan(1.05);
+    const rise = range(10, 40).map((f) => entrancePose(f, FPS, 10, "rise"));
+    expect(Math.max(...rise.map((p) => p.sy))).toBeGreaterThan(1.05);
+    expect(entrancePose(10 + 4 * FPS, FPS, 10, "slide").sx).toBeCloseTo(1, 3);
+    expect(entrancePose(20, FPS, 10, "slide", { stretch: 0 }).sx).toBe(1);
+  });
+});
+
+describe("Bounce before release", () => {
+  it("is still, with no stretch, until it is let go", () => {
+    const spec = { start: 10, x0: 100, y0: 200, floor: 1100, vx: 600 };
+    expect(bounceAt(5, FPS, spec).vx).toBe(0);
+    expect(bounceShape(5, FPS, spec).stretch.along).toBe(1);
+  });
+});

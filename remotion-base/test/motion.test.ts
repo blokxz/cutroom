@@ -250,3 +250,67 @@ describe("operated-camera helpers", () => {
     }
   });
 });
+
+// ------------------------------------------------------------------ squash and stretch
+import {
+  contactSquash,
+  stretchAxes,
+  stretchFromVelocity,
+  stretchTransform,
+  velocityOf,
+} from "../src/lib/motion";
+
+describe("stretchFromVelocity", () => {
+  it("is no stretch at rest", () => {
+    expect(stretchFromVelocity(0, 0)).toEqual({
+      along: 1,
+      across: 1,
+      angle: 0,
+    });
+    expect(stretchTransform(stretchFromVelocity(0, 0))).toBe("");
+  });
+  it("keeps the area and grows with speed, under its cap", () => {
+    let prev = 1;
+    for (const v of [5, 20, 60, 150, 400, 5000]) {
+      const s = stretchFromVelocity(v, 0, { max: 0.3 });
+      expect(s.along * s.across).toBeCloseTo(1, 9);
+      expect(s.along).toBeGreaterThan(prev);
+      expect(s.along).toBeLessThanOrEqual(1.3 + 1e-9);
+      prev = s.along;
+    }
+  });
+  it("points along the travel", () => {
+    expect(stretchFromVelocity(10, 0).angle).toBeCloseTo(0, 9);
+    expect(stretchFromVelocity(0, 10).angle).toBeCloseTo(90, 9); // y down: falling
+    expect(stretchFromVelocity(-10, 0).angle).toBeCloseTo(180, 9);
+    expect(stretchAxes(stretchFromVelocity(0, 50)).sy).toBeGreaterThan(1);
+    expect(stretchAxes(stretchFromVelocity(50, 0)).sx).toBeGreaterThan(1);
+  });
+  it("max 0 turns it off", () => {
+    expect(stretchFromVelocity(100, 0, { max: 0 }).along).toBe(1);
+  });
+});
+
+describe("velocityOf", () => {
+  it("differentiates a position function and never reads before `from`", () => {
+    const v = velocityOf((f) => ({ x: 3 * f, y: f * f }), 10);
+    expect(v.vx).toBeCloseTo(3, 9);
+    expect(v.vy).toBeCloseTo(20, 9);
+    const seen: number[] = [];
+    velocityOf((f) => (seen.push(f), { x: f, y: 0 }), 10, 0.5, 10);
+    expect(Math.min(...seen)).toBeGreaterThanOrEqual(10);
+  });
+});
+
+describe("contactSquash", () => {
+  it("is nothing before the contact, flat on it, back to rest after", () => {
+    expect(contactSquash(9, FPS, 10).along).toBe(1);
+    const hit = contactSquash(10, FPS, 10, { amount: 0.25 });
+    expect(hit.along).toBeCloseTo(0.75, 9);
+    expect(hit.along * hit.across).toBeCloseTo(1, 9);
+    expect(hit.angle).toBe(90);
+    expect(Math.abs(contactSquash(10 + FPS, FPS, 10).along - 1)).toBeLessThan(
+      1e-3,
+    );
+  });
+});

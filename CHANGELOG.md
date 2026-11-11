@@ -8,6 +8,8 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 ### Added
 
+- Squash and stretch from velocity in `lib/motion.ts` (`stretchFromVelocity`, `velocityOf`, `contactSquash`, `stretchTransform`, `stretchAxes`): area kept, soft cap, squash along the contact normal. `entrancePose` now stretches rise, drop and slide along their travel (`stretch: 0` turns it off). New move `Bouncer` (`bounceAt`, `bounceContacts`, `bounceShape`): closed-form bounces that stretch in flight, squash on each contact and roll to rest.
+- The move library is complete: `examples/moves/LibraryDemos.tsx` adds demos for Squash, Morph, pushThrough, IrisOpen, MaskReveal, SplitText, Typewriter, ArchWindow, Caption, Camera, Steam and Stream, so all 27 moves have a Studio demo, a final-quality clip and a sheet in `docs/moves/` (index in `docs/moves/README.md`).
 - `<MotionBlur>`: one wrapper for every example. Drafts get few blur samples and finals 12. The camera engine is the default; the HTML-in-canvas engine (real shutter) is opt-in with `CUTROOM_BLUR_ENGINE`. `scripts/blur-ab.mjs` compares both engines on chosen frames.
 - `render.mjs --master-4k`: a 2160×3840 final master.
 - `tools/setup.py`: one-command setup for Windows, macOS and Linux. It checks requirements with install hints, runs `npm ci` and `pip install`, and creates `.env`.

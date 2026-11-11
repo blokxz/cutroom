@@ -40,6 +40,21 @@ import {
   PostcardDropDemo,
   WrittenPostcardDemo,
 } from "./examples/moves/MovesDemo";
+import {
+  LIBRARY_DEMO_FRAMES,
+  SquashDemo,
+  MorphDemo,
+  PushThroughDemo,
+  IrisOpenDemo,
+  MaskRevealDemo,
+  SplitTextDemo,
+  TypewriterDemo,
+  ArchWindowDemo,
+  CaptionDemo,
+  CameraDemo,
+  SteamDemo,
+  StreamDemo,
+} from "./examples/moves/LibraryDemos";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -230,6 +245,102 @@ export const RemotionRoot: React.FC = () => {
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
           durationInFrames={MOVES_DEMO_FRAMES.silk}
+        />
+        <Composition
+          id="MovesDemo-Squash"
+          component={withTimeOffset(SquashDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.squash}
+        />
+        <Composition
+          id="MovesDemo-Morph"
+          component={withTimeOffset(MorphDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.morph}
+        />
+        <Composition
+          id="MovesDemo-PushThrough"
+          component={withTimeOffset(PushThroughDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.push}
+        />
+        <Composition
+          id="MovesDemo-IrisOpen"
+          component={withTimeOffset(IrisOpenDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.iris}
+        />
+        <Composition
+          id="MovesDemo-MaskReveal"
+          component={withTimeOffset(MaskRevealDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.mask}
+        />
+        <Composition
+          id="MovesDemo-SplitText"
+          component={withTimeOffset(SplitTextDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.split}
+        />
+        <Composition
+          id="MovesDemo-Typewriter"
+          component={withTimeOffset(TypewriterDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.type}
+        />
+        <Composition
+          id="MovesDemo-ArchWindow"
+          component={withTimeOffset(ArchWindowDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.arch}
+        />
+        <Composition
+          id="MovesDemo-Caption"
+          component={withTimeOffset(CaptionDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.caption}
+        />
+        <Composition
+          id="MovesDemo-Camera"
+          component={withTimeOffset(CameraDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.camera}
+        />
+        <Composition
+          id="MovesDemo-Steam"
+          component={withTimeOffset(SteamDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.steam}
+        />
+        <Composition
+          id="MovesDemo-Stream"
+          component={withTimeOffset(StreamDemo)}
+          width={FORMATS.reel.width}
+          height={FORMATS.reel.height}
+          fps={FORMATS.reel.fps}
+          durationInFrames={LIBRARY_DEMO_FRAMES.stream}
         />
       </Folder>
     </>
