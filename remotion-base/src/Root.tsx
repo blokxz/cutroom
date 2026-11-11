@@ -2,11 +2,26 @@ import React from "react";
 import { Composition, Folder } from "remotion";
 import { FORMATS } from "./lib/formats";
 import { SAMPLE_POST_FRAMES, SamplePost } from "./examples/sample/SamplePost";
-import { TERMAS_ARROYO_FRAMES, TermasArroyo } from "./examples/termas/TermasArroyo";
-import { TERMAS_CINTA_FRAMES, TermasCinta } from "./examples/termas/TermasCinta";
+import {
+  TERMAS_ARROYO_FRAMES,
+  TermasArroyo,
+} from "./examples/termas/TermasArroyo";
+import {
+  TERMAS_CINTA_FRAMES,
+  TermasCinta,
+} from "./examples/termas/TermasCinta";
 import { ESCAPADA_FRAMES, Escapada } from "./examples/termas/Escapada";
-import { CAROUSEL_DEFAULTS, COVER_DEFAULTS, CarouselCover, CarouselSlide } from "./examples/sample/CarouselSlide";
-import { SAMPLE_DATES_FRAMES, SampleDates } from "./examples/sample/SampleDates";
+import { withTimeOffset } from "./lib/shutter";
+import {
+  CAROUSEL_DEFAULTS,
+  COVER_DEFAULTS,
+  CarouselCover,
+  CarouselSlide,
+} from "./examples/sample/CarouselSlide";
+import {
+  SAMPLE_DATES_FRAMES,
+  SampleDates,
+} from "./examples/sample/SampleDates";
 import {
   BeltDemo,
   CalendarDemo,
@@ -32,7 +47,7 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="examples">
         <Composition
           id="SamplePost"
-          component={SamplePost}
+          component={withTimeOffset(SamplePost)}
           width={FORMATS.post.width}
           height={FORMATS.post.height}
           fps={FORMATS.post.fps}
@@ -41,7 +56,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="CarouselSlide"
-          component={CarouselSlide}
+          component={withTimeOffset(CarouselSlide)}
           width={FORMATS.post.width}
           height={FORMATS.post.height}
           fps={FORMATS.post.fps}
@@ -50,7 +65,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="CarouselCover"
-          component={CarouselCover}
+          component={withTimeOffset(CarouselCover)}
           width={FORMATS.post.width}
           height={FORMATS.post.height}
           fps={FORMATS.post.fps}
@@ -59,7 +74,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="TermasArroyo"
-          component={TermasArroyo}
+          component={withTimeOffset(TermasArroyo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -68,7 +83,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="TermasCinta"
-          component={TermasCinta}
+          component={withTimeOffset(TermasCinta)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -77,7 +92,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="Escapada"
-          component={Escapada}
+          component={withTimeOffset(Escapada)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -86,7 +101,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="SampleDates"
-          component={SampleDates}
+          component={withTimeOffset(SampleDates)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -98,7 +113,7 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="moves">
         <Composition
           id="MovesDemo-PostcardDrop"
-          component={PostcardDropDemo}
+          component={withTimeOffset(PostcardDropDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -106,7 +121,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-LightArc"
-          component={LightArcDemo}
+          component={withTimeOffset(LightArcDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -114,7 +129,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-PathCamera"
-          component={PathCameraDemo}
+          component={withTimeOffset(PathCameraDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -122,7 +137,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-Key"
-          component={KeyDemo}
+          component={withTimeOffset(KeyDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -130,7 +145,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-WrittenPostcard"
-          component={WrittenPostcardDemo}
+          component={withTimeOffset(WrittenPostcardDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -138,7 +153,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-LightFlood"
-          component={LightFloodDemo}
+          component={withTimeOffset(LightFloodDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -146,7 +161,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-Belt"
-          component={BeltDemo}
+          component={withTimeOffset(BeltDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -154,7 +169,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-ObjectWipe"
-          component={ObjectWipeDemo}
+          component={withTimeOffset(ObjectWipeDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -162,7 +177,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-Calendar"
-          component={CalendarDemo}
+          component={withTimeOffset(CalendarDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -170,7 +185,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-FilmStrip"
-          component={FilmStripDemo}
+          component={withTimeOffset(FilmStripDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -178,7 +193,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-Dominoes"
-          component={DominoesDemo}
+          component={withTimeOffset(DominoesDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -186,7 +201,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-CauseEffect"
-          component={CauseEffectDemo}
+          component={withTimeOffset(CauseEffectDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -194,7 +209,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-Depth"
-          component={DepthDemo}
+          component={withTimeOffset(DepthDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -202,7 +217,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-Gather"
-          component={GatherDemo}
+          component={withTimeOffset(GatherDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}
@@ -210,7 +225,7 @@ export const RemotionRoot: React.FC = () => {
         />
         <Composition
           id="MovesDemo-Silk"
-          component={SilkDemo}
+          component={withTimeOffset(SilkDemo)}
           width={FORMATS.reel.width}
           height={FORMATS.reel.height}
           fps={FORMATS.reel.fps}

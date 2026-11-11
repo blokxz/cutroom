@@ -27,7 +27,12 @@ import {
 
 export type BlurEngine = "canvas" | "camera";
 
-type BlurProps = { blurEngine?: BlurEngine; blurSamples?: number };
+type BlurProps = {
+  blurEngine?: BlurEngine;
+  blurSamples?: number;
+  /** set by render.mjs when it averages whole-frame passes (tools/shutter.py): no in-DOM blur on top */
+  shutterPasses?: number;
+};
 
 const inputs = (): BlurProps => {
   try {
@@ -87,7 +92,7 @@ export const MotionBlur: React.FC<{
     samples,
   );
   const n = samplesWithTravel(requested, travel, gap);
-  if (n === 0) return <>{children}</>;
+  if (n === 0 || (inputs().shutterPasses ?? 1) > 1) return <>{children}</>;
   if (engine === "canvas") {
     return (
       <HtmlInCanvasMotionBlur

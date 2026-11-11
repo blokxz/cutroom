@@ -29,3 +29,10 @@ def test_a_real_fast_move_without_blur_still_fails():
     assert blur_fails({"photo": fr})
     fr_b = {1: rec(1, 0, 0, 400, 400, True), 2: rec(2, 300, 0, 400, 400, True)}
     assert blur_fails({"photo": fr_b}) == []
+
+
+def test_a_whole_frame_shutter_counts_as_blur():
+    fr = {1: rec(1, 0, 0, 400, 400), 2: rec(2, 300, 0, 400, 400)}
+    rep = Report()
+    element_checks({**J, "shutter": 4}, {"photo": fr}, rep, (0, 0, 0, 0))
+    assert [i for i in rep.items if i["check"] == "blur"] == []

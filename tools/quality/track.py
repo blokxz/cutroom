@@ -137,7 +137,8 @@ def element_checks(j, by_id, report, text_safe, min_text_h=0, blocked=None, caut
                     text_caution.append(f)
                 if min_text_h and r["h"] < min_text_h * scale:
                     small.add(i)
-            if sp > 80 and not r.get("blurred"):
+            # a whole-frame shutter (render.mjs --final, tools/shutter.py) blurs everything that moves
+            if sp > 80 and not r.get("blurred") and not (j.get("shutter") or 1) > 1:
                 fast_unblurred.append((i, f, sp))
         for a_, b_ in runs(out_of_frame, 3):
             report.fail("framing", f'"{i}" leaves the frame at {a_ / fps:.2f}–{b_ / fps:.2f}s')

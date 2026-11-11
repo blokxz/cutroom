@@ -8,7 +8,11 @@
  *
  * --brief        takes the composition id, platform, format and reference from the brief, passes the
  *                brief to the composition as the `brief` prop (copy, CTA, contact) and writes to out/<brief id>/.
- * --final        high-quality encode (crf 14) + audio mastering to -16 LUFS / -1.5 dBTP.
+ * --final        high-quality encode (crf 14) from PNG frames + audio mastering to -16 LUFS / -1.5 dBTP, with a
+ *                whole-frame shutter: the stretches that move are rendered again at fractions of a frame and
+ *                averaged in linear light (tools/shutter.py). --shutter N sets the samples (default 4; 1 = off).
+ * --fps60        (with --final) also write <id>-60.mp4 at 60 fps from the same piece (passes at +0.5 frame,
+ *                interleaved). Verification runs on the 30 fps file.
  * --master-4k    a 2160x3840 (scale 2) final master for clients who ask for one, written as <id>-4k.mp4.
  *                Not verified against platform limits (it's above their 1920 px upload maximum): publish the 1080 final.
  * --preview      quick look while iterating: half size, no stills, no mastering, no verification; written as
@@ -25,10 +29,12 @@
  */
 import { bundle } from "@remotion/bundler";
 import { openBrowser, renderMedia, renderStill, selectComposition } from "@remotion/renderer";
+import { spawnSync } from "node:child_process";
 import crypto from "node:crypto";
+import os from "node:os";
 import fs from "node:fs";
 import path from "node:path";
-import { config, remotionRoot as root, repoRoot, runTool } from "./config.mjs";
+import { config, remotionRoot as root, repoRoot, runTool, toolsDir } from "./config.mjs";
 import { syncClients } from "./sync-clients.mjs";
 
 const args = process.argv.slice(2);
@@ -37,7 +43,7 @@ const opt = (n, d) => {
   const i = args.indexOf(`--${n}`);
   return i >= 0 ? args[i + 1] : d;
 };
-const VALUED = ["--format", "--platform", "--out", "--scale", "--brief", "--concurrency"];
+const VALUED = ["--format", "--platform", "--out", "--scale", "--brief", "--concurrency", "--shutter"];
 const valued = new Set(VALUED.filter((o) => args.includes(o)).flatMap((o) => [o, args[args.indexOf(o) + 1]]));
 const briefPath = opt("brief") ? path.resolve(process.cwd(), opt("brief")) : null;
 const brief = briefPath ? JSON.parse(fs.readFileSync(briefPath, "utf8")) : null;
@@ -68,7 +74,12 @@ const { browserExecutable } = config;
 // motion blur: engine from .env, samples by profile (finals get a smoother shutter than drafts)
 const blurEngine = brief?.render?.blur_engine ?? config.blurEngine;
 const blurSamples = final ? 12 : preview ? 3 : undefined;
-const blurProps = { blurEngine, ...(blurSamples ? { blurSamples } : {}) };
+// whole-frame shutter: finals render the moving stretches again at fractions of a frame and average the passes in
+// linear light (tools/shutter.py); the in-DOM <MotionBlur> steps aside so nothing is blurred twice
+const shutter = Math.max(1, Math.round(Number(opt("shutter", final && !preview ? "4" : "1"))));
+const fps60 = flag("fps60") && final;
+const multipass = shutter > 1 || fps60;
+const blurProps = { blurEngine, ...(blurSamples ? { blurSamples } : {}), ...(multipass ? { shutterPasses: shutter } : {}) };
 const inputProps = brief ? { track: true, brief, ...blurProps } : { track: true, ...blurProps };
 
 const suffix = master4k ? "-4k" : final ? "" : preview ? "-preview" : "-draft";
@@ -90,7 +101,7 @@ const cacheKey = () => {
   // workflow fields of the brief (status, decisions, notes) don't change the picture
   // (delivery only steers the package; material is already reflected in assets)
   const { status, decisions, notes, delivery, material, ...picture } = brief ?? {};
-  h.update(JSON.stringify({ id, final, scale, blurEngine, blurSamples, format: opt("format"), platform: opt("platform"), brief: picture }));
+  h.update(JSON.stringify({ id, final, scale, blurEngine, blurSamples, shutter, fps60, format: opt("format"), platform: opt("platform"), brief: picture }));
   // composition code: hash contents (small); assets: size + mtime (large)
   for (const f of [...walk(path.join(root, "src")), path.join(root, "package-lock.json")].sort()) {
     if (fs.existsSync(f)) h.update(f.slice(root.length)).update(fs.readFileSync(f));
@@ -148,20 +159,27 @@ if (cached) {
     };
 
     let last = -1;
+    const tmp = multipass ? fs.mkdtempSync(path.join(os.tmpdir(), "cutroom-passes-")) : null;
+    const pass0 = multipass ? path.join(tmp, "pass-0-0.mp4") : video;
     await renderMedia({
       composition,
       serveUrl,
       codec: "h264",
-      crf: final ? 14 : preview ? 26 : 20,
+      crf: multipass ? 1 : final ? 14 : preview ? 26 : 20,
+      // frames are captured as PNG for finals (Remotion's default JPEG at quality 80 compresses every frame once
+      // before the encoder compresses it again: blocks in gradients and steam); drafts keep JPEG, at a higher quality
+      imageFormat: final ? "png" : "jpeg",
+      ...(final ? {} : { jpegQuality: 92 }),
       scale,
-      outputLocation: video,
+      outputLocation: pass0,
       inputProps,
       browserExecutable,
       puppeteerInstance: browser,
       concurrency,
       onBrowserLog,
       // limited-range 4:2:0 and a keyframe every 2 s: what social platforms process most predictably
-      pixelFormat: "yuv420p",
+      // (a multi-pass render keeps a near-lossless 4:4:4 intermediate; the blend writes the 4:2:0 file)
+      pixelFormat: multipass ? "yuv444p" : "yuv420p",
       colorSpace: "bt709",
       gopSize: composition.fps * 2,
       onProgress: ({ progress }) => {
@@ -172,11 +190,47 @@ if (cached) {
         }
       },
     });
-    console.log(`\nwrote ${path.relative(root, video)} (${secs()})`);
+    console.log(`\nwrote ${path.relative(root, pass0)} (${secs()})`);
+
+    if (multipass) {
+      const plan = spawnSync(config.python, [path.join(toolsDir, "shutter.py"), "plan", pass0], { encoding: "utf8" });
+      if (plan.status !== 0) throw new Error(`shutter plan failed: ${plan.stderr}`);
+      const { frames, ranges, moving } = JSON.parse(plan.stdout);
+      const offs = [];
+      for (let m = 0; m < (fps60 ? 2 : 1); m++)
+        for (let j = 0; j < shutter; j++) offs.push({ m, j, offset: m / (fps60 ? 2 : 1) + (0.5 / (fps60 ? 2 : 1)) * (j / shutter) });
+      const passes = [{ m: 0, j: 0, start: 0, end: frames - 1, path: pass0 }];
+      for (const o of offs) {
+        if (o.m === 0 && o.j === 0) continue;
+        // a sub-frame's first sample covers the whole piece; the other samples only where something moves
+        const spans = o.j === 0 ? [[0, frames - 1]] : ranges;
+        for (const [a, b] of spans) {
+          const file = path.join(tmp, `pass-${o.m}-${o.j}-${a}.mp4`);
+          await renderMedia({
+            composition, serveUrl, codec: "h264", crf: 1, pixelFormat: "yuv444p", imageFormat: "png", scale,
+            frameRange: [a, b], outputLocation: file, muted: true, browserExecutable, puppeteerInstance: browser, concurrency,
+            inputProps: { ...inputProps, track: false, timeOffset: o.offset },
+          });
+          passes.push({ m: o.m, j: o.j, start: a, end: b, path: file });
+        }
+      }
+      console.log(`shutter: ${shutter} samples, ${moving}/${frames} frames moving, ${passes.length} passes (${secs()})`);
+      const blend = (mult, out) => {
+        const pass = passes.filter((p) => p.m < mult).flatMap((p) => ["--pass", `${p.m}:${p.j}:${p.start}:${p.end}:${p.path}`]);
+        const r = spawnSync(config.python, [path.join(toolsDir, "shutter.py"), "blend", "--frames", String(frames), "--fps", String(composition.fps),
+          "--mult", String(mult), "--out", out, "--audio", pass0, "--crf", "14", ...pass], { stdio: "inherit" });
+        if (r.status !== 0) throw new Error("shutter blend failed");
+      };
+      // fps60 needs every sub-frame 1 pass; the 30 fps file uses sub-frame 0 only
+      blend(1, video);
+      if (fps60) blend(2, video.replace(/\.mp4$/, "-60.mp4"));
+      fs.rmSync(tmp, { recursive: true, force: true });
+      console.log(`wrote ${path.relative(root, video)}${fps60 ? " and the 60 fps copy" : ""} (${secs()})`);
+    }
 
     fs.writeFileSync(
       trackFile,
-      JSON.stringify({ width: composition.width * scale, height: composition.height * scale, fps: composition.fps, scale, beats, records: [...track.values()] }),
+      JSON.stringify({ width: composition.width * scale, height: composition.height * scale, fps: composition.fps, scale, shutter, beats, records: [...track.values()] }),
     );
     console.log(`wrote ${path.relative(root, trackFile)} (${track.size} records, ${beats.length} beats)`);
 
@@ -194,6 +248,8 @@ if (cached) {
 
   // audio mastered to -16 LUFS / -1.5 dBTP on drafts too, so the draft's loudness verdict matches the final's
   const m = preview ? { status: 0 } : runTool("master.py", [video, "--out", video]);
+  const v60 = video.replace(/\.mp4$/, "-60.mp4");
+  if (fps60 && fs.existsSync(v60)) runTool("master.py", [v60, "--out", v60]);
   mastered = !preview && m.status === 0;
   if (!mastered && !preview) console.warn("mastering failed — keeping the unmastered file (the pipeline will not deliver it)");
   fs.writeFileSync(cacheFile, JSON.stringify({ ...readCache(), [video]: { key, format: fmt, mastered, at: new Date().toISOString() } }, null, 2));
