@@ -1,0 +1,50 @@
+{
+  "note": "cutroom's own looks: a palette and two faces chosen together. Faces are SIL OFL families from @fontsource. Colours use the brand.ts tokens.",
+  "looks": [
+    {
+      "name": "linen",
+      "mood": "cream linen, moss ink, a dusty rose — calm hospitality, places to rest",
+      "colors": {"ground": "#F4EFE6", "paper": "#FFFDF8", "ink": "#2F3A2E", "soft": "#6E6A60", "accent": "#8C5E58", "accent2": "#C7A27C", "line": "#DCD4C6"},
+      "faces": {
+        "display": {"family": "Instrument Serif", "weights": [400], "italic": true},
+        "text": {"family": "Inter", "weights": [400, 600]}
+      }
+    },
+    {
+      "name": "harbor",
+      "mood": "salt white, deep sea ink, a warm sand accent — water, coast, clean rooms",
+      "colors": {"ground": "#F5F8F9", "paper": "#FFFFFF", "ink": "#12324A", "soft": "#5B6E7C", "accent": "#256F96", "accent2": "#E0A465", "line": "#D6E0E5"},
+      "faces": {
+        "display": {"family": "Fraunces", "weights": [400], "italic": true},
+        "text": {"family": "DM Sans", "weights": [400, 600]}
+      }
+    },
+    {
+      "name": "nocturne",
+      "mood": "a night interior, warm lamp light on charcoal — evenings, dining, intimacy",
+      "colors": {"ground": "#16181D", "paper": "#20232A", "ink": "#F2ECE3", "soft": "#A39D93", "accent": "#D9915F", "accent2": "#7F9BB0", "line": "#33363E"},
+      "faces": {
+        "display": {"family": "Playfair Display", "weights": [400], "italic": true},
+        "text": {"family": "Inter", "weights": [400, 600]}
+      }
+    },
+    {
+      "name": "atelier",
+      "mood": "raw paper, black ink, a terracotta stamp — craft, studios, handmade goods",
+      "colors": {"ground": "#EFE9E1", "paper": "#FAF7F2", "ink": "#1E1E1E", "soft": "#6F6A63", "accent": "#A84F2B", "accent2": "#3E6B5A", "line": "#D8D0C4"},
+      "faces": {
+        "display": {"family": "Cormorant Garamond", "weights": [500], "italic": true},
+        "text": {"family": "DM Sans", "weights": [400, 600]}
+      }
+    },
+    {
+      "name": "poster",
+      "mood": "a printed poster: bone white, heavy black, one loud red — offers, events, bold claims",
+      "colors": {"ground": "#ECE7DC", "paper": "#F8F5EE", "ink": "#151515", "soft": "#5F5B55", "accent": "#C93C22", "accent2": "#1F6B5C", "line": "#D5CFC2"},
+      "faces": {
+        "display": {"family": "Archivo", "weights": [800]},
+        "text": {"family": "Space Grotesk", "weights": [400, 600]}
+      }
+    }
+  ]
+}

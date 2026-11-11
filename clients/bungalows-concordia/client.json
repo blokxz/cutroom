@@ -16,29 +16,29 @@
       "line": "#D9D2C8"
     },
     "fonts": {
-      "display": "DM Serif Display",
+      "display": "Instrument Serif",
       "text": "Inter",
       "script": "Caveat",
       "files": [
         {
-          "family": "DM Serif Display",
-          "file": "DMSerifDisplay-400.woff2",
+          "family": "Instrument Serif",
+          "file": "instrument-serif-latin-400-normal.woff2",
           "weight": "400"
         },
         {
-          "family": "DM Serif Display",
-          "file": "DMSerifDisplay-400i.woff2",
+          "family": "Instrument Serif",
+          "file": "instrument-serif-latin-400-italic.woff2",
           "weight": "400",
           "style": "italic"
         },
         {
           "family": "Inter",
-          "file": "Inter-400.woff2",
+          "file": "inter-latin-400-normal.woff2",
           "weight": "400"
         },
         {
           "family": "Inter",
-          "file": "Inter-600.woff2",
+          "file": "inter-latin-600-normal.woff2",
           "weight": "600"
         },
         {
@@ -50,7 +50,8 @@
     "logo": "assets/logo.png",
     "taglines": [
       "Termas • Bosque • Familia"
-    ]
+    ],
+    "look": "linen"
   },
   "voice": "Calm and warm; voseo rioplatense; short sentences; show the place, never press.",
   "notes": "Palette measured from the logo (moss green, dusty rose, stone grey); the Instagram profile could not be read from the session. Photos supplied by the client; kept out of git. The logo (assets/logo.png) is dark green on transparent and is not in the repo.",

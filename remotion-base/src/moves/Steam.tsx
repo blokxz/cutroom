@@ -74,7 +74,7 @@ export const Steam: React.FC<{
   density,
   count = 16,
   seed = "steam",
-  color = "255,255,255",
+  color = "236,242,245",
   trackId,
   leadFrames = 450,
 }) => {
@@ -96,7 +96,7 @@ export const Steam: React.FC<{
               width: at.r * 2,
               height: at.r * 2,
               borderRadius: "50%",
-              background: `radial-gradient(circle, rgba(${color},${(0.85 * density).toFixed(3)}) 0%, rgba(${color},${(0.45 * density).toFixed(3)}) 38%, rgba(${color},0) 70%)`,
+              background: `radial-gradient(circle, rgba(${color},${(0.72 * density).toFixed(3)}) 0%, rgba(${color},${(0.34 * density).toFixed(3)}) 38%, rgba(${color},0) 70%)`,
             }}
           />
         );
@@ -106,7 +106,7 @@ export const Steam: React.FC<{
         style={{
           position: "absolute",
           inset: 0,
-          background: `rgba(${color},${(Math.max(0, density - 0.45) * 1.2).toFixed(3)})`,
+          background: `rgba(${color},${(Math.max(0, density - 0.55) * 0.7).toFixed(3)})`,
         }}
       />
     </div>

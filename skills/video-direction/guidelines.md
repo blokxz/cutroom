@@ -27,7 +27,9 @@ Edge cases:
 - Prompt contains claims (health, results) ⇒ do not put them on screen; `deliver.py` flags severe claims [G-05].
 - Copy conflicts with `avoid` ⇒ `check` errors; rewrite only with user consent, else record in `decisions`.
 
-## 2 · Material and concepts [R-01 R-02 R-13]
+## 2 · Material and concepts [R-01 R-02 R-13 R-19]
+
+0. Reference from the client? `python3 tools/verify.py <ref.mp4> --analyze --frames <ref-frames.png>`: write down its still share, longest rest, cuts and bursts, and look at the frame sheet before writing concepts [R-19].
 
 1. `python3 tools/material.py analyze <slug> <folder> [--videos]` — reads originals read-only.
 2. Open `clients/<slug>/material/<batch>/contact_sheet.png`; choose by number (ask when it matters).
@@ -43,12 +45,15 @@ Edge cases:
 3. Write the beat table before any code (`references/beat-sheet.md`); store in `brief.beats`.
 4. Self-check the table: ratio [R-03], rest [R-04], CTA hold [R-05], survivor per boundary [R-06], one story [R-07].
 
-## 4 · Build [C-05 G-04 G-08 R-08…R-12 R-15]
+## 4 · Build [C-05 G-04 G-08 R-08…R-12 R-15 R-17 R-18]
+
+0. Look: `python3 tools/looks.py list`; `apply <look> <slug>` (add `--keep-colors` to keep the client's palette) before writing the composition [R-17].
 
 1. Create `remotion-base/src/clients/<slug>/<Name>.tsx`; register in `src/Root.tsx`; set `brief.composition`.
 2. Wrap in `<CopyProvider brief={brief} defaults={…}>`; all text via `useCopy()`, brand via `CLIENT` [G-04].
 3. Pick moves and helpers from `references/remotion-kit.md`; moves carry an element across a boundary, never decorate.
 4. Clips: `python3 tools/material.py clip <video> --start S --dur S --out clients/<slug>/assets/videos/<name>.mp4`, play with `<Video>` from `@remotion/media`.
+4b. Captions: `<Caption text="small|large {word}" at out …>` from `src/components/Caption.tsx`; `out` at least 10 frames before the next change [R-18].
 5. Instrument: `<TrackRoot>`, `<Beats>` with `kind`, `<Track id kind>` on subject (`inFrame`), texts, logo; `blurred` inside `<MotionBlur>`; `trackId` on `IrisOpen` [R-15].
 6. Layout: `showSafeZones` in Studio; sizes and zones in `references/platform-layout.md` [R-11 R-12].
 7. Type-check: `cd remotion-base && npx tsc --noEmit`.
@@ -70,12 +75,12 @@ Edge cases:
 
 1. `python3 tools/pipeline.py render <brief>` (draft; `--preview` = half size, never gates; `--force` re-renders unchanged).
 2. Per line: FAIL ⇒ fix + re-render; WARN ⇒ decision in `decisions`; INFO ⇒ read. Detail: `references/verifier.md`.
-3. Inspect stills + sheet in `remotion-base/out/<id>/` yourself — the checker measures, it does not judge taste.
+3. Inspect stills + sheet in `remotion-base/out/<id>/` yourself — the checker measures, it does not judge taste. With a reference or a rival render: `python3 tools/compare.py <ours.mp4> <theirs.mp4> --ref <ref.mp4> --photos <dir>` [R-19].
 4. Show draft MP4 + stills. Only after explicit user approval: `python3 tools/pipeline.py advance <brief> --approved` [G-02].
 
 ## 8 · Final and delivery [C-07 G-03]
 
-1. `python3 tools/pipeline.py render <brief> --final` (encode + mastering); 0 FAIL required.
+1. `python3 tools/pipeline.py render <brief> --final` (PNG frames, whole-frame shutter, encode + mastering); 0 FAIL required. A `burnt` WARN means an effect whitens the picture: thin it [R-20]. A 60 fps copy: `node remotion-base/scripts/render.mjs --brief <brief> --final --fps60`.
 2. Write `deliveries/<id>/caption.md` in `voice_guide` voice: short, medium, booking versions, hashtags, alt text; no health promises.
 3. `python3 tools/deliver.py <brief>`; then `advance`.
 4. Deliver `deliveries/<id>/` with one line of context; walk `CHECKLIST.md` with the user; include `decisions`.

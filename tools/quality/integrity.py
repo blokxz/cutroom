@@ -263,3 +263,26 @@ def check_scene_continuity(an, report):
                               "carry an element, push or iris from one moment into the next")
     elif share < L.MOTION_WARN_SHARE:
         report.warn("scenes", f"{counts['motion']}/{total} scene changes happen in motion ({detail}: {where}) — aim for ≥ {L.MOTION_WARN_SHARE:.0%}")
+
+
+BURNT_SHARE = 0.15   # at least this share of the frame at luma ≥ 250
+BURNT_HALO = 0.6     # and most of the ring around it is a near-white haze (225–249)
+
+
+def burnt_frames(grey):
+    """Frames where a large white area melts into a near-white haze: highlights burnt by steam, fog, glare or an
+    overexposed sky. A white shape that is part of the design (a card, a page) has a crisp edge and does not count."""
+    import cv2
+
+    k = np.ones((7, 7), np.uint8)
+    out = []
+    for i, g in enumerate(grey):
+        blown = (g >= 250).astype(np.uint8)
+        share = float(blown.mean())
+        if share < BURNT_SHARE:
+            continue
+        ring = cv2.dilate(blown, k, iterations=2) - blown
+        halo = float(((g >= 225) & (g < 250) & (ring > 0)).sum() / max(1, ring.sum()))
+        if halo > BURNT_HALO:
+            out.append(i)
+    return out

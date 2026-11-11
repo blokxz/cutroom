@@ -40,8 +40,24 @@ def speeds(track):
     return out
 
 
-def draw(track, strip=None, width=1400, height=420):
-    sp = speeds(track)
+def video_speeds(path):
+    """{'picture': [(frame, px/frame)]} measured from the pixels (optical flow, as the verifier measures it), the fps
+    and the hard cuts: a sheet for any render, with or without tracked elements."""
+    import cv2
+
+    from quality import motion
+
+    cap = cv2.VideoCapture(path)
+    w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    n = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30
+    cap.release()
+    an = motion.analyze(path, fps, w, n / fps)
+    return {"picture": [(i, float(v)) for i, v in enumerate(an["speed"])]}, fps, an["cuts"]
+
+
+def draw(track, strip=None, width=1400, height=420, sp=None):
+    sp = sp if sp is not None else speeds(track)
     last = max([f for pts in sp.values() for f, _ in pts] + [1])
     top = min(max([v for pts in sp.values() for _, v in pts] + [BLUR_PX * 1.2]), BLUR_PX * 3)  # beyond 3x the limit a line is off scale
     pad = 56
@@ -65,7 +81,7 @@ def draw(track, strip=None, width=1400, height=420):
         if len(pts) > 1:
             d.line([(x(f), y(min(v, top))) for f, v in pts], fill=c, width=2)
         d.text((pad + 8 + n * 150, height - pad + 12), f"- {i}", fill=c)
-    d.text((pad, height - 18), f"frames 0–{last} ({last / fps:.1f} s) · px/frame of each element's centre (lines clipped at the top of the graph)", fill=(120, 120, 120))
+    d.text((pad, height - 18), f"frames 0–{last} ({last / fps:.1f} s) · px/frame of each tracked centre, or of the picture's optical flow (clipped at the top)", fill=(120, 120, 120))
     if strip and os.path.exists(strip):
         s = Image.open(strip).convert("RGB")
         s = s.resize((width, int(s.height * width / s.width)))
@@ -78,14 +94,26 @@ def draw(track, strip=None, width=1400, height=420):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("track")
+    ap.add_argument("track", help="a render's .track.json, or a video (.mp4): speed then comes from the pixels")
     ap.add_argument("--strip", help="a contact sheet PNG to put above the graph")
     ap.add_argument("--out", help="output PNG (default: next to the track file)")
     a = ap.parse_args(argv)
-    with open(a.track, encoding="utf-8") as f:
-        track = json.load(f)
-    out = a.out or a.track.replace(".track.json", "") + "-move-sheet.png"
-    draw(track, a.strip).save(out)
+    if a.track.lower().endswith((".mp4", ".mov", ".webm")):
+        sp, fps, cuts = video_speeds(a.track)
+        track = {"fps": fps, "beats": [{"f": c, "name": "cut"} for c in cuts]}
+        strip = a.strip
+        if not strip:
+            from quality import motion
+
+            strip = os.path.splitext(a.track)[0] + "-strip.png"
+            motion.contact_sheet(a.track, strip)
+        out = a.out or os.path.splitext(a.track)[0] + "-move-sheet.png"
+        draw(track, strip, sp=sp).save(out)
+    else:
+        with open(a.track, encoding="utf-8") as f:
+            track = json.load(f)
+        out = a.out or a.track.replace(".track.json", "") + "-move-sheet.png"
+        draw(track, a.strip).save(out)
     print("wrote", out)
     return 0
 

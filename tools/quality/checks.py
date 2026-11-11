@@ -27,6 +27,13 @@ def cuts(an, report):
         report.warn("cuts", "hard cuts are isolated scene changes; prefer carrying an element across, or group cuts into a quick burst")
 
 
+def burnt(an, report):
+    b, fps = an.get("burnt") or [], an["fps"]
+    if len(b) >= 2:
+        report.warn("burnt", f"{len(b)} frames where a large area burns to white through a haze (first at {b[0] / fps:.2f}s) — "
+                             "thin the steam / fog or lower the glare so the picture stays under it")
+
+
 def curves(an, report):
     m = an["metrics"]
     if m["moves"] >= 4 and m["t80_iqr"] is not None and m["t80_iqr"] <= 0.08:

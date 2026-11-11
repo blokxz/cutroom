@@ -74,6 +74,10 @@ Direct one short motion piece (story, reel, feed post, Short, TikTok) in Remotio
 | R-14 | Sound: few events, one material family, one room; music ducks under effects; master −16 LUFS, −1.5 dBTP. | LUFS |
 | R-16 | Meaning: every concept states the claim its picture makes; art that is only pretty, or a label added to explain it, is rejected — build the idea into the picture. | 1 claim per concept |
 | R-15 | Tracking: `<TrackRoot>`, `<Beats>` with `kind` ∈ `move rest hold cut`, `<Track>` on subject, texts, logo. | — |
+| R-17 | Look: a named look from `tools/looks.py` (palette + two OFL faces chosen together) or the client's colours with a look's faces; never a face picked by default. | contrast check |
+| R-18 | Captions through `<Caption>`: small sans line, serif italic line out of a blur, at most one boxed word; a caption leaves ≥ 10 frames before the next change, never ghosting through a transition. | reading time |
+| R-19 | Reference: when the client sends one, read it before the concepts (`verify.py --analyze --frames`: energy map, cuts, bursts, frame sheet) and compare the draft against it (`--ref`, `tools/compare.py`). | numbers in `decisions` |
+| R-20 | Picture quality: finals render from PNG frames with the whole-frame shutter (4 samples, linear light); a 60 fps copy on request; no effect (steam, fog, glare) burns the picture to white. | verifier `burnt`, `compare.py` |
 
 ## 7 · Severity contract
 

@@ -17,6 +17,7 @@
 import React from "react";
 import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
 import { Audio } from "@remotion/media";
+import { Caption, blurIn } from "../../components/Caption";
 import { Paper } from "../../components/Paper";
 import { SafeZones } from "../../components/SafeZones";
 import { Beat, Beats, Track, TrackRoot } from "../../components/Track";
@@ -139,108 +140,12 @@ export const Escapada: React.FC<Props> = ({ brief, ...rest }) => (
   </CopyProvider>
 );
 
-/** A word or line that comes in out of a blur, rising a little; it leaves the same way. */
-const blurIn = (frame: number, inAt: number, outAt: number, len = 14) => {
-  const i = tween(frame, [inAt, inAt + len], [0, 1], EASE.out);
-  const o = tween(frame, [outAt, outAt + 10], [0, 1], EASE.in);
-  const v = i * (1 - o);
-  return {
-    opacity: v,
-    filter: `blur(${((1 - v) * 14).toFixed(2)}px)`,
-    translate: `0px ${((1 - i) * 18).toFixed(1)}px`,
-  };
-};
-
-const Caption: React.FC<{
-  text: string;
-  at: number;
-  out: number;
-  i: number;
-}> = ({ text, at, out, i }) => {
-  const frame = useCurrentFrame();
-  const [small, big = ""] = text.split("|");
-  const m = big.match(/^(.*?)\{(.+?)\}(.*)$/);
-  const box =
-    tween(frame, [at + 18, at + 30], [0, 1], EASE.snap) *
-    (1 - tween(frame, [out, out + 10], [0, 1]));
-  const bigStyle: React.CSSProperties = {
-    fontFamily: T.fonts.display,
-    fontStyle: "italic",
-    fontSize: 104,
-    lineHeight: 1.1,
-    color: "#fff",
-    textShadow: "0 4px 26px rgba(0,0,0,.35)",
-  };
-  return (
-    <>
-      <Track id={`cap-${i}-a`} kind="text">
-        <div
-          style={{
-            position: "absolute",
-            left: 140,
-            right: 140,
-            top: 830,
-            textAlign: "center",
-            ...blurIn(frame, at + 6, out, 12),
-          }}
-        >
-          <span
-            style={{
-              fontFamily: T.fonts.text,
-              fontWeight: 500,
-              fontSize: 40,
-              color: "#fff",
-              textShadow: "0 2px 16px rgba(0,0,0,.45)",
-            }}
-          >
-            {small}
-          </span>
-        </div>
-      </Track>
-      <Track id={`cap-${i}-b`} kind="text">
-        <div
-          style={{
-            position: "absolute",
-            left: 120,
-            right: 120,
-            top: 885,
-            textAlign: "center",
-            ...blurIn(frame, at + 10, out, 12),
-          }}
-        >
-          {m ? (
-            <span style={bigStyle}>
-              {m[1]}
-              <span style={{ position: "relative", padding: "0 18px" }}>
-                <span
-                  style={{
-                    position: "absolute",
-                    inset: "10px 0 6px 0",
-                    background: T.colors.ink,
-                    opacity: 0.88,
-                    transformOrigin: "0 50%",
-                    scale: `${box} 1`,
-                  }}
-                />
-                <span style={{ position: "relative" }}>{m[2]}</span>
-              </span>
-              {m[3]}
-            </span>
-          ) : (
-            <span style={bigStyle}>{big}</span>
-          )}
-        </div>
-      </Track>
-    </>
-  );
-};
-
 const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
   const copy = useCopy();
   const frame = useCurrentFrame();
   const density = veilDensity(frame, [...AT.slice(1), END + 6], {
     base: 0.05,
-    peak: 0.74,
+    peak: 0.82,
     before: 7,
     after: 26,
   });
@@ -254,7 +159,7 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
         <Paper color={T.colors.ink} />
         {SCENES.map((s, i) => {
           const at = AT[i];
-          const shown = i === 0 ? 1 : tween(frame, [at - 8, at + 12], [0, 1]);
+          const shown = i === 0 ? 1 : tween(frame, [at - 5, at + 9], [0, 1]);
           // a push that arrives with the scene, then a very slow drift while it rests
           const push = tween(frame, [at, at + MOVE], [0, 1], s.ease);
           const drift = tween(
@@ -268,7 +173,7 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
             <Track key={s.src} id={`photo-${i}`} kind="image">
               <AbsoluteFill
                 style={{
-                  opacity: frame < at - 8 ? 0 : shown,
+                  opacity: frame < at - 5 ? 0 : shown,
                   translate: `${s.pan * 14 * push}px 0px`,
                 }}
               >
@@ -281,10 +186,12 @@ const Scene: React.FC<Omit<Props, "brief">> = ({ showSafeZones = false }) => {
           s.caption === undefined ? null : (
             <Caption
               key={i}
-              i={s.caption}
+              id={`cap-${s.caption}`}
               text={copy.lines[s.caption] ?? ""}
               at={AT[i]}
-              out={(AT[i + 1] ?? END) - 8}
+              out={(AT[i + 1] ?? END) - 18}
+              fonts={T.fonts}
+              box={T.colors.ink}
             />
           ),
         )}

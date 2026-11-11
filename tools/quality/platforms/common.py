@@ -183,6 +183,7 @@ def core_video(ctx, fmt):
     integrity.check_integrity(an, report, ctx.get("track"))
     checks.rhythm(an, report)
     checks.cuts(an, report)
+    checks.burnt(an, report)
     checks.curves(an, report)
     checks.ending_hold(an, report, fmt["end_hold"])
     mm = an["metrics"]

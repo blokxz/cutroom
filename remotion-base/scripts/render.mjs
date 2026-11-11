@@ -160,6 +160,8 @@ if (cached) {
 
     let last = -1;
     const tmp = multipass ? fs.mkdtempSync(path.join(os.tmpdir(), "cutroom-passes-")) : null;
+    // the passes are large: remove them however the run ends
+    if (tmp) process.on("exit", () => fs.rmSync(tmp, { recursive: true, force: true }));
     const pass0 = multipass ? path.join(tmp, "pass-0-0.mp4") : video;
     await renderMedia({
       composition,

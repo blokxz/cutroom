@@ -131,3 +131,19 @@ Families and move counts are not the same unit: a family is a creative idea buil
 ### Verdict changes
 
 None of the 14 rows flips. Row 11 (Verifier) stays **ahead**; row 6 (Move library) stays **behind** and now names fluid, contact and camera helpers as the missing kinds; row 14 (Proof) stays **behind** with the case template described above.
+
+## Quality parity work — 2026-11-11
+
+A side-by-side test (the same Escapada reel built with both tools, outside the repo for onetake) showed cutroom's picture looking cheaper. `tools/compare.py` measured why, and each fix below is our own design, measured before and after on the same piece.
+
+| # | Idea taken | What is ours | Measured |
+|---|---|---|---|
+| 11 | **Lossless frame capture** | `render.mjs` captures finals as PNG; drafts stay JPEG at quality 92 for speed | blocks 2.46 → 1.26 (onetake 1.44), banding 0.018 → 0.0075 (onetake 0.015), flat areas 53 % → 41 % (onetake 50 %) |
+| 12 | **A real shutter: several time samples averaged in linear light** | `withTimeOffset` shifts a whole Remotion piece by a fraction of a frame with `<Freeze>`; only the stretches that move are rendered again (`tools/shutter.py plan`); the average is done in numpy in linear light, not by ffmpeg | Escapada: 215 of 450 frames resampled, 7 min against 14 for onetake's full shutter; fast moves (Belt) lose their strobing |
+| 13 | **60 fps from a piece timed at 30** | the same offset passes at +0.5 frame, interleaved; no composition is rewritten; verification stays on the 30 fps file | Belt: 130 → 260 frames |
+| 14 | **Named looks: palette and faces chosen together** | `tools/looks.py` with five looks of our own (`linen`, `harbor`, `nocturne`, `atelier`, `poster`), contrast-checked, faces pulled only from `@fontsource` (OFL) with their licences | Bungalows Concordia moves from DM Serif to Instrument Serif (`linen` faces, client colours kept) |
+| 15 | **One caption system** | `<Caption>` (small sans + serif italic out of a blur + one boxed word) that always leaves before a change, so no caption ghosts through a transition | — |
+| 16 | **Reading a reference as a score** | `verify.py --analyze` prints an energy map and bursts; `--frames` tiles the whole piece. Our cut detector also demands a colour change, so moving water is not a cut: on the client's reference it finds 1 real cut where onetake's analyzer counted 33 | test with sliding texture vs a real switch |
+| 17 | **Effects must not burn the picture** | verifier `burnt` WARN: a large white area that melts into a near-white haze (steam, fog, glare); a crisp white card or page does not count | sample-dates 0, onetake 0, old Escapada 10 frames |
+| 18 | **Move sheets for every move** | `move_sheet.py` also measures speed from the pixels (optical flow), so any demo or piece gets a sheet without tracking | Belt: ramp, cruise, brake read cleanly |
+| 19 | **One entry point** | `/cutroom:film` runs the whole protocol (reference → concepts → beats → look → build → draft → sound → final → delivery) on top of the spec-driven skills | — |

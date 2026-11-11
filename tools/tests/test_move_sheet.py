@@ -45,3 +45,27 @@ def test_cli_writes_png_with_strip_on_top(tmp_path):
     im = Image.open(out)
     assert im.width == 1400 and im.height == 1400 * 300 // 1600 + 420
     assert im.getpixel((5, 5)) == (10, 20, 30)
+
+
+def test_a_video_gets_a_sheet_from_its_pixels(tmp_path):
+    import subprocess
+
+    import numpy as np
+    from quality.bins import ffmpeg
+
+    frames = []
+    for k in range(40):
+        f = np.full((128, 72, 3), 230, np.uint8)
+        x = min(60, max(0, (k - 10) * 3))  # still, then a square slides right, then still
+        f[50:70, x:x + 12] = 30
+        frames.append(f)
+    path = tmp_path / "m.mp4"
+    subprocess.run([ffmpeg(), "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", "72x128", "-r", "30", "-i", "-",
+                    "-c:v", "libx264", "-crf", "16", "-pix_fmt", "yuv420p", str(path)], input=b"".join(f.tobytes() for f in frames), check=True)
+    sp, fps, cuts = ms.video_speeds(str(path))
+    v = [s for _, s in sp["picture"]]
+    assert fps == 30 and cuts == []
+    assert max(v[12:28]) > max(v[:8]) and max(v[12:28]) > max(v[34:])
+    out = tmp_path / "sheet.png"
+    assert ms.main([str(path), "--out", str(out)]) == 0
+    assert Image.open(out).width == 1400

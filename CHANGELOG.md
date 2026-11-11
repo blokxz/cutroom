@@ -44,6 +44,14 @@ Phase 1 of the plan to surpass onetake: render quality and ease of use.
 
 - Reel `Escapada` for Bungalows Concordia (15 s), after the client's own reference reel: two-line captions that come in out of a blur with a moss box on one word, a slow camera per photo, and scene changes through rising steam (new move `Steam`: seeded puffs, a veil that swells around each change, a tracked lead puff). Checked against the reference with `verify.py --ref`.
 
+- Picture quality: finals capture PNG frames; a whole-frame shutter (`--shutter N`, default 4) re-renders only the moving stretches at fractions of a frame (`withTimeOffset`) and `tools/shutter.py` averages them in linear light; `--fps60` writes a 60 fps copy from the same piece.
+- `tools/looks.py`: five named looks (palette + two OFL faces from `@fontsource`, contrast-checked) applied to a client in one step.
+- `<Caption>`: the two-line caption system (small sans, serif italic out of a blur, one boxed word) that leaves before every change.
+- Reference reading: `verify.py --analyze` prints an energy map and bursts of cuts; `--frames` writes a sheet of one frame every 0.5 s.
+- Verifier `burnt` WARN: a large area burning to white through a haze (steam, fog, glare); crisp white design shapes do not count.
+- `move_sheet.py` measures speed from the pixels when given a video, so every move gets a sheet.
+- `/cutroom:film`: the whole protocol in one command. `video-direction` rules R-17 (look), R-18 (captions), R-19 (reference), R-20 (picture quality).
+
 - `tools/compare.py`: compares two renders of the same piece — a labelled side-by-side video, a sheet of the same instants with a 2x crop of the caption band, and numbers per video (detail, flat and blown areas, banding, sharpness, compression blocks, SSIM fidelity to the client's photos, rhythm against a reference), the winner of each, and an optional seeded blind A/B pair. Tests make renders worse on purpose and check that each number moves the right way.
 
 - `tools/move_sheet.py`: a speed graph (px/frame per tracked element, beats and the 80 px/frame blur limit marked) under a contact sheet; first sheets in `docs/moves/`.

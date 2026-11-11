@@ -14,13 +14,14 @@ This repo is **cutroom**: a Claude Code plugin plus the working kit it drives. `
 ```
 .claude-plugin/    plugin.json + marketplace.json (marketplace "blokxz")
 commands/video.md  /cutroom:video — the orchestrator: drives tools/pipeline.py stage by stage
+commands/film.md   /cutroom:film — the whole protocol in one command: reference, concepts, beats, look, build, draft, sound, final, delivery
 commands/reel.md   /cutroom:reel — summary first, families + seeded variations in one batch, then the same pipeline
 skills/            video-direction, reel-families — each spec.md (single source of truth) → SKILL.md (router), guidelines.md, references/
 schemas/           client.json, brief.json, music LIBRARY.json
 clients/<slug>/    client.json, assets/ (logo, photos, fonts, music), briefs/, references/
 remotion-base/     Remotion project: src/{lib,moves,components,examples,clients}, scripts/{render,config,sync-clients}.mjs
 tools/             pipeline.py, brief.py, material.py (+ media/), verify.py (+ quality/ core, claims, platforms/), deliver.py,
-                   brand.py, sfx.py, master.py, models.py, setup.py, doctor.py, check_plugin.py, check_skill.py, variation.py, reel_summary.py, sound_events.py, move_sheet.py, compare.py
+                   brand.py, sfx.py, master.py, models.py, setup.py, doctor.py, check_plugin.py, check_skill.py, variation.py, reel_summary.py, sound_events.py, move_sheet.py, compare.py, shutter.py, looks.py (+ looks/)
 deliveries/<id>/   publish-ready packages built by tools/deliver.py (git-ignored)
 ```
 

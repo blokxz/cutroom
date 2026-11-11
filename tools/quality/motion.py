@@ -50,6 +50,13 @@ def frame_count(path):
     return n
 
 
+def video_fps(path):
+    cap = cv2.VideoCapture(path)
+    f = cap.get(cv2.CAP_PROP_FPS)
+    cap.release()
+    return f or None
+
+
 def sheet_indices(total, n=8):
     return [int((k + 0.5) * total / n) for k in range(n)]
 
@@ -180,6 +187,7 @@ def _analyze(path, fps, width, duration, keep):
     diff, speed, hist_corr = motion_series(frames, scale, grey)
     level_mean, level_p99 = integrity.frame_levels(grey)
     scenes = integrity.scene_changes(grey, diff, fps)
+    burnt = integrity.burnt_frames(grey)
     _, scene_share = integrity.summarize_scenes(scenes)
     # still = little change overall AND no measurable travel (small elements on a big ground barely change the mean)
     still = (smooth(diff, 3) < STILL_THR) & (smooth(speed, 3) < STILL_SPEED)
@@ -196,7 +204,7 @@ def _analyze(path, fps, width, duration, keep):
     hook = float(np.mean(diff[1:int(fps) + 1])) if len(diff) > fps else 0.0
     return dict(
         full_frames=full, diff=diff, speed=speed, still=still, fps=fps, rests=rests, active=active, cuts=cuts, beats=beats, curves=curves,
-        integrity=dict(mean=level_mean, p99=level_p99, bars=bars), scene_changes=scenes,
+        integrity=dict(mean=level_mean, p99=level_p99, bars=bars), scene_changes=scenes, burnt=burnt,
         metrics=dict(
             still_fraction=round(float(np.mean(still)), 2),
             longest_rest_s=round(max([l for _, l in rests], default=0), 2),
@@ -205,6 +213,7 @@ def _analyze(path, fps, width, duration, keep):
             beat_length_cv=round(float(np.std(beats) / np.mean(beats)), 2) if len(beats) >= 3 else 1.0,
             median_beat_s=round(float(np.median(beats)), 2) if beats else 0,
             hard_cuts=[round(c / fps, 2) for c in cuts],
+            bursts=bursts(cuts, fps),
             cuts_per_10s=round(len(cuts) / max(duration, 1e-6) * 10, 2),
             max_speed_px_per_frame=round(float(speed.max())) if len(speed) else 0,
             fast_frames=int((speed > 80).sum()),
@@ -216,8 +225,67 @@ def _analyze(path, fps, width, duration, keep):
             loop_seam_diff=round(loop_diff, 1) if loop_diff is not None else None,
             scene_changes_found=len(scenes),
             scene_changes_in_motion=round(scene_share, 2),
+            burnt_frames=len(burnt),
         ),
     )
+
+
+LEVELS = " .:-=+*#%@"
+
+
+def energy_map(diff, fps, cuts=(), row_s=4.0, cols=48):
+    """The motion energy as text, one row per `row_s` seconds: blank = still, @ = the most energetic moment of the
+    piece, | = a hard cut. Reads like a score: where the piece rests, where it moves, where it cuts."""
+    if len(diff) == 0:
+        return []
+    e = smooth(np.asarray(diff, float), 3)
+    top = max(float(np.percentile(e, 99)), 1e-6)
+    per = row_s * fps / cols  # frames per column
+    cut_cols = {int(c / per) for c in cuts}
+    rows, n_cols = [], int(np.ceil(len(e) / per))
+    for r0 in range(0, n_cols, cols):
+        chars = []
+        for c in range(r0, min(r0 + cols, n_cols)):
+            if c in cut_cols:
+                chars.append("|")
+                continue
+            seg = e[int(c * per): max(int(c * per) + 1, int((c + 1) * per))]
+            lv = min(len(LEVELS) - 1, int(round(float(seg.mean()) / top * (len(LEVELS) - 1))))
+            chars.append(LEVELS[lv])
+        rows.append(f"{r0 * per / fps:5.1f}s |{''.join(chars)}|")
+    return rows
+
+
+def bursts(cuts, fps, gap_s=0.5, min_cuts=3):
+    """Groups of at least `min_cuts` hard cuts each within `gap_s` of the previous one: [(t0, t1, n)]."""
+    out, cur = [], []
+    for c in sorted(cuts):
+        if cur and (c - cur[-1]) / fps > gap_s:
+            if len(cur) >= min_cuts:
+                out.append((round(cur[0] / fps, 2), round(cur[-1] / fps, 2), len(cur)))
+            cur = []
+        cur.append(c)
+    if len(cur) >= min_cuts:
+        out.append((round(cur[0] / fps, 2), round(cur[-1] / fps, 2), len(cur)))
+    return out
+
+
+def frame_sheet(path, out, every_s=0.5, cols=8, width=180):
+    """Every `every_s` seconds of a video, tiled `cols` across, with the time in a corner: the whole piece on one page."""
+    import subprocess
+
+    from .bins import ffmpeg
+
+    n = frame_count(path)
+    fps_in = video_fps(path) or 30
+    rows = max(1, int(np.ceil(n / (every_s * fps_in) / cols)))
+    vf = (f"fps={1 / every_s},scale={width}:-2,drawtext=text='%{{pts\\:hms}}':x=4:y=4:fontsize=12:fontcolor=white:box=1:boxcolor=black@0.5,"
+          f"tile={cols}x{rows}")
+    r = subprocess.run([ffmpeg(), "-v", "error", "-y", "-i", path, "-vf", vf, "-frames:v", "1", out], capture_output=True, text=True)
+    if r.returncode != 0:  # drawtext needs a font; fall back to untimed tiles
+        subprocess.run([ffmpeg(), "-v", "error", "-y", "-i", path, "-vf", f"fps={1 / every_s},scale={width}:-2,tile={cols}x{rows}",
+                        "-frames:v", "1", out], check=True)
+    return out
 
 
 def energy_profile(diff, n=100):
@@ -235,6 +303,10 @@ def compare_reference(an, ref, report):
         print(f"  {k:26} {str(a.get(k)):9} {r.get(k)}")
     corr = float(np.corrcoef(energy_profile(an["diff"]), energy_profile(ref["diff"]))[0, 1])
     print(f"  {'energy_profile_corr':26} {corr:.2f}")
+    for title, x in (("this", an), ("reference", ref)):
+        print(f"\n  energy map — {title}  (blank still · @ peak · | cut)")
+        for row in energy_map(x["diff"], x["fps"], x["cuts"]):
+            print("  " + row)
     report.metrics["reference_energy_corr"] = round(corr, 2)
     if abs(a["still_fraction"] - r["still_fraction"]) > 0.15:
         report.warn("reference", f"still time {a['still_fraction']:.0%} vs reference {r['still_fraction']:.0%}")

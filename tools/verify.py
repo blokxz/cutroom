@@ -92,6 +92,7 @@ def main():
     ap.add_argument("--cover-frame", type=int, help="frame used as the reel cover (default: first frame)")
     ap.add_argument("--analyze", action="store_true", help="print measurements only, no verdict")
     ap.add_argument("--sheet", help="write a contact sheet PNG (videos)")
+    ap.add_argument("--frames", help="write a sheet of one frame every 0.5 s (videos): the whole piece, or a reference, on one page")
     ap.add_argument("--json", help="write the report as JSON")
     a = ap.parse_args()
 
@@ -123,6 +124,13 @@ def main():
         if a.sheet:
             motion.contact_sheet(a.path, a.sheet, frames=an.get("full_frames"))
             report.metrics["contact_sheet"] = a.sheet
+        if a.frames:
+            motion.frame_sheet(a.path, a.frames)
+            report.metrics["frame_sheet"] = a.frames
+        if a.analyze and not a.ref:
+            print("\n  energy map  (blank still · @ peak · | cut)")
+            for row in motion.energy_map(an["diff"], an["fps"], an["cuts"]):
+                print("  " + row)
         if a.ref:
             rm = probe_media(a.ref)
             motion.compare_reference(an, analyze_video(rm), report)

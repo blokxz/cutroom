@@ -13,7 +13,7 @@ export const BUNGALOWS_CONCORDIA: Brand = {
     accent2: "#C9A3A3",
     line: "#D9D2C8",
   },
-  fonts: { display: "DM Serif Display", text: "Inter", script: "Caveat" },
+  fonts: { display: "Instrument Serif", text: "Inter", script: "Caveat" },
 };
 
 export const CLIENT = {"name": "Bungalows Concordia", "taglines": ["Termas • Bosque • Familia"]} as const;
@@ -22,10 +22,10 @@ export const asset = (path: string) => staticFile(`clients/bungalows-concordia/$
 
 loadFonts(
   [
-    { family: "DM Serif Display", file: "DMSerifDisplay-400.woff2", weight: "400", style: "normal" },
-    { family: "DM Serif Display", file: "DMSerifDisplay-400i.woff2", weight: "400", style: "italic" },
-    { family: "Inter", file: "Inter-400.woff2", weight: "400", style: "normal" },
-    { family: "Inter", file: "Inter-600.woff2", weight: "600", style: "normal" },
+    { family: "Instrument Serif", file: "instrument-serif-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { family: "Instrument Serif", file: "instrument-serif-latin-400-italic.woff2", weight: "400", style: "italic" },
+    { family: "Inter", file: "inter-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { family: "Inter", file: "inter-latin-600-normal.woff2", weight: "600", style: "normal" },
     { family: "Caveat", file: "Caveat-400.woff2", weight: "400", style: "normal" },
   ],
   "clients/bungalows-concordia/fonts",
